@@ -1,0 +1,130 @@
+@use "./mixins" as mixins;
+
+.display-xl,
+.display-lg,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+	font-family: var(--font-display), system-ui, sans-serif;
+	color: var(--fg-strong);
+	font-weight: var(--w-bold);
+	text-wrap: balance;
+}
+
+.display-xl {
+	font-size: var(--fs-display-xl);
+	letter-spacing: var(--ls-display-xl);
+	line-height: var(--lh-display-xl);
+}
+
+.display-lg {
+	font-size: var(--fs-display-lg);
+	letter-spacing: var(--ls-display-lg);
+	line-height: var(--lh-display-lg);
+}
+
+.h1 {
+	font-size: var(--fs-h1);
+	letter-spacing: var(--ls-h1);
+	line-height: var(--lh-h1);
+}
+
+.h2 {
+	font-size: var(--fs-h2);
+	font-weight: var(--w-semibold);
+	letter-spacing: var(--ls-h2);
+	line-height: var(--lh-h2);
+}
+
+.h3 {
+	font-size: var(--fs-h3);
+	font-weight: var(--w-semibold);
+	letter-spacing: var(--ls-h3);
+	line-height: var(--lh-h3);
+}
+
+.h4 {
+	font-size: var(--fs-h4);
+	font-weight: var(--w-semibold);
+	letter-spacing: var(--ls-h4);
+	line-height: var(--lh-h4);
+}
+
+.h5 {
+	font-size: var(--fs-h5);
+	font-weight: var(--w-semibold);
+	letter-spacing: var(--ls-h5);
+	line-height: var(--lh-h5);
+}
+
+.h6 {
+	font-size: var(--fs-h6);
+	font-weight: var(--w-semibold);
+	letter-spacing: var(--ls-h6);
+	line-height: var(--lh-h6);
+}
+
+.body-lg {
+	font-size: var(--fs-body-lg);
+	line-height: var(--lh-body-lg);
+}
+
+.body {
+	font-size: var(--fs-body);
+	line-height: var(--lh-body);
+}
+
+.body-sm {
+	font-size: var(--fs-body-sm);
+	line-height: var(--lh-body-sm);
+}
+
+.caption {
+	color: var(--fg-muted);
+	font-size: var(--fs-caption);
+	line-height: var(--lh-caption);
+}
+
+.overline {
+	color: var(--fg-muted);
+	font-family: var(--font-mono), ui-monospace, monospace;
+	font-size: var(--fs-overline);
+	font-weight: var(--w-bold);
+	letter-spacing: var(--ls-overline);
+	line-height: var(--lh-overline);
+	text-transform: uppercase;
+}
+
+.metric {
+	color: var(--fg-strong);
+	font-family: var(--font-display), system-ui, sans-serif;
+	font-feature-settings: "tnum" 1;
+	font-size: var(--fs-metric);
+	font-weight: var(--w-bold);
+	letter-spacing: var(--ls-metric);
+	line-height: var(--lh-metric);
+}
+
+.mono {
+	font-family: var(--font-mono), ui-monospace, monospace;
+	font-size: var(--fs-body-sm);
+}
+
+.text-gradient-viral {
+	@include mixins.text-gradient;
+}
+
+.card {
+	@include mixins.studio-card;
+}
+
+.visually-hidden {
+	@include mixins.visually-hidden;
+}
+
+.score-pop {
+	animation: score-pop var(--dur-base) var(--ease-spring) both;
+}

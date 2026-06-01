@@ -1,47 +1,70 @@
 @use "./styles/mixins" as mixins;
 @use "./styles/variables" as variables;
 @use "./styles/typography" as typography;
+@use "./styles/utilities";
+
+@include typography.font-faces;
 
 :root {
-  --focus-outline-width: 0.1rem;
-  --focus-outline-offset: 0.14rem;
-  --focus-outline-color: #{variables.$color-focus};
-  --color-background: #{variables.$color-background};
-  --color-text: #{variables.$color-text};
+	@include variables.css-variables;
+	@include typography.css-variables;
+
+	--focus-outline-width: 0.12rem;
+	--focus-outline-offset: 0.12rem;
+}
+
+@media (min-width: 48rem) {
+	:root {
+		@include typography.desktop-css-variables;
+	}
 }
 
 *,
 *::before,
 *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
 }
 
 html {
-  min-height: 100%;
+	min-height: 100%;
+	background: var(--bg);
+	color: var(--fg);
+	font-family: var(--font-body), system-ui, sans-serif;
+	scroll-behavior: smooth;
+	text-rendering: optimizeLegibility;
 }
 
 body {
-  min-height: 100dvh;
-  background: var(--color-background);
-  color: var(--color-text);
-  font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
-  font-weight: 400;
-  line-height: typography.$line-height-base;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+	min-height: 100dvh;
+	overflow-x: hidden;
+	background: radial-gradient(45% 50% at 18% 10%, rgba(198, 244, 50, 0.08), transparent),
+	radial-gradient(40% 45% at 84% 12%, rgba(255, 61, 139, 0.08), transparent),
+	var(--bg);
+	color: var(--fg);
+	font-family: var(--font-body), system-ui, sans-serif;
+	font-size: var(--fs-body);
+	font-weight: var(--w-regular);
+	line-height: var(--lh-body);
+	text-wrap: pretty;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
 }
 
 ul,
 ol {
-  list-style: none;
+	list-style: none;
 }
 
 a {
-  color: inherit;
-  text-decoration: none;
-  transition: color variables.$transition-base;
+	color: var(--wave-300);
+	text-decoration: none;
+	transition: color var(--dur-micro) var(--ease-out);
+}
+
+a:hover {
+	color: var(--wave-200);
 }
 
 img,
@@ -49,52 +72,143 @@ picture,
 video,
 canvas,
 svg {
-  display: block;
-  max-width: 100%;
+	display: block;
+	max-width: 100%;
 }
 
 input,
 button,
 textarea,
 select {
-  font: inherit;
+	font: inherit;
 }
 
 button {
-  cursor: pointer;
+	cursor: pointer;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	color: var(--fg-strong);
+	font-family: var(--font-display), system-ui, sans-serif;
+	font-weight: var(--w-bold);
+	text-wrap: balance;
+}
+
+h1 {
+	font-size: var(--fs-h1);
+	letter-spacing: var(--ls-h1);
+	line-height: var(--lh-h1);
+}
+
+h2 {
+	font-size: var(--fs-h2);
+	font-weight: var(--w-semibold);
+	letter-spacing: var(--ls-h2);
+	line-height: var(--lh-h2);
+}
+
+h3 {
+	font-size: var(--fs-h3);
+	font-weight: var(--w-semibold);
+	letter-spacing: var(--ls-h3);
+	line-height: var(--lh-h3);
+}
+
+h4 {
+	font-size: var(--fs-h4);
+	font-weight: var(--w-semibold);
+	letter-spacing: var(--ls-h4);
+	line-height: var(--lh-h4);
+}
+
+h5 {
+	font-size: var(--fs-h5);
+	font-weight: var(--w-semibold);
+	letter-spacing: var(--ls-h5);
+	line-height: var(--lh-h5);
+}
+
+h6 {
+	font-size: var(--fs-h6);
+	font-weight: var(--w-semibold);
+	letter-spacing: var(--ls-h6);
+	line-height: var(--lh-h6);
+}
+
+::selection {
+	background: var(--accent);
+	color: var(--accent-fg);
+}
+
+::-webkit-scrollbar {
+	width: 0.75rem;
+	height: 0.75rem;
+}
+
+::-webkit-scrollbar-track {
+	background: var(--ink-950);
+}
+
+::-webkit-scrollbar-thumb {
+	background: var(--ink-600);
+	border: 0.19rem solid var(--ink-950);
+	border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: var(--ink-500);
 }
 
 :where(
-  a[href],
-  button,
-  input:not([type="hidden"]),
-  textarea,
-  select,
-  summary,
-  [role="button"],
-  [tabindex]:not([tabindex="-1"])
+	a[href],
+	button,
+	input:not([type="hidden"]),
+	textarea,
+	select,
+	summary,
+	[role="button"],
+	[tabindex]:not([tabindex="-1"])
 ):focus-visible {
-  outline: var(--focus-outline-width) solid var(--focus-outline-color);
-  outline-offset: var(--focus-outline-offset);
+	@include mixins.focus-ring;
+	border-radius: var(--radius-xs);
 }
 
 :where(
-  button,
-  input:not([type="hidden"]),
-  textarea,
-  select,
-  summary,
-  [role="button"]
+	button,
+	input:not([type="hidden"]),
+	textarea,
+	select,
+	summary,
+	[role="button"]
 ):focus-visible {
-  border-color: var(--focus-outline-color);
+	border-color: var(--focus-outline-color);
 }
 
 *:focus:not(:focus-visible) {
-  outline: none;
+	outline: none;
 }
 
 * {
-  transition-duration: variables.$transition-base;
-  transition-property: background-color, border-color, color;
-  transition-timing-function: variables.$ease-standard;
+	transition-duration: variables.$transition-base;
+	transition-property: background-color, border-color, color;
+	transition-timing-function: variables.$ease-standard;
+}
+
+@keyframes score-pop {
+	0% {
+		transform: scale(0.92);
+	}
+
+	60% {
+		transform: scale(1.03);
+	}
+
+	100% {
+		transform: scale(1);
+	}
 }

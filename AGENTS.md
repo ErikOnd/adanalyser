@@ -127,6 +127,7 @@ Rules:
 - Never use styled-components.
 - Prefer class-based styling through CSS/SCSS modules.
 - Avoid inline styles unless the value is dynamic and cannot reasonably live in CSS.
+- Use `rem` for CSS length values instead of `px`; prefer readable rounded values like `0.06rem` over exact conversions like `0.0625rem`.
 - Prefer readable, shallow nesting.
 - Avoid deeply nested selectors.
 - Component-specific styles belong next to the component.
@@ -163,12 +164,3 @@ Bad:
 Good:
 
 "The first 2.5 seconds contain no curiosity trigger, product reveal, or problem statement, which increases scroll risk."
-
-## Commands
-
-```bash
-pnpm install
-pnpm dev
-pnpm lint
-pnpm build
-```
