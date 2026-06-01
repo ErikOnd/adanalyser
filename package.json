@@ -1,0 +1,29 @@
+{
+	"name": "adanalyser",
+	"version": "0.1.0",
+	"private": true,
+	"packageManager": "pnpm@8.10.5",
+	"scripts": {
+		"dev": "next dev",
+		"build": "next build",
+		"start": "next start",
+		"lint": "eslint",
+		"format": "dprint fmt",
+		"check-format": "dprint check"
+	},
+	"dependencies": {
+		"next": "16.2.6",
+		"react": "19.2.4",
+		"react-dom": "19.2.4"
+	},
+	"devDependencies": {
+		"@types/node": "^20",
+		"@types/react": "^19",
+		"@types/react-dom": "^19",
+		"dprint": "^0.50.2",
+		"eslint": "^9",
+		"eslint-config-next": "16.2.6",
+		"sass": "^1.100.0",
+		"typescript": "^5"
+	}
+}

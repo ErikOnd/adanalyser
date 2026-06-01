@@ -1,0 +1,100 @@
+@use "./styles/mixins" as mixins;
+@use "./styles/variables" as variables;
+@use "./styles/typography" as typography;
+
+:root {
+  --focus-outline-width: 0.1rem;
+  --focus-outline-offset: 0.14rem;
+  --focus-outline-color: #{variables.$color-focus};
+  --color-background: #{variables.$color-background};
+  --color-text: #{variables.$color-text};
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  min-height: 100%;
+}
+
+body {
+  min-height: 100dvh;
+  background: var(--color-background);
+  color: var(--color-text);
+  font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
+  font-weight: 400;
+  line-height: typography.$line-height-base;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: color variables.$transition-base;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+:where(
+  a[href],
+  button,
+  input:not([type="hidden"]),
+  textarea,
+  select,
+  summary,
+  [role="button"],
+  [tabindex]:not([tabindex="-1"])
+):focus-visible {
+  outline: var(--focus-outline-width) solid var(--focus-outline-color);
+  outline-offset: var(--focus-outline-offset);
+}
+
+:where(
+  button,
+  input:not([type="hidden"]),
+  textarea,
+  select,
+  summary,
+  [role="button"]
+):focus-visible {
+  border-color: var(--focus-outline-color);
+}
+
+*:focus:not(:focus-visible) {
+  outline: none;
+}
+
+* {
+  transition-duration: variables.$transition-base;
+  transition-property: background-color, border-color, color;
+  transition-timing-function: variables.$ease-standard;
+}
