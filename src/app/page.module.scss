@@ -1,0 +1,35 @@
+.page {
+	position: relative;
+	min-height: 100dvh;
+	overflow: hidden;
+	background:
+		linear-gradient(90deg, rgba(8, 9, 11, 0.98), rgba(8, 9, 11, 0.7) 20%, rgba(8, 9, 11, 0.38) 52%, rgba(8, 9, 11, 0.9)),
+		radial-gradient(46rem 34rem at 22% 6%, rgba(198, 244, 50, 0.18), transparent 68%),
+		radial-gradient(42rem 32rem at 76% 12%, rgba(255, 61, 139, 0.2), transparent 68%),
+		radial-gradient(34rem 24rem at 68% 82%, rgba(198, 244, 50, 0.11), transparent 70%),
+		var(--ink-950);
+}
+
+.page::before {
+	position: absolute;
+	inset: 0;
+	background:
+		linear-gradient(105deg, rgba(198, 244, 50, 0.1), transparent 32%),
+		linear-gradient(250deg, rgba(255, 61, 139, 0.11), transparent 36%);
+	content: "";
+	filter: blur(1.8rem);
+	opacity: 0.78;
+	pointer-events: none;
+}
+
+.page::after {
+	position: absolute;
+	right: 8%;
+	bottom: 8%;
+	width: 34rem;
+	height: 14rem;
+	background: linear-gradient(90deg, rgba(198, 244, 50, 0.14), rgba(255, 61, 139, 0.08));
+	content: "";
+	filter: blur(4rem);
+	pointer-events: none;
+}

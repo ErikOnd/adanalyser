@@ -1,0 +1,17 @@
+.link {
+	display: inline-flex;
+	align-items: center;
+	color: var(--fg-muted);
+	font-size: 0.94rem;
+	font-weight: var(--w-medium);
+	text-decoration: none;
+}
+
+.link:hover {
+	color: var(--fg-strong);
+}
+
+.strong {
+	color: var(--fg);
+	font-weight: var(--w-bold);
+}

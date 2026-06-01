@@ -1,0 +1,44 @@
+.badge {
+	display: inline-flex;
+	align-items: center;
+	width: max-content;
+	border-radius: var(--radius-full);
+	font-weight: var(--w-bold);
+}
+
+.volt {
+	gap: var(--space-xs);
+	padding: var(--space-xs) var(--space-sm);
+	border: 0.06rem solid rgba(198, 244, 50, 0.35);
+	background: var(--volt-soft);
+	color: var(--volt-300);
+	font-family: var(--font-mono), ui-monospace, monospace;
+	font-size: 0.63rem;
+	letter-spacing: 0.09em;
+	line-height: 1;
+	text-transform: uppercase;
+}
+
+.dark {
+	gap: var(--space-xs);
+	padding: var(--space-sm) var(--space-md);
+	border: 0.06rem solid var(--border-strong);
+	background: rgba(24, 28, 33, 0.96);
+	box-shadow: var(--shadow-md);
+	color: var(--fg-strong);
+	font-size: 0.9rem;
+}
+
+.success {
+	gap: var(--space-xs);
+	padding: var(--space-sm) var(--space-md);
+	border: 0.06rem solid var(--border-strong);
+	background: var(--ink-850);
+	box-shadow: var(--shadow-md);
+	color: var(--fg-strong);
+	font-size: 0.9rem;
+}
+
+.success span {
+	color: var(--success);
+}

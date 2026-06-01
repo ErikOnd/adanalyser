@@ -1,3 +1,10 @@
+@use "sass:map";
+
+$breakpoints: (
+	tablet: 42rem,
+	desktop: 68rem,
+);
+
 @mixin focus-ring {
 	outline: var(--focus-outline-width) solid var(--focus-outline-color);
 	outline-offset: var(--focus-outline-offset);
@@ -27,4 +34,10 @@
 	-webkit-background-clip: text;
 	background-clip: text;
 	color: transparent;
+}
+
+@mixin breakpoint($name) {
+	@media (min-width: map.get($breakpoints, $name)) {
+		@content;
+	}
 }

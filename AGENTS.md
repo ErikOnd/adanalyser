@@ -51,6 +51,7 @@ The goal is not generic feedback. Feedback must be highly specific to the upload
 ## UI Architecture
 
 We use two UI layers: **Atoms** and **Components**.
+Follow the project shape used in `planner7`: capitalized `Atoms` and `Components` folders live under `src/app`.
 
 ### Atoms
 
@@ -69,7 +70,7 @@ Examples:
 Structure:
 
 ```txt
-src/atoms/
+src/app/Atoms/
   Button/
     Button.tsx
     Button.module.scss
@@ -81,6 +82,8 @@ Rules:
 - Atoms must not contain product-specific business logic.
 - Atoms must not import Components.
 - Atoms may be used by Components, pages, and layouts.
+- Icons must come from https://lucide.dev/icons/ as downloaded SVG source, live as dedicated `.svg` files, use `currentColor` for color, and must not keep fixed `height` or `width` attributes on the SVG.
+- Use the `Icon` atom for rendering icons. It exposes `size="small" | "medium" | "large"` for 16, 24, and 36 CSS pixels; keep those sizes in SCSS as rem equivalents.
 
 ### Components
 
@@ -99,7 +102,7 @@ Examples:
 Structure:
 
 ```txt
-src/components/
+src/app/Components/
   Navigation/
     Navigation.tsx
     Navigation.module.scss
@@ -121,13 +124,16 @@ Rules:
 
 ## Styling
 
-- Use CSS Modules by default.
-- Use SCSS Modules when `sass` is installed.
-- Never use Tailwind unless explicitly requested.
+- Always use SCSS for stylesheets.
+- Use SCSS Modules for component-specific styles.
+- Never use Tailwind
 - Never use styled-components.
-- Prefer class-based styling through CSS/SCSS modules.
+- Prefer class-based styling through SCSS modules.
+- Use `clsx` when class names need conditional or composable logic.
 - Avoid inline styles unless the value is dynamic and cannot reasonably live in CSS.
 - Use `rem` for CSS length values instead of `px`; prefer readable rounded values like `0.06rem` over exact conversions like `0.0625rem`.
+- Use spacing variables from `src/app/styles/_variables.scss` for padding, margin, and gap values instead of one-off spacing literals.
+- Use the mobile-first breakpoint mixin from `src/app/styles/_mixins.scss`: write base styles for mobile, then use `@include breakpoint(tablet)` and `@include breakpoint(desktop)`.
 - Prefer readable, shallow nesting.
 - Avoid deeply nested selectors.
 - Component-specific styles belong next to the component.

@@ -95,18 +95,30 @@ $ease-standard: cubic-bezier(0.22, 1, 0.36, 1);
 	--grad-sheen: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0));
 
 	/* Spacing */
-	--space-1: 0.12rem;
-	--space-2: 0.25rem;
-	--space-3: 0.5rem;
-	--space-4: 0.75rem;
-	--space-5: 1rem;
-	--space-6: 1.25rem;
-	--space-7: 1.5rem;
-	--space-8: 2rem;
-	--space-9: 2.5rem;
-	--space-10: 3rem;
-	--space-11: 4rem;
-	--space-12: 5rem;
+	--space-0: 0;
+	--space-2xs: 0.25rem;
+	--space-xs: 0.5rem;
+	--space-sm: 0.75rem;
+	--space-md: 1rem;
+	--space-lg: 1.25rem;
+	--space-xl: 1.5rem;
+	--space-2xl: 2rem;
+	--space-3xl: 2.5rem;
+	--space-4xl: 3rem;
+	--space-5xl: 4rem;
+	--space-6xl: 5rem;
+	--space-1: var(--space-2xs);
+	--space-2: var(--space-xs);
+	--space-3: var(--space-sm);
+	--space-4: var(--space-md);
+	--space-5: var(--space-lg);
+	--space-6: var(--space-xl);
+	--space-7: var(--space-2xl);
+	--space-8: var(--space-3xl);
+	--space-9: var(--space-4xl);
+	--space-10: var(--space-5xl);
+	--space-11: var(--space-6xl);
+	--content-max: 80rem;
 
 	/* Radius */
 	--radius-xs: 0.38rem;

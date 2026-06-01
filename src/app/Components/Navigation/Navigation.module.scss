@@ -1,0 +1,96 @@
+@use "../../styles/mixins" as *;
+
+.nav {
+	position: relative;
+	z-index: 2;
+	width: 100%;
+	border-bottom: 0.06rem solid var(--border);
+	background: rgba(8, 9, 11, 0.72);
+	backdrop-filter: blur(1rem);
+}
+
+.inner {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	max-width: var(--content-max);
+	min-height: 4.5rem;
+	padding: var(--space-sm) clamp(var(--space-lg), 3vw, var(--space-4xl));
+	margin: var(--space-0) auto;
+	gap: var(--space-md);
+}
+
+.brand {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--space-sm);
+	color: var(--fg-strong);
+	font-family: var(--font-display), system-ui, sans-serif;
+	font-size: 1.13rem;
+	font-weight: var(--w-bold);
+	text-decoration: none;
+}
+
+.mark {
+	display: grid;
+	width: 2rem;
+	height: 2rem;
+	place-items: center;
+	border: 0.06rem solid rgba(198, 244, 50, 0.28);
+	border-radius: 0.63rem;
+	background: var(--ink-900);
+	color: var(--volt-300);
+}
+
+.links {
+	display: none;
+	align-items: center;
+	gap: clamp(var(--space-md), 2.2vw, var(--space-2xl));
+}
+
+.actions {
+	display: flex;
+	align-items: center;
+	gap: var(--space-md);
+}
+
+.signIn {
+	display: none;
+}
+
+.cta {
+	padding: var(--space-sm) var(--space-md);
+	font-size: 0.88rem;
+}
+
+@include breakpoint(tablet) {
+	.inner {
+		display: grid;
+		grid-template-columns: 1fr auto;
+	}
+
+	.brand {
+		font-size: 1.18rem;
+	}
+}
+
+@include breakpoint(desktop) {
+	.inner {
+		grid-template-columns: auto 1fr auto;
+		min-height: 4.35rem;
+		gap: var(--space-2xl);
+	}
+
+	.links {
+		display: flex;
+	}
+
+	.signIn {
+		display: inline-flex;
+	}
+
+	.cta {
+		padding: var(--space-sm) var(--space-md);
+		font-size: 0.9rem;
+	}
+}
