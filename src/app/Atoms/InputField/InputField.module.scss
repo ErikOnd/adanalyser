@@ -1,0 +1,62 @@
+.field {
+	display: grid;
+	color: var(--fg-muted);
+	font-size: 0.82rem;
+	font-weight: var(--w-bold);
+	gap: var(--space-2xs);
+}
+
+.label {
+	color: inherit;
+	font: inherit;
+}
+
+.control {
+	display: flex;
+	min-height: 2.75rem;
+	width: 100%;
+	align-items: center;
+	padding: var(--space-0) 1rem;
+	border: 0.06rem solid color-mix(in oklch, var(--ink-300) 68%, var(--fg-muted));
+	border-radius: 0.82rem;
+	background: rgba(24, 28, 33, 0.74);
+	color: var(--fg-muted);
+	gap: 0.85rem;
+}
+
+.control:focus-within {
+	border-color: var(--accent);
+	box-shadow: 0 0 0 0.19rem var(--volt-soft);
+}
+
+.input {
+	width: 100%;
+	border: 0;
+	outline: 0;
+	background: transparent;
+	color: var(--fg);
+	font-size: 0.88rem;
+	font-weight: var(--w-bold);
+}
+
+.input::placeholder {
+	color: color-mix(in oklch, var(--fg-muted) 72%, transparent);
+}
+
+.toggle {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	flex: 0 0 auto;
+	border: 0;
+	background: transparent;
+	color: var(--fg-muted);
+}
+
+.toggle:hover {
+	color: var(--fg);
+}
+
+.trailingIcon {
+	color: var(--fg-muted);
+}

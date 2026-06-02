@@ -1,0 +1,128 @@
+{
+	"Navigation": {
+		"brandAriaLabel": "Accueil Adanalyser",
+		"brand": "Adanalyser",
+		"ariaLabel": "Navigation principale",
+		"links": {
+			"how": "Comment ça marche",
+			"example": "Exemple d'audit",
+			"pricing": "Tarifs",
+			"faq": "FAQ"
+		},
+		"signIn": "Se connecter",
+		"cta": "Auditer une vidéo gratuitement"
+	},
+	"Hero": {
+		"eyebrow": "Auditeur de pubs IA pour TikTok & Reels",
+		"headlineLine1": "Sachez pourquoi",
+		"headlineLine2": "votre vidéo",
+		"headlineLine3Prefix": "va",
+		"headlineHighlight": "cartonner ou flopper",
+		"headlineLine4": "— avant de la poster",
+		"headlineLine5": ".",
+		"subcopy": "Uploadez une pub TikTok, un Reel ou un clip UGC et obtenez un audit IA qui repère votre hook faible, les temps morts, le CTA flou et les signaux de confiance manquants — avec le correctif exact pour chacun, noté avant publication.",
+		"ctaPrimary": "Auditer votre première vidéo gratuitement",
+		"ctaSecondary": "Voir un exemple d'audit",
+		"trust": {
+			"noCard": "Sans carte bancaire",
+			"fastAudit": "Audit complet en ~90 s",
+			"formats": "MP4 / MOV, jusqu'à 3 min"
+		}
+	},
+	"AuditCard": {
+		"ariaLabel": "Exemple de carte d'audit publicitaire",
+		"status": "analysée",
+		"dropOff": "Abandon 0:03",
+		"gaugeAriaLabel": "Score global 61 sur 100",
+		"overall": "Global",
+		"verdict": "À retravailler",
+		"goal": "Objectif : conversions · 92%",
+		"projection": "+8s après corrections",
+		"rows": {
+			"hook": "Hook",
+			"retention": "Rétention",
+			"cta": "CTA"
+		},
+		"fixTitle": "Hook faible · 0:00–0:03",
+		"fixDetail": "Couper sur le produit en main à 0:01",
+		"fixDelta": "+19%",
+		"trendingSound": "Son tendance"
+	},
+	"SignIn": {
+		"brandAriaLabel": "Accueil Adanalyser",
+		"brandHtml": "Viral<strong>Video</strong>Lab",
+		"introAriaLabel": "Introduction à la connexion",
+		"formAriaLabel": "Formulaire de connexion",
+		"eyebrow": "Bienvenue au lab",
+		"introTitle": "Reprenez là où votre dernier audit s'est arrêté.",
+		"introCopy": "Vos scores, correctifs enregistrés et re-cuts vous attendent. Connectez-vous pour continuer vers le FYP.",
+		"preview": {
+			"video": "hook-test-v3.mp4",
+			"gain": "+18s de watch time",
+			"scoreLabel": "Score d'audit précédent 92",
+			"items": {
+				"0": "Hook posé à 0:02 — cold open solide",
+				"1": "Aucun temps mort entre 0:08–0:21",
+				"2": "CTA clair — « comment SCALE »"
+			}
+		},
+		"socialProof": "Adopté par des créateurs qui ont audité <strong>120k+</strong> pubs avant publication.",
+		"title": "Se connecter",
+		"subtitle": "Retrouvez vos audits et correctifs enregistrés.",
+		"google": "Continuer avec Google",
+		"tiktok": "Continuer avec TikTok",
+		"divider": "ou se connecter par e-mail",
+		"email": "E-mail",
+		"emailPlaceholder": "vous@studio.com",
+		"password": "Mot de passe",
+		"passwordPlaceholder": "Votre mot de passe",
+		"remember": "Se souvenir de moi",
+		"forgot": "Mot de passe oublié ?",
+		"submit": "Se connecter",
+		"new": "Nouveau sur ViralVideoLab ?",
+		"create": "Créer un compte gratuit →",
+		"legal": "Connexion protégée · En continuant, vous acceptez nos Conditions & Confidentialité."
+	},
+	"AuditUpload": {
+		"brandAriaLabel": "Accueil ViralVideoLab",
+		"brandHtml": "Viral<strong>Video</strong>Lab",
+		"backHome": "Retour à l'accueil",
+		"eyebrow": "Auditez votre première vidéo — gratuit",
+		"title": "Pourquoi cette vidéo va cartonner ou flopper ?",
+		"copy": "Déposez votre pub TikTok, Instagram Reels ou YouTube Shorts. En environ 90 secondes, vous recevez un audit complet — hook, rétention, temps morts, CTA, confiance et le correctif exact pour chacun.",
+		"dropzone": {
+			"title": "Déposez votre vidéo ici pour l'auditer",
+			"formats": "MP4 ou MOV · vertical 9:16 · jusqu'à 3 min",
+			"button": "Parcourir les fichiers"
+		},
+		"ready": {
+			"eyebrow": "Prêt pour l'audit",
+			"metaLabel": "Détails de la vidéo sélectionnée",
+			"video": "Vidéo",
+			"status": "Prêt",
+			"start": "Lancer l'audit",
+			"chooseAnother": "Choisir une autre",
+			"privacy": "Nous analysons votre vidéo uniquement pour générer cet audit. Elle n'est jamais partagée ni utilisée pour entraîner des modèles publics."
+		},
+		"trust": {
+			"noCard": "Sans carte bancaire",
+			"private": "Votre contenu reste privé",
+			"turnaround": "~90 s de délai"
+		},
+		"stepsHeading": "Comment ça marche",
+		"steps": {
+			"0": {
+				"title": "Déposez votre clip",
+				"body": "MP4 / MOV, jusqu'à 3 minutes"
+			},
+			"1": {
+				"title": "L'IA le regarde",
+				"body": "Analyse image, audio & visuelle"
+			},
+			"2": {
+				"title": "Recevez l'audit",
+				"body": "Score, correctifs & fit plateforme"
+			}
+		}
+	}
+}

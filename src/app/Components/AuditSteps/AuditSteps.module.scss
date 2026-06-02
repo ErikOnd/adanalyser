@@ -1,0 +1,66 @@
+@use "../../styles/mixins" as *;
+
+.card {
+	width: min(100%, 36rem);
+	padding: var(--space-lg);
+	border: 0.06rem solid var(--border-strong);
+	border-radius: var(--radius-xl);
+	background: rgba(24, 28, 33, 0.78);
+	box-shadow: var(--shadow-md);
+}
+
+.card h2 {
+	margin: var(--space-0);
+	color: var(--fg-muted);
+	font-family: var(--font-mono), ui-monospace, monospace;
+	font-size: 0.66rem;
+	font-weight: var(--w-bold);
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+}
+
+.steps {
+	display: grid;
+	margin-top: var(--space-md);
+	gap: var(--space-md);
+}
+
+.steps li {
+	display: grid;
+	grid-template-columns: auto 1fr;
+	align-items: center;
+	gap: var(--space-sm);
+}
+
+.iconWrap {
+	display: grid;
+	width: 2rem;
+	height: 2rem;
+	place-items: center;
+	border-radius: var(--radius-full);
+	background: var(--volt-soft);
+	color: var(--accent);
+}
+
+.steps strong,
+.steps small {
+	display: block;
+}
+
+.steps strong {
+	color: var(--fg-strong);
+	font-size: 0.78rem;
+}
+
+.steps small {
+	margin-top: var(--space-2xs);
+	color: var(--fg-muted);
+	font-size: 0.7rem;
+	line-height: 1.35;
+}
+
+@include breakpoint(desktop) {
+	.card {
+		width: min(100%, 16.5rem);
+	}
+}

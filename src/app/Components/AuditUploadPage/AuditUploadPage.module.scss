@@ -1,0 +1,326 @@
+@use "../../styles/mixins" as *;
+
+.page {
+	min-height: 100dvh;
+	background:
+		radial-gradient(38rem 24rem at 47% 8%, rgba(198, 244, 50, 0.12), transparent 70%),
+		var(--ink-950);
+}
+
+.auditHeader {
+	border-bottom: 0.06rem solid var(--line-10);
+	background: rgba(8, 9, 11, 0.66);
+}
+
+.headerInner {
+	display: flex;
+	min-height: 3.75rem;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0.55rem clamp(var(--space-lg), 3vw, var(--space-4xl));
+	gap: var(--space-md);
+}
+
+.brand {
+	display: inline-flex;
+	min-width: 0;
+	align-items: center;
+	color: var(--fg-strong);
+	font-family: var(--font-display), system-ui, sans-serif;
+	font-size: 1.13rem;
+	font-weight: var(--w-bold);
+	gap: var(--space-sm);
+	text-decoration: none;
+}
+
+.brand strong {
+	color: var(--accent);
+}
+
+.mark {
+	display: grid;
+	width: 2rem;
+	height: 2rem;
+	place-items: center;
+	flex: 0 0 auto;
+	border: 0.06rem solid rgba(198, 244, 50, 0.34);
+	border-radius: var(--radius-sm);
+	background: var(--ink-950);
+	color: var(--accent);
+}
+
+.backLink {
+	display: inline-flex;
+	align-items: center;
+	color: var(--fg-muted);
+	font-size: 0.92rem;
+	font-weight: var(--w-bold);
+	gap: var(--space-xs);
+	text-decoration: none;
+	transition:
+		color var(--dur-base) var(--ease-out),
+		transform var(--dur-base) var(--ease-spring);
+}
+
+.backLink:hover,
+.backLink:focus-visible {
+	color: var(--fg-strong);
+	transform: translateX(-0.05rem);
+}
+
+.backIcon {
+	transform: rotate(180deg);
+}
+
+.shell {
+	display: grid;
+	width: min(100%, 54rem);
+	justify-content: center;
+	gap: var(--space-lg);
+	margin: var(--space-0) auto;
+	padding: var(--space-4xl) var(--space-lg);
+}
+
+.readyShell {
+	display: grid;
+	width: min(100%, 38.5rem);
+	margin: var(--space-0) auto;
+	padding: var(--space-4xl) var(--space-lg);
+}
+
+.panel {
+	position: relative;
+	overflow: hidden;
+	width: min(100%, 36rem);
+	padding: var(--space-2xl);
+	border: 0.06rem solid var(--border-strong);
+	border-radius: var(--radius-xl);
+	background:
+		linear-gradient(180deg, rgba(24, 28, 33, 0.78), rgba(24, 28, 33, 0.92)),
+		rgba(24, 28, 33, 0.82);
+	box-shadow: var(--shadow-lg);
+}
+
+.panel::before {
+	position: absolute;
+	inset: 0;
+	z-index: 0;
+	background:
+		radial-gradient(38rem 18rem at 34% -6%, rgba(198, 244, 50, 0.16), rgba(198, 244, 50, 0.05) 48%, transparent 74%),
+		linear-gradient(120deg, rgba(198, 244, 50, 0.07), transparent 46%);
+	content: "";
+	pointer-events: none;
+}
+
+.panel > * {
+	position: relative;
+	z-index: 1;
+}
+
+.readyPanel {
+	position: relative;
+	overflow: hidden;
+	padding: var(--space-2xl);
+	border: 0.06rem solid var(--border-strong);
+	border-radius: var(--radius-xl);
+	background:
+		linear-gradient(180deg, rgba(24, 28, 33, 0.78), rgba(24, 28, 33, 0.92)),
+		rgba(24, 28, 33, 0.82);
+	box-shadow: var(--shadow-lg);
+}
+
+.readyPanel::before {
+	position: absolute;
+	inset: 0;
+	z-index: 0;
+	background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), transparent 46%);
+	content: "";
+	pointer-events: none;
+}
+
+.readyPanel > * {
+	position: relative;
+	z-index: 1;
+}
+
+.readyContent {
+	display: grid;
+	margin-top: var(--space-xl);
+	gap: var(--space-lg);
+}
+
+.previewFrame {
+	overflow: hidden;
+	width: min(100%, 8.5rem);
+	aspect-ratio: 9 / 16;
+	border: 0.06rem solid var(--border-strong);
+	border-radius: var(--radius-lg);
+	background:
+		linear-gradient(180deg, rgba(255, 255, 255, 0.05), transparent),
+		var(--ink-950);
+	box-shadow: var(--shadow-md);
+}
+
+.previewVideo {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.readyDetails {
+	min-width: 0;
+}
+
+.readyDetails h1 {
+	max-width: 25rem;
+	margin: var(--space-0);
+	color: var(--fg-strong);
+	font-size: clamp(1.2rem, 1rem + 0.7vw, 1.35rem);
+	line-height: 1.2;
+	overflow-wrap: anywhere;
+}
+
+.metaList {
+	display: flex;
+	flex-wrap: wrap;
+	margin-top: var(--space-lg);
+	gap: var(--space-sm);
+}
+
+.metaList > span {
+	display: inline-flex;
+	min-height: 2.15rem;
+	align-items: center;
+	gap: var(--space-xs);
+	padding: var(--space-xs) var(--space-sm);
+	border: 0.06rem solid var(--border-strong);
+	border-radius: var(--radius-full);
+	color: var(--fg);
+	font-family: var(--font-mono), ui-monospace, monospace;
+	font-size: 0.76rem;
+}
+
+.metaList > span:last-child {
+	color: var(--fg-strong);
+}
+
+.metaList > span:last-child span {
+	color: var(--success);
+}
+
+.readyActions {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	margin-top: var(--space-lg);
+	gap: var(--space-md);
+}
+
+.privacyNote {
+	display: grid;
+	grid-template-columns: auto 1fr;
+	align-items: center;
+	margin-top: var(--space-xl);
+	padding: var(--space-md) var(--space-lg);
+	border: 0.06rem solid var(--border);
+	border-radius: var(--radius-lg);
+	background: rgba(8, 9, 11, 0.18);
+	color: var(--fg-muted);
+	gap: var(--space-md);
+}
+
+.privacyNote span {
+	color: var(--wave-300);
+}
+
+.privacyNote p {
+	margin: var(--space-0);
+	font-size: 0.85rem;
+	line-height: 1.45;
+}
+
+.eyebrow {
+	color: var(--fg-muted);
+	font-family: var(--font-mono), ui-monospace, monospace;
+	font-size: 0.68rem;
+	font-weight: var(--w-bold);
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+}
+
+.panel h1 {
+	margin: var(--space-xs) var(--space-0) var(--space-0);
+	color: var(--fg-strong);
+	font-size: clamp(1.7rem, 1.3rem + 1.2vw, 2rem);
+	line-height: 1.08;
+}
+
+.copy {
+	max-width: 28.5rem;
+	margin-top: var(--space-md);
+	color: var(--fg-muted);
+	font-size: 0.9rem;
+	line-height: 1.55;
+}
+
+.dropzone {
+	margin-top: var(--space-2xl);
+}
+
+.trustList {
+	display: flex;
+	flex-wrap: wrap;
+	margin-top: var(--space-lg);
+	color: var(--fg-muted);
+	font-size: 0.76rem;
+	gap: var(--space-lg);
+}
+
+.trustList li {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--space-xs);
+}
+
+.trustIcon {
+	color: var(--wave-300);
+}
+
+.trustList li:first-child .trustIcon {
+	color: var(--success);
+}
+
+@include breakpoint(tablet) {
+	.readyContent {
+		grid-template-columns: 8.5rem 1fr;
+		align-items: center;
+	}
+}
+
+@include breakpoint(desktop) {
+	.headerInner {
+		min-height: 4.35rem;
+	}
+
+	.brand {
+		font-size: 1.18rem;
+	}
+
+	.shell {
+		width: min(100%, 54rem);
+		grid-template-columns: minmax(0, 36rem) minmax(14rem, 16.5rem);
+		align-items: start;
+	}
+
+	.panel {
+		width: 100%;
+	}
+
+	.readyPanel {
+		padding: var(--space-xl);
+	}
+
+	.privacyNote {
+		margin-top: var(--space-xl);
+	}
+}

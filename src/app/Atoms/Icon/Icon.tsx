@@ -4,9 +4,17 @@ import styles from "./Icon.module.scss";
 import activityIcon from "./icons/activity.svg";
 import arrowRightIcon from "./icons/arrow-right.svg";
 import checkIcon from "./icons/check.svg";
+import chevronDownIcon from "./icons/chevron-down.svg";
+import chevronUpIcon from "./icons/chevron-up.svg";
 import clockIcon from "./icons/clock.svg";
+import eyeIcon from "./icons/eye.svg";
 import filmIcon from "./icons/film.svg";
+import globeIcon from "./icons/globe.svg";
 import goalIcon from "./icons/goal.svg";
+import lockIcon from "./icons/lock.svg";
+import mailIcon from "./icons/mail.svg";
+import refreshCwIcon from "./icons/refresh-cw.svg";
+import shieldCheckIcon from "./icons/shield-check.svg";
 import sparklesIcon from "./icons/sparkles.svg";
 import uploadIcon from "./icons/upload.svg";
 import zapIcon from "./icons/zap.svg";
@@ -16,8 +24,16 @@ export type IconName =
 	| "upload"
 	| "spark"
 	| "check"
+	| "chevronDown"
+	| "chevronUp"
 	| "clock"
+	| "eye"
 	| "film"
+	| "globe"
+	| "lock"
+	| "mail"
+	| "refreshCw"
+	| "shieldCheck"
 	| "target"
 	| "wave"
 	| "bolt";
@@ -38,8 +54,16 @@ const icons = {
 	arrow: arrowRightIcon,
 	bolt: zapIcon,
 	check: checkIcon,
+	chevronDown: chevronDownIcon,
+	chevronUp: chevronUpIcon,
 	clock: clockIcon,
+	eye: eyeIcon,
 	film: filmIcon,
+	globe: globeIcon,
+	lock: lockIcon,
+	mail: mailIcon,
+	refreshCw: refreshCwIcon,
+	shieldCheck: shieldCheckIcon,
 	spark: sparklesIcon,
 	target: goalIcon,
 	upload: uploadIcon,

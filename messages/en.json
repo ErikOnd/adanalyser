@@ -1,0 +1,128 @@
+{
+	"Navigation": {
+		"brandAriaLabel": "Adanalyser home",
+		"brand": "Adanalyser",
+		"ariaLabel": "Main navigation",
+		"links": {
+			"how": "How it works",
+			"example": "Example audit",
+			"pricing": "Pricing",
+			"faq": "FAQ"
+		},
+		"signIn": "Sign in",
+		"cta": "Audit a video free"
+	},
+	"Hero": {
+		"eyebrow": "AI ad auditor for TikTok & Reels",
+		"headlineLine1": "Know why",
+		"headlineLine2": "your video",
+		"headlineLine3Prefix": "will",
+		"headlineHighlight": "pop or flop",
+		"headlineLine4": "— before you post",
+		"headlineLine5": "it.",
+		"subcopy": "Upload a TikTok ad, Reel, or UGC clip and get an AI audit that finds your weak hook, dead air, unclear CTA, and missing trust signals — with the exact fix for each, scored before you publish.",
+		"ctaPrimary": "Audit your first video free",
+		"ctaSecondary": "See an example audit",
+		"trust": {
+			"noCard": "No card required",
+			"fastAudit": "Full audit in ~90s",
+			"formats": "MP4 / MOV, up to 3 min"
+		}
+	},
+	"AuditCard": {
+		"ariaLabel": "Example ad audit score card",
+		"status": "analyzed",
+		"dropOff": "Drop-off 0:03",
+		"gaugeAriaLabel": "Overall score 61 out of 100",
+		"overall": "Overall",
+		"verdict": "Needs work",
+		"goal": "Goal: conversions · 92%",
+		"projection": "+8s after fixes",
+		"rows": {
+			"hook": "Hook",
+			"retention": "Retention",
+			"cta": "CTA"
+		},
+		"fixTitle": "Weak hook · 0:00–0:03",
+		"fixDetail": "Cut to the product in-hand at 0:01",
+		"fixDelta": "+19%",
+		"trendingSound": "Trending sound"
+	},
+	"SignIn": {
+		"brandAriaLabel": "Adanalyser home",
+		"brandHtml": "Viral<strong>Video</strong>Lab",
+		"introAriaLabel": "Sign in introduction",
+		"formAriaLabel": "Sign in form",
+		"eyebrow": "Welcome back to the lab",
+		"introTitle": "Pick up where your last audit left off.",
+		"introCopy": "Your scores, saved fixes, and re-cuts are waiting. Sign in to keep climbing toward the FYP.",
+		"preview": {
+			"video": "hook-test-v3.mp4",
+			"gain": "+18s watch time",
+			"scoreLabel": "Previous audit score 92",
+			"items": {
+				"0": "Hook lands in 0:02 — strong cold open",
+				"1": "No dead air across 0:08–0:21",
+				"2": "Clear CTA — “comment SCALE”"
+			}
+		},
+		"socialProof": "Trusted by creators who've audited <strong>120k+</strong> ads before posting.",
+		"title": "Sign in",
+		"subtitle": "Get back to your audits and saved fixes.",
+		"google": "Continue with Google",
+		"tiktok": "Continue with TikTok",
+		"divider": "or sign in with email",
+		"email": "Email",
+		"emailPlaceholder": "you@studio.com",
+		"password": "Password",
+		"passwordPlaceholder": "Your password",
+		"remember": "Remember me",
+		"forgot": "Forgot password?",
+		"submit": "Sign in",
+		"new": "New to ViralVideoLab?",
+		"create": "Create a free account →",
+		"legal": "Protected sign-in · By continuing you agree to our Terms & Privacy."
+	},
+	"AuditUpload": {
+		"brandAriaLabel": "ViralVideoLab home",
+		"brandHtml": "Viral<strong>Video</strong>Lab",
+		"backHome": "Back to home",
+		"eyebrow": "Audit your first video — free",
+		"title": "Why will this video pop or flop?",
+		"copy": "Drop your TikTok, Instagram Reels, or YouTube Shorts ad. In about 90 seconds you'll get a full audit — hook, retention, dead air, CTA, trust, and the exact fix for each, before you publish.",
+		"dropzone": {
+			"title": "Drop your video here to audit it",
+			"formats": "MP4 or MOV · vertical 9:16 · up to 3 min",
+			"button": "Browse files"
+		},
+		"ready": {
+			"eyebrow": "Ready to audit",
+			"metaLabel": "Selected video details",
+			"video": "Video",
+			"status": "Ready",
+			"start": "Start audit",
+			"chooseAnother": "Choose another",
+			"privacy": "We analyze your video only to generate this audit. It's never shared or used to train public models."
+		},
+		"trust": {
+			"noCard": "No card required",
+			"private": "Your content stays private",
+			"turnaround": "~90s turnaround"
+		},
+		"stepsHeading": "How it works",
+		"steps": {
+			"0": {
+				"title": "Drop your clip",
+				"body": "MP4 / MOV, up to 3 minutes"
+			},
+			"1": {
+				"title": "AI watches it",
+				"body": "Frame, audio & visual analysis"
+			},
+			"2": {
+				"title": "Get your audit",
+				"body": "Score, fixes & platform fit"
+			}
+		}
+	}
+}

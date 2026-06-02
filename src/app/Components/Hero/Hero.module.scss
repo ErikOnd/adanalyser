@@ -98,6 +98,10 @@
 	color: var(--success);
 }
 
+.trustList li:nth-child(3) .trustIcon {
+	color: var(--ink-200);
+}
+
 @include breakpoint(tablet) {
 	.hero {
 		grid-template-columns: 1fr;

@@ -1,0 +1,128 @@
+{
+	"Navigation": {
+		"brandAriaLabel": "Adanalyser Startseite",
+		"brand": "Adanalyser",
+		"ariaLabel": "Hauptnavigation",
+		"links": {
+			"how": "So funktioniert's",
+			"example": "Beispiel-Audit",
+			"pricing": "Preise",
+			"faq": "FAQ"
+		},
+		"signIn": "Anmelden",
+		"cta": "Video kostenlos auditieren"
+	},
+	"Hero": {
+		"eyebrow": "KI-Anzeigen-Auditor für TikTok & Reels",
+		"headlineLine1": "Erfahre, warum",
+		"headlineLine2": "dein Video",
+		"headlineLine3Prefix": "wird",
+		"headlineHighlight": "zünden oder floppen",
+		"headlineLine4": "— bevor du es postest",
+		"headlineLine5": ".",
+		"subcopy": "Lade eine TikTok-Anzeige, ein Reel oder einen UGC-Clip hoch und erhalte ein KI-Audit, das schwache Hooks, tote Momente, unklare CTAs und fehlende Trust-Signale findet — mit dem exakten Fix für jedes Problem, bewertet bevor du veröffentlichst.",
+		"ctaPrimary": "Erstes Video kostenlos auditieren",
+		"ctaSecondary": "Beispiel-Audit ansehen",
+		"trust": {
+			"noCard": "Keine Kreditkarte nötig",
+			"fastAudit": "Komplettes Audit in ~90 s",
+			"formats": "MP4 / MOV, bis zu 3 Min"
+		}
+	},
+	"AuditCard": {
+		"ariaLabel": "Beispiel einer Anzeigen-Audit-Karte",
+		"status": "analysiert",
+		"dropOff": "Absprung 0:03",
+		"gaugeAriaLabel": "Gesamtwertung 61 von 100",
+		"overall": "Gesamt",
+		"verdict": "Verbesserungswürdig",
+		"goal": "Ziel: Conversions · 92%",
+		"projection": "+8s nach Fixes",
+		"rows": {
+			"hook": "Hook",
+			"retention": "Retention",
+			"cta": "CTA"
+		},
+		"fixTitle": "Schwacher Hook · 0:00–0:03",
+		"fixDetail": "Bei 0:01 auf das Produkt in der Hand schneiden",
+		"fixDelta": "+19%",
+		"trendingSound": "Trend-Sound"
+	},
+	"SignIn": {
+		"brandAriaLabel": "Adanalyser Startseite",
+		"brandHtml": "Viral<strong>Video</strong>Lab",
+		"introAriaLabel": "Einführung zur Anmeldung",
+		"formAriaLabel": "Anmeldeformular",
+		"eyebrow": "Willkommen zurück im Lab",
+		"introTitle": "Mach dort weiter, wo dein letztes Audit aufgehört hat.",
+		"introCopy": "Deine Scores, gespeicherten Fixes und Re-Cuts warten. Melde dich an und arbeite weiter Richtung FYP.",
+		"preview": {
+			"video": "hook-test-v3.mp4",
+			"gain": "+18s Watchtime",
+			"scoreLabel": "Vorheriger Audit-Score 92",
+			"items": {
+				"0": "Hook sitzt bei 0:02 — starker Cold Open",
+				"1": "Keine Leerlaufzeit von 0:08–0:21",
+				"2": "Klarer CTA — „comment SCALE“"
+			}
+		},
+		"socialProof": "Vertraut von Creators, die vor dem Posten <strong>120k+</strong> Ads auditiert haben.",
+		"title": "Anmelden",
+		"subtitle": "Zurück zu deinen Audits und gespeicherten Fixes.",
+		"google": "Mit Google fortfahren",
+		"tiktok": "Mit TikTok fortfahren",
+		"divider": "oder mit E-Mail anmelden",
+		"email": "E-Mail",
+		"emailPlaceholder": "du@studio.com",
+		"password": "Passwort",
+		"passwordPlaceholder": "Dein Passwort",
+		"remember": "Angemeldet bleiben",
+		"forgot": "Passwort vergessen?",
+		"submit": "Anmelden",
+		"new": "Neu bei ViralVideoLab?",
+		"create": "Kostenloses Konto erstellen →",
+		"legal": "Geschützte Anmeldung · Mit der Fortsetzung stimmst du unseren Bedingungen & Datenschutz zu."
+	},
+	"AuditUpload": {
+		"brandAriaLabel": "ViralVideoLab Startseite",
+		"brandHtml": "Viral<strong>Video</strong>Lab",
+		"backHome": "Zur Startseite",
+		"eyebrow": "Erstes Video auditieren — kostenlos",
+		"title": "Warum wird dieses Video zünden oder floppen?",
+		"copy": "Lade deine TikTok-, Instagram-Reels- oder YouTube-Shorts-Ad hoch. In etwa 90 Sekunden erhältst du ein komplettes Audit — Hook, Retention, tote Momente, CTA, Trust und den exakten Fix für jedes Thema.",
+		"dropzone": {
+			"title": "Ziehe dein Video hierher, um es zu auditieren",
+			"formats": "MP4 oder MOV · vertikal 9:16 · bis zu 3 Min",
+			"button": "Dateien auswählen"
+		},
+		"ready": {
+			"eyebrow": "Bereit zum Audit",
+			"metaLabel": "Ausgewählte Videodetails",
+			"video": "Video",
+			"status": "Bereit",
+			"start": "Audit starten",
+			"chooseAnother": "Anderes wählen",
+			"privacy": "Wir analysieren dein Video nur, um dieses Audit zu erstellen. Es wird nie geteilt oder zum Trainieren öffentlicher Modelle verwendet."
+		},
+		"trust": {
+			"noCard": "Keine Kreditkarte nötig",
+			"private": "Dein Content bleibt privat",
+			"turnaround": "~90 s Bearbeitung"
+		},
+		"stepsHeading": "So funktioniert's",
+		"steps": {
+			"0": {
+				"title": "Clip hochladen",
+				"body": "MP4 / MOV, bis zu 3 Minuten"
+			},
+			"1": {
+				"title": "KI analysiert ihn",
+				"body": "Frame-, Audio- & Visual-Analyse"
+			},
+			"2": {
+				"title": "Audit erhalten",
+				"body": "Score, Fixes & Plattform-Fit"
+			}
+		}
+	}
+}

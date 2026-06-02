@@ -82,6 +82,7 @@ Rules:
 - Atoms must not contain product-specific business logic.
 - Atoms must not import Components.
 - Atoms may be used by Components, pages, and layouts.
+- Buttons and input fields must be rendered and styled through their atom components; do not create component-local button or input field styles except for layout-only positioning of an atom instance.
 - Icons must come from https://lucide.dev/icons/ as downloaded SVG source, live as dedicated `.svg` files, use `currentColor` for color, and must not keep fixed `height` or `width` attributes on the SVG.
 - Use the `Icon` atom for rendering icons. It exposes `size="small" | "medium" | "large"` for 16, 24, and 36 CSS pixels; keep those sizes in SCSS as rem equivalents.
 
