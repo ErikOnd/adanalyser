@@ -5,10 +5,36 @@ import { Icon, type IconName } from "@/app/Atoms/Icon/Icon";
 import { AuditSteps } from "@/app/Components/AuditSteps/AuditSteps";
 import { UploadDropzone } from "@/app/Components/UploadDropzone/UploadDropzone";
 import type { AnalysisAudit, AnalysisResponse, PriorityFix } from "@/lib/analysis/types";
+import clsx from "clsx";
 import { useLocale, useTranslations } from "next-intl";
 import type { CSSProperties } from "react";
 import { useEffect, useMemo, useState } from "react";
 import styles from "./AuditUploadPage.module.scss";
+
+const PLATFORM_OPTIONS = [
+	{ icon: "tiktok", label: "TikTok" },
+	{ icon: "badgeCard", label: "Instagram Reels" },
+	{ icon: "film", label: "YouTube Shorts" },
+] as const satisfies ReadonlyArray<{ icon: IconName; label: string }>;
+
+const DESTINATION_OPTIONS = [
+	{ icon: "user", label: "Link in bio" },
+	{ icon: "arrow", label: "Landing page" },
+	{ icon: "badgeCard", label: "Profile / shop" },
+	{ icon: "captions", label: "DM or comment" },
+	{ icon: "lock", label: "Nowhere yet" },
+] as const satisfies ReadonlyArray<{ icon: IconName; label: string }>;
+
+const GOAL_OPTIONS = [
+	{ icon: "badgeCard", label: "Sales" },
+	{ icon: "user", label: "Followers" },
+	{ icon: "eye", label: "Awareness" },
+	{ icon: "arrow", label: "Traffic" },
+] as const satisfies ReadonlyArray<{ icon: IconName; label: string }>;
+
+type PlatformOption = (typeof PLATFORM_OPTIONS)[number]["label"];
+type DestinationOption = (typeof DESTINATION_OPTIONS)[number]["label"];
+type GoalOption = (typeof GOAL_OPTIONS)[number]["label"];
 
 type TrustKey = "noCard" | "private" | "turnaround";
 
@@ -24,6 +50,14 @@ type JobStatus = {
 	stage: string;
 	progress: number;
 	error?: string;
+	steps?: JobStep[];
+};
+
+type JobStep = {
+	id: "media" | "transcript" | "visuals" | "audit";
+	label: string;
+	source: string;
+	status: "pending" | "active" | "complete" | "error";
 };
 
 function formatFileSize(bytes: number) {
@@ -40,7 +74,14 @@ function truncateText(text: string, maxLength: number) {
 }
 
 function getShortSummary(audit: AnalysisAudit) {
-	const source = audit.bottomLine && audit.bottomLine.length < audit.summary.length ? audit.bottomLine : audit.summary;
+	const summary = audit.summary ?? "";
+	const bottomLine = audit.bottomLine ?? "";
+	const source = bottomLine && (!summary || bottomLine.length < summary.length) ? bottomLine : summary;
+
+	if (!source) {
+		return "";
+	}
+
 	const firstSentence = source.match(/^.*?[.!?](?:\s|$)/)?.[0]?.trim();
 
 	return truncateText(firstSentence ?? source, 190);
@@ -104,6 +145,79 @@ function getBiggestProblemHeadline(audit: AnalysisAudit, priorityFixes: Priority
 	}
 
 	return fallback;
+}
+
+const fallbackJobSteps: JobStep[] = [
+	{ id: "media", label: "Preparing video", source: "Upload", status: "pending" },
+	{ id: "transcript", label: "Transcribing audio", source: "AssemblyAI", status: "pending" },
+	{ id: "visuals", label: "Understanding visuals", source: "TwelveLabs Pegasus", status: "pending" },
+	{ id: "audit", label: "Scoring & writing fixes", source: "Claude Sonnet", status: "pending" },
+];
+
+function AuditLoadingPanel({
+	error,
+	fileName,
+	onAuditAnother,
+	platform,
+	status,
+}: {
+	error: string | null;
+	fileName: string;
+	onAuditAnother: () => void;
+	platform: PlatformOption;
+	status: JobStatus;
+}) {
+	const steps = status.steps?.length ? status.steps : fallbackJobSteps;
+	const progress = Math.max(0, Math.min(100, status.progress));
+
+	return (
+		<section className={styles.loadingShell} aria-labelledby="audit-loading-title" aria-live="polite">
+			<div className={styles.loadingPanel}>
+				<div className={styles.loadingMark}>
+					<Icon name={error ? "lock" : "spark"} size="large" />
+				</div>
+				<h1 id="audit-loading-title">
+					{error ? "Audit failed" : <>Auditing &ldquo;{fileName}&rdquo;</>}
+				</h1>
+				<p>{error ? "The analysis stopped before the report could be created." : "Watching it the way the algorithm — and your buyer — will."}</p>
+
+				<div className={styles.loadingPlatform}>
+					<Icon name={platform === "TikTok" ? "tiktok" : platform === "YouTube Shorts" ? "film" : "badgeCard"} size="small" />
+					{platform}
+				</div>
+
+				<div className={styles.loadingProgress}>
+					<div className={styles.loadingBar}>
+						<span style={{ width: `${progress}%` }} />
+					</div>
+					<strong>{progress}%</strong>
+				</div>
+
+				<ul className={styles.loadingSteps}>
+					{steps.map((step) => (
+						<li key={step.id} className={clsx(styles.loadingStep, styles[`step${step.status}`])}>
+							<span>
+								{step.status === "complete" ? <Icon name="check" size="small" /> : null}
+								{step.status === "active" ? <Icon name="spark" size="small" /> : null}
+								{step.status === "error" ? <Icon name="lock" size="small" /> : null}
+							</span>
+							<strong>{step.label}</strong>
+							<em>{step.source}</em>
+						</li>
+					))}
+				</ul>
+
+				{error ? (
+					<div className={styles.loadingError}>
+						<p>{error}</p>
+						<Button type="button" variant="secondary" icon="refreshCw" iconSize="small" onClick={onAuditAnother}>
+							Choose another
+						</Button>
+					</div>
+				) : null}
+			</div>
+		</section>
+	);
 }
 
 function isAnalysisResponse(value: unknown): value is AnalysisResponse {
@@ -415,6 +529,10 @@ export function AuditUploadPage() {
 	const [analysis, setAnalysis] = useState<AnalysisAudit | null>(null);
 	const [error, setError] = useState<string | null>(null);
 	const [isSubmitting, setIsSubmitting] = useState(false);
+	const [platform, setPlatform] = useState<PlatformOption>("TikTok");
+	const [destination, setDestination] = useState<DestinationOption | null>(null);
+	const [goal, setGoal] = useState<GoalOption | null>(null);
+	const [notes, setNotes] = useState("");
 	const previewUrl = useMemo(() => (selectedVideo ? URL.createObjectURL(selectedVideo) : null), [selectedVideo]);
 
 	const steps = stepIcons.map((icon, index) => ({
@@ -456,6 +574,10 @@ export function AuditUploadPage() {
 		setAnalysis(null);
 		setError(null);
 		setIsSubmitting(false);
+		setPlatform("TikTok");
+		setDestination(null);
+		setGoal(null);
+		setNotes("");
 	};
 
 	const startAnalysis = async () => {
@@ -468,8 +590,26 @@ export function AuditUploadPage() {
 
 		formData.set("video", selectedVideo);
 		formData.set("jobId", jobId);
+		formData.set("platform", platform);
+
+		if (destination) {
+			formData.set("destination", destination);
+		}
+
+		if (goal) {
+			formData.set("goal", goal);
+		}
+
+		const trimmedNotes = notes.trim();
+		if (trimmedNotes) {
+			formData.set("notes", trimmedNotes);
+		}
 		setActiveJobId(jobId);
-		setStatus({ stage: "Uploading video", progress: 10 });
+		setStatus({
+			stage: "Preparing video",
+			progress: 5,
+			steps: fallbackJobSteps.map((step) => step.id === "media" ? { ...step, status: "active" } : step),
+		});
 		setAnalysis(null);
 		setError(null);
 		setIsSubmitting(true);
@@ -532,17 +672,33 @@ export function AuditUploadPage() {
 			);
 		}
 
+		if (isSubmitting || error) {
+			return (
+				<main className={styles.page}>
+					{header}
+					<AuditLoadingPanel
+						error={error}
+						fileName={selectedVideo.name}
+						onAuditAnother={resetSelection}
+						platform={platform}
+						status={status}
+					/>
+				</main>
+			);
+		}
+
 		return (
 			<main className={styles.page}>
 				{header}
 				<section className={styles.readyShell} aria-labelledby="audit-ready-title">
 					<div className={styles.readyPanel}>
 						<p className={styles.eyebrow}>{t("ready.eyebrow")}</p>
-						<div className={styles.readyContent}>
+						<div className={styles.readyMediaHeader}>
 							<div className={styles.previewFrame}>
 								{previewUrl
 									? <video className={styles.previewVideo} src={previewUrl} muted playsInline preload="metadata" />
 									: null}
+								<span className={styles.aspectBadge}>9:16</span>
 							</div>
 
 							<div className={styles.readyDetails}>
@@ -558,41 +714,161 @@ export function AuditUploadPage() {
 										{t("ready.status")}
 									</span>
 								</div>
-								<div className={styles.readyActions}>
-									<Button type="button" size="md" icon="arrow" disabled={isSubmitting} onClick={startAnalysis}>
-										{isSubmitting ? status.stage : t("ready.start")}
-									</Button>
-									<Button
-										type="button"
-										variant="ghost"
-										icon="refreshCw"
-										iconSize="small"
+
+								<Button
+									className={styles.chooseInline}
+									type="button"
+									variant="ghost"
+									icon="refreshCw"
+									iconSize="small"
+									disabled={isSubmitting}
+									onClick={resetSelection}
+								>
+									{t("ready.chooseAnother")}
+								</Button>
+							</div>
+						</div>
+
+						<div className={styles.briefAudit}>
+							<div className={styles.briefIntro}>
+								<p>
+									<Icon name="spark" size="small" />
+									Brief the audit
+								</p>
+								<h2>Tell us about this ad</h2>
+								<span>All optional — but the more the AI knows about your ad, the sharper the fixes and the more accurate the goal detection.</span>
+							</div>
+
+							<div className={styles.briefField}>
+								<div className={styles.briefLabel}>
+									<span><Icon name="target" size="small" /></span>
+									<h3>Where will this ad run?</h3>
+								</div>
+								<div className={styles.choiceRow} role="radiogroup" aria-label="Where will this ad run?">
+									{PLATFORM_OPTIONS.map((option) => {
+										const selected = platform === option.label;
+										return (
+											<Button
+												key={option.label}
+												className={clsx(styles.choicePill, selected && styles.choiceSelected)}
+												type="button"
+												variant={selected ? "primary" : "secondary"}
+												size="md"
+												role="radio"
+												aria-checked={selected}
+												leadingMedia={<Icon name={option.icon} size="small" />}
+												onClick={() => setPlatform(option.label)}
+												disabled={isSubmitting}
+											>
+												{option.label}
+											</Button>
+										);
+									})}
+								</div>
+							</div>
+
+							<div className={styles.briefField}>
+								<div className={styles.briefLabel}>
+									<span><Icon name="target" size="small" /></span>
+									<h3>What&apos;s the goal of this ad?</h3>
+								</div>
+								<div className={styles.choiceRow} role="radiogroup" aria-label="What's the goal of this ad?">
+									{GOAL_OPTIONS.map((option) => {
+										const selected = goal === option.label;
+										return (
+											<Button
+												key={option.label}
+												className={clsx(styles.choicePill, selected && styles.choiceSelected)}
+												type="button"
+												variant={selected ? "primary" : "secondary"}
+												size="md"
+												role="radio"
+												aria-checked={selected}
+												leadingMedia={<Icon name={option.icon} size="small" />}
+												onClick={() => setGoal(selected ? null : option.label)}
+												disabled={isSubmitting}
+											>
+												{option.label}
+											</Button>
+										);
+									})}
+								</div>
+							</div>
+
+							<div className={styles.briefField}>
+								<div className={styles.briefLabel}>
+									<span><Icon name="share" size="small" /></span>
+									<h3>Is there a link or page viewers can act on?</h3>
+									<small>Optional</small>
+								</div>
+								<div className={styles.choiceRow} role="radiogroup" aria-label="Is there a link or page viewers can act on?">
+									{DESTINATION_OPTIONS.map((option) => {
+										const selected = destination === option.label;
+										return (
+											<Button
+												key={option.label}
+												className={clsx(styles.choicePill, selected && styles.choiceSelected)}
+												type="button"
+												variant={selected ? "primary" : "secondary"}
+												size="md"
+												role="radio"
+												aria-checked={selected}
+												leadingMedia={<Icon name={option.icon} size="small" />}
+												onClick={() => setDestination(selected ? null : option.label)}
+												disabled={isSubmitting}
+											>
+												{option.label}
+											</Button>
+										);
+									})}
+								</div>
+							</div>
+
+							<div className={styles.briefField}>
+								<div className={styles.briefLabel}>
+									<span><Icon name="captions" size="small" /></span>
+									<h3>Anything you want the audit to focus on?</h3>
+									<small>Optional</small>
+								</div>
+								<div className={styles.notesWrap}>
+									<textarea
+										className={styles.notesInput}
+										placeholder="e.g. Is the hook strong enough? Does the CTA clearly point viewers to the link?"
+										value={notes}
+										onChange={(event) => setNotes(event.target.value)}
 										disabled={isSubmitting}
-										onClick={resetSelection}
-									>
-										{t("ready.chooseAnother")}
-									</Button>
+										maxLength={280}
+										aria-label="Anything you want the audit to focus on?"
+									/>
+									<span>{notes.length}/280</span>
 								</div>
 							</div>
 						</div>
 
-						<div className={styles.progressWrap} aria-live="polite">
-							<div className={styles.progressMeta}>
-								<span>{status.stage}</span>
-								<strong>{status.progress}%</strong>
-							</div>
-							<div className={styles.progressBar}>
-								<span style={{ width: `${status.progress}%` }} />
-							</div>
-							{analysis
-								? null
-								: <p className={styles.progressHint}>This can take up to 3 minutes while the AI reviews the video.</p>}
-							{error ? <p className={styles.errorText}>{error}</p> : null}
-						</div>
+						{isSubmitting || error
+							? (
+								<div className={styles.progressWrap} aria-live="polite">
+									<div className={styles.progressMeta}>
+										<span>{status.stage}</span>
+										<strong>{status.progress}%</strong>
+									</div>
+									<div className={styles.progressBar}>
+										<span style={{ width: `${status.progress}%` }} />
+									</div>
+									<p className={styles.progressHint}>This can take up to 3 minutes while the AI reviews the video.</p>
+									{error ? <p className={styles.errorText}>{error}</p> : null}
+								</div>
+							)
+							: null}
 
-						<div className={styles.privacyNote}>
-							<Icon name="shieldCheck" size="small" />
-							<p>{t("ready.privacy")}</p>
+						<div className={styles.readyFooter}>
+							<Button className={styles.startButton} type="button" size="md" icon="arrow" disabled={isSubmitting} onClick={startAnalysis}>
+								{isSubmitting ? status.stage : t("ready.start")}
+							</Button>
+							<div className={styles.privacyNote}>
+								<Icon name="shieldCheck" size="small" />
+								<p>Your video and notes stay private — never shared or used to train public models.</p>
+							</div>
 						</div>
 					</div>
 				</section>

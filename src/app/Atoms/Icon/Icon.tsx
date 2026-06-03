@@ -21,6 +21,7 @@ import rocketIcon from "./icons/rocket.svg";
 import share2Icon from "./icons/share-2.svg";
 import shieldCheckIcon from "./icons/shield-check.svg";
 import sparklesIcon from "./icons/sparkles.svg";
+import tiktokIcon from "./icons/tiktok.svg";
 import uploadIcon from "./icons/upload.svg";
 import userIcon from "./icons/user.svg";
 import zapIcon from "./icons/zap.svg";
@@ -46,6 +47,7 @@ export type IconName =
 	| "share"
 	| "shieldCheck"
 	| "target"
+	| "tiktok"
 	| "user"
 	| "wave"
 	| "bolt";
@@ -83,6 +85,7 @@ const icons = {
 	shieldCheck: shieldCheckIcon,
 	spark: sparklesIcon,
 	target: goalIcon,
+	tiktok: tiktokIcon,
 	upload: uploadIcon,
 	user: userIcon,
 	wave: activityIcon,
