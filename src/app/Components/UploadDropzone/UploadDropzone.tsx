@@ -37,7 +37,7 @@ export function UploadDropzone({ buttonLabel, className, formats, onFileSelect, 
 				ref={inputRef}
 				className={styles.fileInput}
 				type="file"
-				accept="video/mp4,video/quicktime,.mp4,.mov"
+				accept="video/mp4,video/quicktime,video/webm,.mp4,.mov,.webm"
 				aria-label={title}
 				onChange={(event) => {
 					const file = event.currentTarget.files?.[0];
