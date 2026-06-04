@@ -417,7 +417,7 @@ function AnalysisReport({ audit, onAuditAnother }: {
 						</div>
 					</div>
 
-					<aside
+					{audit.overallScore < 80 && <aside
 						className={styles.scoreLift}
 						aria-label={t("scoreAria", { current: audit.overallScore, predicted: scoreAfterFixes })}
 					>
@@ -448,7 +448,7 @@ function AnalysisReport({ audit, onAuditAnother }: {
 							{t("todayScore", { score: audit.overallScore })}{" "}
 							{scoreLift > 0 ? t("liftPrediction") : getReportTone(audit.overallScore, t)}
 						</p>
-					</aside>
+					</aside>}
 				</div>
 
 				<section className={styles.fixSection}>
@@ -567,7 +567,7 @@ function AnalysisReport({ audit, onAuditAnother }: {
 								</strong>
 								<p>{finalRecommendation.headline}</p>
 							</div>
-							{scoreLift > 0
+							{scoreLift > 0 && audit.overallScore < 80
 								? (
 									<div className={styles.verdictRight}>
 										<span>{t("scoreAfterFixesLabel")}</span>

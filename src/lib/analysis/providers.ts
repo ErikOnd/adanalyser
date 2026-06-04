@@ -68,14 +68,21 @@ SCORE PREDICTION — keep it honest
 ═══════════════════════════════════════
 scoreAfterFixes is a prediction of the score IF the user applies the priorityFixes you listed — nothing more. Rules:
   • The lift (scoreLift) must come only from the fixes you actually listed. Do not predict gains from changes you didn't recommend.
-  • Be conservative. A realistic lift for 2–3 fixes is roughly +6 to +14 points. Never predict +20 or a jump to 95+ unless the fixes are transformative and you can justify it from evidence.
+  • Match the lift to the impact of the fixes: a single high-leverage fix (e.g. rewriting a dead hook) can lift +15–20; three strong fixes on a near-ready video can lift +20–25. Only cap the lift when the fixes are minor polish.
   • A weak CTA with strong everything-else lifts more from one fix than a video weak across the board. Reflect that.
   • scoreLift must exactly equal scoreAfterFixes minus overallScore.
 
 ═══════════════════════════════════════
 SCORING DISCIPLINE
 ═══════════════════════════════════════
-Score each dimension 0–100 honestly. A great hook with no CTA should show a high hook score and a low cta score — do not average everything toward 70. Real ads have spiky profiles; flat scores read as lazy. overallScore should reflect the weighted reality for the detected goal (for a sales/conversion goal, CTA and conversion weigh heavily; for a views goal, hook and retention weigh heavily). The score must feel earned: a reader should be able to look at the six sub-scores and understand why the overall landed where it did.
+Score each dimension 0–100 honestly using the full range. Calibrate against this scale:
+  • 90–100 — exceptional: near-flawless execution for the goal, strong hook, clear product, compelling close, excellent retention signals
+  • 75–89  — solid: clearly publishable with minor improvements; most good ads land here
+  • 60–74  — needs work: publishable but has at least one significant gap that will hurt performance
+  • 40–59  — weak: multiple real problems; likely to underperform without meaningful rework
+  • 0–39   — poor: fundamental issues; hook fails, product unclear, no CTA, or the creative actively hurts the brand
+
+A great hook with no CTA should show a high hook score and a low cta score — do not average everything toward 70. Real ads have spiky profiles; flat scores read as lazy. overallScore should reflect the weighted reality for the detected goal (for a sales/conversion goal, CTA and conversion weigh heavily; for a views goal, hook and retention weigh heavily). The score must feel earned: a reader should be able to look at the six sub-scores and understand why the overall landed where it did.
 
 ═══════════════════════════════════════
 FIELD-BY-FIELD REQUIREMENTS
@@ -169,14 +176,6 @@ Return ONLY valid JSON matching the schema exactly — no markdown, no fences, n
 const PEGASUS_PROMPT =
 	"Analyze this video as a short-form ad. For EVERY observation include an approximate timestamp or range (e.g. 0:00–0:03). Cover, with timestamps: exactly what is on screen in the first 3 seconds; every text overlay and when it appears and disappears; each scene change and the pacing between cuts; whether and how a product is shown; any CTA shown or spoken and when; who delivers it (UGC creator on camera, voiceover, animation, b-roll); the emotional tone and how it shifts; and any social-proof or authority elements. Be concrete and visual — name what you actually see at each moment.";
 
-const auditJsonSchema = {
-	type: "object",
-	properties: {
-		auditJson: { type: "string" },
-	},
-	required: ["auditJson"],
-	additionalProperties: false,
-} as const;
 
 function requireEnv(name: string) {
 	const value = process.env[name];
@@ -392,14 +391,9 @@ function extractJson(text: string): AnalysisAudit {
 		throw new Error("Audit generation returned an invalid response");
 	}
 
-	const parsed = JSON.parse(candidate.slice(start, end + 1)) as AnalysisAudit | { auditJson: string };
-	const audit = isAuditJsonWrapper(parsed) ? JSON.parse(parsed.auditJson) as AnalysisAudit : parsed as AnalysisAudit;
+	const audit = JSON.parse(candidate.slice(start, end + 1)) as AnalysisAudit;
 	assertAuditShape(audit);
 	return audit;
-}
-
-function isAuditJsonWrapper(value: AnalysisAudit | { auditJson: string }): value is { auditJson: string } {
-	return "auditJson" in value && typeof value.auditJson === "string";
 }
 
 function assertAuditShape(audit: AnalysisAudit) {
@@ -428,17 +422,13 @@ type AnthropicMessage = { role: "user" | "assistant"; content: AnthropicTextBloc
 type AnthropicEffort = "low" | "medium" | "high" | "xhigh" | "max";
 type AnthropicCacheControl = { type: "ephemeral"; ttl?: "5m" | "1h" };
 type AnthropicSystemBlock = { type: "text"; text: string; cache_control?: AnthropicCacheControl };
-type AnthropicJsonSchemaFormat = {
-	type: "json_schema";
-	schema: typeof auditJsonSchema;
-};
 
 async function callAnthropic(payload: {
 	system: string | AnthropicSystemBlock[];
 	messages: AnthropicMessage[];
 	max_tokens: number;
 	thinking?: { type: "adaptive" } | { type: "enabled"; budget_tokens: number };
-	output_config?: { effort?: AnthropicEffort; format?: AnthropicJsonSchemaFormat };
+	output_config?: { effort?: AnthropicEffort };
 }): Promise<string> {
 	const message = await fetchJson<{ content: AnthropicContentBlock[]; stop_reason?: string }>(
 		"https://api.anthropic.com/v1/messages",
@@ -502,7 +492,7 @@ export async function generateClaudeAudit(
 
 	const userPrompt = `Create the audit from the available data. If transcript or visual analysis is missing, explicitly account for that limitation in the JSON reasoning.
 
-Return a JSON object with exactly one property, auditJson. The auditJson value must be a string containing minified valid JSON for the full audit object described in the system prompt. Do not put the audit fields next to auditJson; put the full audit object inside the auditJson string.
+Return the audit as a JSON object directly matching the schema in the system prompt. Do not wrap it — output the audit fields at the top level.
 
 TRANSCRIPT DATA:
 ${JSON.stringify(transcript ?? { error: "Transcript data unavailable" }, null, 2)}
@@ -525,10 +515,6 @@ ${JSON.stringify(visuals ?? { error: "Visual analysis data unavailable" }, null,
 		max_tokens: 8000,
 		output_config: {
 			effort: "medium",
-			format: {
-				type: "json_schema",
-				schema: auditJsonSchema,
-			},
 		},
 		messages: initialMessages,
 	});
