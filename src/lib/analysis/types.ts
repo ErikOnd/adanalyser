@@ -24,12 +24,6 @@ export type TimestampedIssue = {
 	expectedImpact: string;
 };
 
-export type WorkingElement = {
-	timestamp: string;
-	element: string;
-	why: string;
-};
-
 export type PlatformScore = {
 	score: number;
 	notes: string;
@@ -76,7 +70,6 @@ export type AnalysisAudit = {
 		items: EditorBriefItem[];
 	};
 	topIssues: TimestampedIssue[];
-	whatWorks: WorkingElement[];
 	viralTriggers: {
 		present: string[];
 		missing: string[];
@@ -94,7 +87,6 @@ export type AnalysisAudit = {
 	finalRecommendation?: {
 		headline: string;
 		expectedResult: string;
-		keep: string[];
 		change: string[];
 	};
 	summary: string;

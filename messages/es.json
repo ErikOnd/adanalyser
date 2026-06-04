@@ -102,7 +102,109 @@
 			"status": "Listo",
 			"start": "Iniciar auditoría",
 			"chooseAnother": "Elegir otro",
-			"privacy": "Analizamos tu vídeo solo para generar esta auditoría. Nunca se comparte ni se usa para entrenar modelos públicos."
+			"privacy": "Analizamos tu vídeo solo para generar esta auditoría. Nunca se comparte ni se usa para entrenamiento externo."
+		},
+		"brief": {
+			"eyebrow": "Brief de auditoría",
+			"title": "Cuéntanos sobre este anuncio",
+			"copy": "Todo es opcional — pero cuanto más sepa la IA sobre tu anuncio, más precisos serán los arreglos y la detección del objetivo.",
+			"goalLabel": "¿Cuál es el objetivo de este anuncio?",
+			"destinationLabel": "¿Hay un enlace o página donde los espectadores puedan actuar?",
+			"notesLabel": "¿Algo en lo que quieras que se enfoque la auditoría?",
+			"notesPlaceholder": "p. ej. ¿El hook es suficientemente fuerte? ¿El CTA lleva claramente al enlace?",
+			"optional": "Opcional",
+			"goals": {
+				"sales": "Ventas",
+				"followers": "Seguidores",
+				"awareness": "Awareness",
+				"traffic": "Tráfico"
+			},
+			"destinations": {
+				"linkInBio": "Link en bio",
+				"landingPage": "Landing page",
+				"profileShop": "Perfil / tienda",
+				"dmComment": "DM o comentario",
+				"nowhere": "Aún ninguna"
+			}
+		},
+		"progressHint": "Puede tardar hasta 3 minutos mientras la IA revisa el vídeo.",
+		"errors": {
+			"chooseVideo": "Elige un archivo de vídeo antes de iniciar la auditoría.",
+			"tooLarge": "El vídeo seleccionado supera el límite de 500 MB.",
+			"unsupportedType": "Sube un vídeo MP4, MOV o WebM.",
+			"unexpectedFormat": "La respuesta del análisis no tenía el formato esperado.",
+			"failed": "El análisis falló. Inténtalo de nuevo con otro vídeo."
+		},
+		"loading": {
+			"title": "Auditando “{fileName}”",
+			"failedTitle": "La auditoría falló",
+			"copy": "Lo analizamos como lo verá el algoritmo — y tu comprador.",
+			"failedCopy": "El análisis se detuvo antes de poder crear el reporte.",
+			"platform": "Creative short-form",
+			"chooseAnother": "Elegir otro",
+			"steps": {
+				"media": {
+					"label": "Preparando vídeo",
+					"source": "Subida segura"
+				},
+				"transcript": {
+					"label": "Transcribiendo audio",
+					"source": "IA de audio"
+				},
+				"visuals": {
+					"label": "Entendiendo visuales",
+					"source": "IA visual"
+				},
+				"audit": {
+					"label": "Puntuando y escribiendo arreglos",
+					"source": "IA creativa"
+				}
+			}
+		},
+		"report": {
+			"auditComplete": "Auditoría completa",
+			"title": "Aquí está tu auditoría creativa",
+			"auditAnother": "Auditar otro",
+			"shareReport": "Compartir reporte",
+			"reportFile": "creative-audit.report",
+			"detectedGoal": "Objetivo detectado",
+			"confidence": "{confidence}% de confianza",
+			"biggestProblem": "Problema principal",
+			"mainReadout": "Lectura principal",
+			"bottomLine": "Conclusión",
+			"scoreAria": "Hoy {current}, predicho {predicted}",
+			"scoreAfterFixes": "Score tras {count, plural, one {# arreglo} other {# arreglos}}",
+			"currentScore": "Score actual",
+			"todayScore": "Hoy puntúa {score}.",
+			"liftPrediction": "La mejora es una predicción tras los edits de abajo.",
+			"whatToChange": "Qué cambiar",
+			"readout": "Lectura",
+			"fixesHeading": "{count, plural, one {El # arreglo más importante} other {Los # arreglos más importantes}}",
+			"noMajorFixes": "No hacen falta grandes arreglos",
+			"whyItMatters": "Por qué importa",
+			"theFix": "El arreglo",
+			"whyThisWorks": "Por qué funciona",
+			"highConfidence": "Alta confianza",
+			"emptyFixes": "El análisis no encontró un problema relevante que valga la pena forzar en el reporte. Publica con pruebas normales de plataforma.",
+			"editorHeading": "Pásale esto a tu editor",
+			"editorCopy": "{count, plural, one {El # arreglo es} other {Los # arreglos son}} una lista de tareas para copiar y pegar — pásala directamente a quien corte la próxima versión.",
+			"copyBrief": "Copiar brief",
+			"finalRecommendation": "Recomendación final",
+			"expectedResult": "Resultado esperado",
+			"change": "Cambio",
+			"estimatedEditTime": "~15 min de edits",
+			"noUrgentEdits": "Sin edits urgentes",
+			"fallbackRecommendation": "Publicar tras {count, plural, one {# arreglo} other {# arreglos}}.",
+			"readyToPublish": "Listo para publicar",
+			"needsRevision": "Necesita revisión",
+			"needsWork": "Necesita trabajo",
+			"noFixesFallback": "Este creative ya está en buen estado.",
+			"compactGoal": {
+				"conversions": "Impulsar conversiones",
+				"views": "Impulsar views",
+				"signups": "Impulsar registros",
+				"sales": "Impulsar ventas"
+			}
 		},
 		"trust": {
 			"noCard": "Sin tarjeta de crédito",

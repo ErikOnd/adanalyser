@@ -11,30 +11,23 @@ import type { CSSProperties } from "react";
 import { useEffect, useMemo, useState } from "react";
 import styles from "./AuditUploadPage.module.scss";
 
-const PLATFORM_OPTIONS = [
-	{ icon: "tiktok", label: "TikTok" },
-	{ icon: "badgeCard", label: "Instagram Reels" },
-	{ icon: "film", label: "YouTube Shorts" },
-] as const satisfies ReadonlyArray<{ icon: IconName; label: string }>;
-
 const DESTINATION_OPTIONS = [
-	{ icon: "user", label: "Link in bio" },
-	{ icon: "arrow", label: "Landing page" },
-	{ icon: "badgeCard", label: "Profile / shop" },
-	{ icon: "captions", label: "DM or comment" },
-	{ icon: "lock", label: "Nowhere yet" },
-] as const satisfies ReadonlyArray<{ icon: IconName; label: string }>;
+	{ icon: "user", key: "linkInBio", value: "Link in bio" },
+	{ icon: "arrow", key: "landingPage", value: "Landing page" },
+	{ icon: "store", key: "profileShop", value: "Profile / shop" },
+	{ icon: "quote", key: "dmComment", value: "DM or comment" },
+	{ icon: "x", key: "nowhere", value: "Nowhere yet" },
+] as const satisfies ReadonlyArray<{ icon: IconName; key: string; value: string }>;
 
 const GOAL_OPTIONS = [
-	{ icon: "badgeCard", label: "Sales" },
-	{ icon: "user", label: "Followers" },
-	{ icon: "eye", label: "Awareness" },
-	{ icon: "arrow", label: "Traffic" },
-] as const satisfies ReadonlyArray<{ icon: IconName; label: string }>;
+	{ icon: "store", key: "sales", value: "Sales" },
+	{ icon: "user", key: "followers", value: "Followers" },
+	{ icon: "eye", key: "awareness", value: "Awareness" },
+	{ icon: "arrow", key: "traffic", value: "Traffic" },
+] as const satisfies ReadonlyArray<{ icon: IconName; key: string; value: string }>;
 
-type PlatformOption = (typeof PLATFORM_OPTIONS)[number]["label"];
-type DestinationOption = (typeof DESTINATION_OPTIONS)[number]["label"];
-type GoalOption = (typeof GOAL_OPTIONS)[number]["label"];
+type DestinationOption = (typeof DESTINATION_OPTIONS)[number]["key"];
+type GoalOption = (typeof GOAL_OPTIONS)[number]["key"];
 
 type TrustKey = "noCard" | "private" | "turnaround";
 
@@ -87,30 +80,38 @@ function getShortSummary(audit: AnalysisAudit) {
 	return truncateText(firstSentence ?? source, 190);
 }
 
-function getCompactGoal(goal: string) {
+type TranslationValues = Record<string, string | number>;
+type TranslationFunction = (key: string, values?: TranslationValues) => string;
+
+function getCompactGoal(goal: string, t: TranslationFunction) {
 	const lowerGoal = goal.toLowerCase();
 
 	if (lowerGoal.includes("conversion") || lowerGoal.includes("lead") || lowerGoal.includes("inquir")) {
-		return "Drive conversions";
+		return t("compactGoal.conversions");
 	}
 
 	if (lowerGoal.includes("view") || lowerGoal.includes("reach") || lowerGoal.includes("engagement")) {
-		return "Drive views";
+		return t("compactGoal.views");
 	}
 
 	if (lowerGoal.includes("signup") || lowerGoal.includes("sign-up")) {
-		return "Drive signups";
+		return t("compactGoal.signups");
 	}
 
 	if (lowerGoal.includes("sale") || lowerGoal.includes("purchase")) {
-		return "Drive sales";
+		return t("compactGoal.sales");
 	}
 
 	return truncateText(goal.replace(/\s*\(.+?\)\s*/g, "").split(/[/:—-]/)[0]?.trim() || goal, 30);
 }
 
-function getBiggestProblemHeadline(audit: AnalysisAudit, priorityFixes: PriorityFix[], hasFixes: boolean) {
-	const fallback = hasFixes ? priorityFixes[0]?.title : "This creative is already in good shape.";
+function getBiggestProblemHeadline(
+	audit: AnalysisAudit,
+	priorityFixes: PriorityFix[],
+	hasFixes: boolean,
+	noFixesFallback: string,
+) {
+	const fallback = hasFixes ? priorityFixes[0]?.title : noFixesFallback;
 	const source = (audit.biggestProblem || fallback || "").trim();
 
 	if (source.length <= 120) {
@@ -148,25 +149,24 @@ function getBiggestProblemHeadline(audit: AnalysisAudit, priorityFixes: Priority
 }
 
 const fallbackJobSteps: JobStep[] = [
-	{ id: "media", label: "Preparing video", source: "Upload", status: "pending" },
-	{ id: "transcript", label: "Transcribing audio", source: "AssemblyAI", status: "pending" },
-	{ id: "visuals", label: "Understanding visuals", source: "TwelveLabs Pegasus", status: "pending" },
-	{ id: "audit", label: "Scoring & writing fixes", source: "Claude Sonnet", status: "pending" },
+	{ id: "media", label: "Preparing video", source: "Secure upload", status: "pending" },
+	{ id: "transcript", label: "Transcribing audio", source: "Audio AI", status: "pending" },
+	{ id: "visuals", label: "Understanding visuals", source: "Visual AI", status: "pending" },
+	{ id: "audit", label: "Scoring & writing fixes", source: "Creative AI", status: "pending" },
 ];
 
 function AuditLoadingPanel({
 	error,
 	fileName,
 	onAuditAnother,
-	platform,
 	status,
 }: {
 	error: string | null;
 	fileName: string;
 	onAuditAnother: () => void;
-	platform: PlatformOption;
 	status: JobStatus;
 }) {
+	const t = useTranslations("AuditUpload.loading");
 	const steps = status.steps?.length ? status.steps : fallbackJobSteps;
 	const progress = Math.max(0, Math.min(100, status.progress));
 
@@ -177,13 +177,13 @@ function AuditLoadingPanel({
 					<Icon name={error ? "lock" : "spark"} size="large" />
 				</div>
 				<h1 id="audit-loading-title">
-					{error ? "Audit failed" : <>Auditing &ldquo;{fileName}&rdquo;</>}
+					{error ? t("failedTitle") : t("title", { fileName })}
 				</h1>
-				<p>{error ? "The analysis stopped before the report could be created." : "Watching it the way the algorithm — and your buyer — will."}</p>
+				<p>{error ? t("failedCopy") : t("copy")}</p>
 
 				<div className={styles.loadingPlatform}>
-					<Icon name={platform === "TikTok" ? "tiktok" : platform === "YouTube Shorts" ? "film" : "badgeCard"} size="small" />
-					{platform}
+					<Icon name="film" size="small" />
+					{t("platform")}
 				</div>
 
 				<div className={styles.loadingProgress}>
@@ -201,20 +201,22 @@ function AuditLoadingPanel({
 								{step.status === "active" ? <Icon name="spark" size="small" /> : null}
 								{step.status === "error" ? <Icon name="lock" size="small" /> : null}
 							</span>
-							<strong>{step.label}</strong>
-							<em>{step.source}</em>
+							<strong>{t(`steps.${step.id}.label`)}</strong>
+							<em>{t(`steps.${step.id}.source`)}</em>
 						</li>
 					))}
 				</ul>
 
-				{error ? (
-					<div className={styles.loadingError}>
-						<p>{error}</p>
-						<Button type="button" variant="secondary" icon="refreshCw" iconSize="small" onClick={onAuditAnother}>
-							Choose another
-						</Button>
-					</div>
-				) : null}
+				{error
+					? (
+						<div className={styles.loadingError}>
+							<p>{error}</p>
+							<Button type="button" variant="secondary" icon="refreshCw" iconSize="small" onClick={onAuditAnother}>
+								{t("chooseAnother")}
+							</Button>
+						</div>
+					)
+					: null}
 			</div>
 		</section>
 	);
@@ -241,16 +243,16 @@ function buildFallbackFixes(audit: AnalysisAudit): PriorityFix[] {
 	}));
 }
 
-function getReportTone(score: number) {
+function getReportTone(score: number, t: TranslationFunction) {
 	if (score >= 80) {
-		return "Ready to publish";
+		return t("readyToPublish");
 	}
 
 	if (score >= 65) {
-		return "Needs revision";
+		return t("needsRevision");
 	}
 
-	return "Needs work";
+	return t("needsWork");
 }
 
 function getImpactClass(impact: string) {
@@ -271,42 +273,55 @@ function getImpactClass(impact: string) {
 	return styles.worthImpact;
 }
 
-function getFixIcon(index: number): IconName {
-	return index === 0 ? "bolt" : index === 1 ? "target" : "shieldCheck";
+function getFixIcon(): IconName {
+	return "bolt";
 }
 
-function getWorkingIcon(index: number): IconName {
-	if (index === 0) {
-		return "user";
+function getLocalizedError(message: string, t: TranslationFunction) {
+	if (message.includes("Choose a video file")) {
+		return t("errors.chooseVideo");
 	}
 
-	if (index === 1) {
-		return "film";
+	if (message.includes("larger than the 500MB limit")) {
+		return t("errors.tooLarge");
 	}
 
-	return "captions";
+	if (message.includes("Upload an MP4, MOV, or WebM video")) {
+		return t("errors.unsupportedType");
+	}
+
+	if (message.includes("not in the expected format")) {
+		return t("errors.unexpectedFormat");
+	}
+
+	if (message.includes("could not be completed") || message.includes("analysis failed")) {
+		return t("errors.failed");
+	}
+
+	return message;
 }
 
 function AnalysisReport({ audit, onAuditAnother }: {
 	audit: AnalysisAudit;
 	onAuditAnother: () => void;
 }) {
+	const t = useTranslations("AuditUpload.report");
 	const shortSummary = getShortSummary(audit);
-	const compactGoal = getCompactGoal(audit.goal.detected);
+	const compactGoal = getCompactGoal(audit.goal.detected, t);
 	const priorityFixes = audit.priorityFixes?.length ? audit.priorityFixes : buildFallbackFixes(audit);
 	const hasFixes = priorityFixes.length > 0;
-	const biggestProblemHeadline = getBiggestProblemHeadline(audit, priorityFixes, hasFixes);
+	const biggestProblemHeadline = getBiggestProblemHeadline(audit, priorityFixes, hasFixes, t("noFixesFallback"));
 	const scoreAfterFixes = audit.scoreAfterFixes ?? Math.min(100, audit.overallScore + (hasFixes ? 12 : 0));
 	const scoreLift = audit.scoreLift ?? Math.max(0, scoreAfterFixes - audit.overallScore);
 	const editorItems = audit.editorBrief?.items.length
 		? audit.editorBrief.items
 		: priorityFixes.map((fix) => ({ task: fix.editorTask, timestamp: fix.timestamp }));
-	const estimatedEditTime = audit.editorBrief?.estimatedEditTime ?? (hasFixes ? "~15 min of edits" : "No urgent edits");
+	const estimatedEditTime = audit.editorBrief?.estimatedEditTime
+		?? (hasFixes ? t("estimatedEditTime") : t("noUrgentEdits"));
 	const finalRecommendation = audit.finalRecommendation ?? {
 		change: priorityFixes.map((fix) => fix.title.split(" ").slice(0, 3).join(" ")),
 		expectedResult: audit.summary,
-		headline: hasFixes ? `Publish after ${priorityFixes.length} ${priorityFixes.length === 1 ? "fix" : "fixes"}.` : "Ready to publish.",
-		keep: audit.whatWorks.slice(0, 3).map((item) => item.element.split(" ").slice(0, 3).join(" ")),
+		headline: hasFixes ? t("fallbackRecommendation", { count: priorityFixes.length }) : t("readyToPublish"),
 	};
 	const copyBrief = async () => {
 		const brief = editorItems
@@ -322,17 +337,25 @@ function AnalysisReport({ audit, onAuditAnother }: {
 				<div>
 					<p className={styles.statusLine}>
 						<span />
-						Audit complete
+						{t("auditComplete")}
 					</p>
-					<h1 id="analysis-report-title">Here&apos;s your creative audit</h1>
+					<h1 id="analysis-report-title">{t("title")}</h1>
 					<p>{shortSummary}</p>
 				</div>
 				<div className={styles.resultActions}>
-					<Button className={styles.auditAgainButton} type="button" variant="secondary" size="md" icon="upload" iconSize="small" onClick={onAuditAnother}>
-						Audit another
+					<Button
+						className={styles.auditAgainButton}
+						type="button"
+						variant="secondary"
+						size="md"
+						icon="upload"
+						iconSize="small"
+						onClick={onAuditAnother}
+					>
+						{t("auditAnother")}
 					</Button>
 					<Button className={styles.shareButton} type="button" size="md" icon="share" iconSize="small">
-						Share report
+						{t("shareReport")}
 					</Button>
 				</div>
 			</div>
@@ -344,55 +367,81 @@ function AnalysisReport({ audit, onAuditAnother }: {
 						<span />
 						<span />
 					</div>
-					<span>creative-audit.report</span>
+					<span>{t("reportFile")}</span>
 					<strong>
 						<span />
-						Audit complete
+						{t("auditComplete")}
 					</strong>
 				</div>
 
 				<div className={styles.diagnosis}>
+					{audit.overallScore < 80
+						? (
+							<div className={styles.revisionBadge}>
+								<span />
+								{t("needsRevision")}
+							</div>
+						)
+						: null}
 					<div>
 						<div className={styles.goalPills}>
-							<span>Detected goal</span>
+							<span>{t("detectedGoal")}</span>
 							<strong>
 								<Icon name="target" size="small" />
 								{compactGoal}
 							</strong>
-							<small>{audit.goal.confidence}% confidence</small>
+							<small>{t("confidence", { confidence: audit.goal.confidence })}</small>
 						</div>
 
-						<p className={styles.problemLabel}>{hasFixes ? "Biggest problem" : "Main readout"}</p>
+						<p className={styles.problemLabel}>{hasFixes ? t("biggestProblem") : t("mainReadout")}</p>
 						<h2>{biggestProblemHeadline}</h2>
 
 						<div className={styles.bottomLine}>
 							<span>
 								<b aria-hidden="true">”</b>
-								Bottom line
+								{t("bottomLine")}
 							</span>
 							<p>{audit.bottomLine ?? audit.goal.reasoning}</p>
 						</div>
 					</div>
 
-					<aside className={styles.scoreLift} aria-label={`Today ${audit.overallScore}, predicted ${scoreAfterFixes}`}>
-						<span>{hasFixes ? `Score after your ${priorityFixes.length} ${priorityFixes.length === 1 ? "fix" : "fixes"}` : "Current score"}</span>
+					<aside
+						className={styles.scoreLift}
+						aria-label={t("scoreAria", { current: audit.overallScore, predicted: scoreAfterFixes })}
+					>
+						<span>{hasFixes ? t("scoreAfterFixes", { count: priorityFixes.length }) : t("currentScore")}</span>
 						<div>
 							<small>{audit.overallScore}</small>
 							<b aria-hidden="true">→</b>
 							<strong>{scoreAfterFixes}</strong>
-							{scoreLift > 0 ? <em>+{scoreLift} pts</em> : null}
+							{scoreLift > 0
+								? (
+									<em>
+										<Icon name="wave" size="small" />
+										+{scoreLift} pts
+									</em>
+								)
+								: null}
 						</div>
 						<div className={styles.liftBar}>
 							<span style={{ "--score-width": `${audit.overallScore}%` } as CSSProperties} />
-							<span style={{ "--score-width": `${scoreAfterFixes}%` } as CSSProperties} />
+							<span
+								style={{
+									"--score-start": `${audit.overallScore}%`,
+									"--score-width": `${scoreAfterFixes}%`,
+								} as CSSProperties}
+							/>
 						</div>
-						<p>Today it scores {audit.overallScore}. {scoreLift > 0 ? "The lift is a prediction after the edits below." : getReportTone(audit.overallScore)}</p>
+						<p>
+							{t("todayScore", { score: audit.overallScore })}{" "}
+							{scoreLift > 0 ? t("liftPrediction") : getReportTone(audit.overallScore, t)}
+						</p>
 					</aside>
 				</div>
 
 				<section className={styles.fixSection}>
-					<p className={styles.sectionKicker}>{hasFixes ? "What to change" : "What to keep"}</p>
-					<h3>{hasFixes ? `The ${priorityFixes.length} ${priorityFixes.length === 1 ? "fix that matters most" : "fixes that matter most"}` : "No major fixes needed"}</h3>
+					<p className={styles.sectionKicker}>{hasFixes ? t("whatToChange") : t("readout")}</p>
+					<h3>{hasFixes ? t("fixesHeading", { count: priorityFixes.length }) : t("noMajorFixes")}</h3>
 
 					{hasFixes
 						? (
@@ -410,21 +459,31 @@ function AnalysisReport({ audit, onAuditAnother }: {
 										</div>
 										<div className={styles.fixBody}>
 											<div className={styles.fixMeta}>
-												<Icon name={getFixIcon(index)} size="small" />
-												<span>{fix.timestamp}</span>
+												<span className={getImpactClass(fix.impact)}>
+													<Icon name={getFixIcon()} size="small" />
+												</span>
+												<span>
+													<Icon name="clock" size="small" />
+													{fix.timestamp}
+												</span>
+												<em>
+													<i />
+													{t("highConfidence")}
+												</em>
 											</div>
 											<h4>{fix.title}</h4>
-											<span>Why it matters</span>
-											<p>{fix.whyItMatters}</p>
+											<p className={styles.fixReason}>{fix.whyItMatters}</p>
 											<div className={styles.fixCallout}>
-												<Icon name="spark" size="small" />
+												<span>
+													<Icon name="wandSparkles" size="small" />
+												</span>
 												<div>
-													<strong>The fix</strong>
+													<strong>{t("theFix")}</strong>
 													<p>{fix.fix}</p>
 												</div>
 											</div>
 											<div className={styles.whyBox}>
-												<strong>Why this works</strong>
+												<Icon name="wave" size="small" />
 												<p>{fix.whyThisWorks}</p>
 											</div>
 										</div>
@@ -432,87 +491,70 @@ function AnalysisReport({ audit, onAuditAnother }: {
 								))}
 							</div>
 						)
-						: <p className={styles.emptyFixes}>The analysis did not find a meaningful problem worth forcing into the report. Keep the strongest elements below and publish with normal platform testing.</p>}
+						: <p className={styles.emptyFixes}>{t("emptyFixes")}</p>}
 				</section>
 
-				{editorItems.length ? (
-					<section className={styles.editorBrief}>
-						<div className={styles.briefHeader}>
-							<div>
-								<Icon name="badgeCard" size="medium" />
+				{editorItems.length
+					? (
+						<section className={styles.editorBrief}>
+							<div className={styles.briefHeader}>
 								<div>
-									<h3>Hand this to your editor</h3>
-									<p>The {editorItems.length} {editorItems.length === 1 ? "fix is" : "fixes are"} a copy-paste task list — paste it straight to whoever cuts the next version.</p>
+									<Icon name="badgeCard" size="medium" />
+									<div>
+										<h3>{t("editorHeading")}</h3>
+										<p>{t("editorCopy", { count: editorItems.length })}</p>
+									</div>
+								</div>
+								<div>
+									<span>
+										<Icon name="clock" size="small" />
+										{estimatedEditTime}
+									</span>
+									<Button
+										className={styles.copyBriefButton}
+										type="button"
+										size="md"
+										leadingMedia={<Icon name="layers" size="small" />}
+										onClick={copyBrief}
+									>
+										{t("copyBrief")}
+									</Button>
 								</div>
 							</div>
-							<div>
-								<span>
-									<Icon name="clock" size="small" />
-									{estimatedEditTime}
-								</span>
-								<Button
-									className={styles.copyBriefButton}
-									type="button"
-									size="md"
-									leadingMedia={<Icon name="layers" size="small" />}
-									onClick={copyBrief}
-								>
-									Copy brief
-								</Button>
-							</div>
-						</div>
-						<ol>
-							{editorItems.map((item, index) => (
-								<li key={`${item.timestamp}-${item.task}`}>
-									<span>{index + 1}</span>
-									<p>{item.task}</p>
-									<small>{item.timestamp}</small>
-								</li>
-							))}
-						</ol>
-					</section>
-				) : null}
-
-				<section className={styles.workingSection}>
-					<p className={styles.sectionKicker}>What&apos;s working</p>
-					<h3>Keep doing this</h3>
-					<div>
-						{audit.whatWorks.map((item, index) => (
-							<article key={`${item.timestamp}-${item.element}`}>
-								<Icon name={getWorkingIcon(index)} size="small" />
-								<span>{item.timestamp}</span>
-								<h4>{item.element}</h4>
-								<p>{item.why}</p>
-							</article>
-						))}
-					</div>
-				</section>
+							<ol>
+								{editorItems.map((item, index) => (
+									<li key={`${item.timestamp}-${item.task}`}>
+										<span>{index + 1}</span>
+										<p>{item.task}</p>
+										<small>{item.timestamp}</small>
+									</li>
+								))}
+							</ol>
+						</section>
+					)
+					: null}
 
 				<section className={styles.finalCard}>
 					<div className={styles.finalHeader}>
 						<Icon name="rocket" size="medium" />
 						<div>
-							<span>Final recommendation</span>
+							<span>{t("finalRecommendation")}</span>
 							<h3>{finalRecommendation.headline}</h3>
 						</div>
 					</div>
 					<div className={styles.expectedResult}>
-						<span>Expected result</span>
+						<span>{t("expectedResult")}</span>
 						<p>{finalRecommendation.expectedResult}</p>
 					</div>
 					<div className={styles.tagRows}>
-						{finalRecommendation.keep.length ? (
-							<div>
-								<strong>Keep</strong>
-								{finalRecommendation.keep.map((tag) => <span key={tag}>{tag}</span>)}
-							</div>
-						) : null}
-						{finalRecommendation.change.length ? (
-							<div>
-								<strong>Change</strong>
-								{finalRecommendation.change.map((tag) => <span key={tag}>{tag}</span>)}
-							</div>
-						) : null}
+						{finalRecommendation.change.length
+							? (
+								<div>
+									<strong>{t("change")}</strong>
+									{finalRecommendation.change.map((tag) => <span key={tag}>{tag}</span>)}
+								</div>
+							)
+							: null}
 					</div>
 				</section>
 			</article>
@@ -529,7 +571,6 @@ export function AuditUploadPage() {
 	const [analysis, setAnalysis] = useState<AnalysisAudit | null>(null);
 	const [error, setError] = useState<string | null>(null);
 	const [isSubmitting, setIsSubmitting] = useState(false);
-	const [platform, setPlatform] = useState<PlatformOption>("TikTok");
 	const [destination, setDestination] = useState<DestinationOption | null>(null);
 	const [goal, setGoal] = useState<GoalOption | null>(null);
 	const [notes, setNotes] = useState("");
@@ -574,7 +615,6 @@ export function AuditUploadPage() {
 		setAnalysis(null);
 		setError(null);
 		setIsSubmitting(false);
-		setPlatform("TikTok");
 		setDestination(null);
 		setGoal(null);
 		setNotes("");
@@ -590,14 +630,16 @@ export function AuditUploadPage() {
 
 		formData.set("video", selectedVideo);
 		formData.set("jobId", jobId);
-		formData.set("platform", platform);
 
 		if (destination) {
-			formData.set("destination", destination);
+			formData.set(
+				"destination",
+				DESTINATION_OPTIONS.find((option) => option.key === destination)?.value ?? destination,
+			);
 		}
 
 		if (goal) {
-			formData.set("goal", goal);
+			formData.set("goal", GOAL_OPTIONS.find((option) => option.key === goal)?.value ?? goal);
 		}
 
 		const trimmedNotes = notes.trim();
@@ -624,20 +666,21 @@ export function AuditUploadPage() {
 			if (!response.ok) {
 				const message = payload && typeof payload === "object" && "error" in payload
 					? String((payload as { error: unknown }).error)
-					: "The analysis failed. Try again with a different video.";
+					: t("errors.failed");
 				throw new Error(message);
 			}
 
 			if (!isAnalysisResponse(payload)) {
-				throw new Error("The analysis response was not in the expected format.");
+				throw new Error(t("errors.unexpectedFormat"));
 			}
 
 			setAnalysis(payload.audit);
 			setStatus({ stage: "Complete", progress: 100 });
 		} catch (analysisError) {
-			const message = analysisError instanceof Error ? analysisError.message : "The analysis failed.";
-			setError(message);
-			setStatus({ stage: "Failed", progress: 100, error: message });
+			const message = analysisError instanceof Error ? analysisError.message : t("errors.failed");
+			const localizedMessage = getLocalizedError(message, t);
+			setError(localizedMessage);
+			setStatus({ stage: "Failed", progress: 100, error: localizedMessage });
 		} finally {
 			setIsSubmitting(false);
 		}
@@ -680,7 +723,6 @@ export function AuditUploadPage() {
 						error={error}
 						fileName={selectedVideo.name}
 						onAuditAnother={resetSelection}
-						platform={platform}
 						status={status}
 					/>
 				</main>
@@ -733,51 +775,25 @@ export function AuditUploadPage() {
 							<div className={styles.briefIntro}>
 								<p>
 									<Icon name="spark" size="small" />
-									Brief the audit
+									{t("brief.eyebrow")}
 								</p>
-								<h2>Tell us about this ad</h2>
-								<span>All optional — but the more the AI knows about your ad, the sharper the fixes and the more accurate the goal detection.</span>
+								<h2>{t("brief.title")}</h2>
+								<span>{t("brief.copy")}</span>
 							</div>
 
 							<div className={styles.briefField}>
 								<div className={styles.briefLabel}>
-									<span><Icon name="target" size="small" /></span>
-									<h3>Where will this ad run?</h3>
+									<span>
+										<Icon name="target" size="small" />
+									</span>
+									<h3>{t("brief.goalLabel")}</h3>
 								</div>
-								<div className={styles.choiceRow} role="radiogroup" aria-label="Where will this ad run?">
-									{PLATFORM_OPTIONS.map((option) => {
-										const selected = platform === option.label;
-										return (
-											<Button
-												key={option.label}
-												className={clsx(styles.choicePill, selected && styles.choiceSelected)}
-												type="button"
-												variant={selected ? "primary" : "secondary"}
-												size="md"
-												role="radio"
-												aria-checked={selected}
-												leadingMedia={<Icon name={option.icon} size="small" />}
-												onClick={() => setPlatform(option.label)}
-												disabled={isSubmitting}
-											>
-												{option.label}
-											</Button>
-										);
-									})}
-								</div>
-							</div>
-
-							<div className={styles.briefField}>
-								<div className={styles.briefLabel}>
-									<span><Icon name="target" size="small" /></span>
-									<h3>What&apos;s the goal of this ad?</h3>
-								</div>
-								<div className={styles.choiceRow} role="radiogroup" aria-label="What's the goal of this ad?">
+								<div className={styles.choiceRow} role="radiogroup" aria-label={t("brief.goalLabel")}>
 									{GOAL_OPTIONS.map((option) => {
-										const selected = goal === option.label;
+										const selected = goal === option.key;
 										return (
 											<Button
-												key={option.label}
+												key={option.key}
 												className={clsx(styles.choicePill, selected && styles.choiceSelected)}
 												type="button"
 												variant={selected ? "primary" : "secondary"}
@@ -785,10 +801,10 @@ export function AuditUploadPage() {
 												role="radio"
 												aria-checked={selected}
 												leadingMedia={<Icon name={option.icon} size="small" />}
-												onClick={() => setGoal(selected ? null : option.label)}
+												onClick={() => setGoal(selected ? null : option.key)}
 												disabled={isSubmitting}
 											>
-												{option.label}
+												{t(`brief.goals.${option.key}`)}
 											</Button>
 										);
 									})}
@@ -797,16 +813,18 @@ export function AuditUploadPage() {
 
 							<div className={styles.briefField}>
 								<div className={styles.briefLabel}>
-									<span><Icon name="share" size="small" /></span>
-									<h3>Is there a link or page viewers can act on?</h3>
-									<small>Optional</small>
+									<span>
+										<Icon name="share" size="small" />
+									</span>
+									<h3>{t("brief.destinationLabel")}</h3>
+									<small>{t("brief.optional")}</small>
 								</div>
-								<div className={styles.choiceRow} role="radiogroup" aria-label="Is there a link or page viewers can act on?">
+								<div className={styles.choiceRow} role="radiogroup" aria-label={t("brief.destinationLabel")}>
 									{DESTINATION_OPTIONS.map((option) => {
-										const selected = destination === option.label;
+										const selected = destination === option.key;
 										return (
 											<Button
-												key={option.label}
+												key={option.key}
 												className={clsx(styles.choicePill, selected && styles.choiceSelected)}
 												type="button"
 												variant={selected ? "primary" : "secondary"}
@@ -814,10 +832,10 @@ export function AuditUploadPage() {
 												role="radio"
 												aria-checked={selected}
 												leadingMedia={<Icon name={option.icon} size="small" />}
-												onClick={() => setDestination(selected ? null : option.label)}
+												onClick={() => setDestination(selected ? null : option.key)}
 												disabled={isSubmitting}
 											>
-												{option.label}
+												{t(`brief.destinations.${option.key}`)}
 											</Button>
 										);
 									})}
@@ -826,19 +844,21 @@ export function AuditUploadPage() {
 
 							<div className={styles.briefField}>
 								<div className={styles.briefLabel}>
-									<span><Icon name="captions" size="small" /></span>
-									<h3>Anything you want the audit to focus on?</h3>
-									<small>Optional</small>
+									<span>
+										<Icon name="quote" size="small" />
+									</span>
+									<h3>{t("brief.notesLabel")}</h3>
+									<small>{t("brief.optional")}</small>
 								</div>
 								<div className={styles.notesWrap}>
 									<textarea
 										className={styles.notesInput}
-										placeholder="e.g. Is the hook strong enough? Does the CTA clearly point viewers to the link?"
+										placeholder={t("brief.notesPlaceholder")}
 										value={notes}
 										onChange={(event) => setNotes(event.target.value)}
 										disabled={isSubmitting}
 										maxLength={280}
-										aria-label="Anything you want the audit to focus on?"
+										aria-label={t("brief.notesLabel")}
 									/>
 									<span>{notes.length}/280</span>
 								</div>
@@ -855,19 +875,26 @@ export function AuditUploadPage() {
 									<div className={styles.progressBar}>
 										<span style={{ width: `${status.progress}%` }} />
 									</div>
-									<p className={styles.progressHint}>This can take up to 3 minutes while the AI reviews the video.</p>
+									<p className={styles.progressHint}>{t("progressHint")}</p>
 									{error ? <p className={styles.errorText}>{error}</p> : null}
 								</div>
 							)
 							: null}
 
 						<div className={styles.readyFooter}>
-							<Button className={styles.startButton} type="button" size="md" icon="arrow" disabled={isSubmitting} onClick={startAnalysis}>
+							<Button
+								className={styles.startButton}
+								type="button"
+								size="md"
+								icon="arrow"
+								disabled={isSubmitting}
+								onClick={startAnalysis}
+							>
 								{isSubmitting ? status.stage : t("ready.start")}
 							</Button>
 							<div className={styles.privacyNote}>
 								<Icon name="shieldCheck" size="small" />
-								<p>Your video and notes stay private — never shared or used to train public models.</p>
+								<p>{t("ready.privacy")}</p>
 							</div>
 						</div>
 					</div>

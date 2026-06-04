@@ -9,7 +9,7 @@ const DEFAULT_ANTHROPIC_MODEL = "claude-sonnet-4-6";
 const CLAUDE_SYSTEM_PROMPT =
 	`You are an elite short-form video ad strategist with 10 years of experience auditing TikTok, Instagram Reels, and YouTube Shorts ads that convert. You have analyzed thousands of ads across ecommerce, UGC, SaaS, and direct-response.
 
-You will receive: (1) a transcript with word-level timestamps from AssemblyAI, and (2) a visual analysis of the video from a vision model. Your job is to produce a brutally honest, surgically specific audit of this exact video as an ad.
+You will receive: (1) a transcript with word-level timestamps, and (2) a visual analysis of the video. Your job is to produce a brutally honest, surgically specific audit of this exact video as an ad.
 
 ═══════════════════════════════════════
 THE ONE RULE THAT MATTERS MOST
@@ -87,12 +87,11 @@ FIELD-BY-FIELD REQUIREMENTS
 - priorityFixes — return 0–3, ordered by impact. Each needs: timestamp, a specific title, an impact tier, whyItMatters (anchored), fix (COPY or EDIT per the rules above), whyThisWorks (anchored), and a short editorTask. Only include a fix backed by real evidence. If the ad is strong with no real weakness, return 0–1 light polish items and do NOT invent problems to fill the UI.
 - editorBrief — estimatedEditTime (e.g. "~15 min of edits" or "No urgent edits") and one item per priorityFix: a short, paste-ready editor task with its timestamp.
 - topIssues — may be empty for excellent ads. If present, each must be real, timestamped, specific, with an expectedImpact naming the metric likely to move.
-- whatWorks — minimum 1. Each anchored to a timestamp, explaining why it works FOR THIS goal/audience. Quote the transcript or name the visual moment.
 - viralTriggers — present[] and missing[] for short-form ad mechanics (face-in-frame, social proof, urgency, before/after, pattern interrupt, strong CTA, authority). biggestOpportunity = the single highest-leverage missing trigger with a concrete, video-specific way to add it.
 - platformFit — score TikTok, Instagram Reels, YouTube Shorts separately against each platform's ranking signals; notes must say something true about THIS cut on THAT platform, not boilerplate.
 - rewriteSuggestions.hook — a rewritten first-3-seconds script using this video's actual product and angle. rewriteSuggestions.cta — a rewritten CTA for this goal. Both must be literal, paste-ready lines, not descriptions.
-- finalRecommendation — headline ("Publish after these 3 fixes." / "Ready to publish."), expectedResult (a prediction, not a guarantee), keep[] (short tags for what's working), change[] (short tags for what to change; empty if nothing meaningful).
-- summary — 1–2 sentences, max 190 chars: what works, what to fix first, ready-to-publish or not.
+- finalRecommendation — headline ("Publish after these 3 fixes." / "Ready to publish."), expectedResult (a prediction, not a guarantee), change[] (short tags for what to change; empty if nothing meaningful).
+- summary — 1–2 sentences, max 190 chars: what to fix first and whether it is ready to publish.
 
 ═══════════════════════════════════════
 JSON SCHEMA — match exactly
@@ -140,9 +139,6 @@ JSON SCHEMA — match exactly
       "expectedImpact": "string — names the metric likely to move"
     }
   ],
-  "whatWorks": [
-    { "timestamp": "string", "element": "string", "why": "string — anchored, explains why it works for THIS goal/audience" }
-  ],
   "viralTriggers": {
     "present": ["string"],
     "missing": ["string"],
@@ -160,7 +156,6 @@ JSON SCHEMA — match exactly
   "finalRecommendation": {
     "headline": "string — e.g. 'Publish after these 3 fixes.' or 'Ready to publish.'",
     "expectedResult": "string — prediction, not a guarantee",
-    "keep": ["string — short tag"],
     "change": ["string — short tag, empty array if nothing meaningful"]
   },
   "summary": "string — 1-2 sentences, max 190 chars"
@@ -214,7 +209,7 @@ type ProgressCallback = (progress: number, stage?: string) => void;
 export async function transcribeWithAssemblyAI(filePath: string, onProgress?: ProgressCallback): Promise<TranscriptResult> {
 	const apiKey = requireEnv("ASSEMBLYAI_API_KEY");
 	const video = await readFile(filePath);
-	onProgress?.(0.05, "Uploading audio to AssemblyAI");
+	onProgress?.(0.05, "Preparing audio");
 	const upload = await fetchJson<{ upload_url: string }>("https://api.assemblyai.com/v2/upload", {
 		method: "POST",
 		headers: {
@@ -224,7 +219,7 @@ export async function transcribeWithAssemblyAI(filePath: string, onProgress?: Pr
 		body: video,
 	});
 
-	onProgress?.(0.18, "Starting AssemblyAI transcript");
+	onProgress?.(0.18, "Starting audio transcript");
 	const submitted = await fetchJson<{ id: string }>("https://api.assemblyai.com/v2/transcript", {
 		method: "POST",
 		headers: {
@@ -239,7 +234,7 @@ export async function transcribeWithAssemblyAI(filePath: string, onProgress?: Pr
 	});
 
 	for (let attempt = 0; attempt < 180; attempt += 1) {
-		onProgress?.(Math.min(0.94, 0.22 + attempt / 180 * 0.72), "AssemblyAI is transcribing audio");
+		onProgress?.(Math.min(0.94, 0.22 + attempt / 180 * 0.72), "Transcribing audio");
 		const transcript = await fetchJson<{
 			status: string;
 			error?: string;
@@ -264,13 +259,13 @@ export async function transcribeWithAssemblyAI(filePath: string, onProgress?: Pr
 		}
 
 		if (transcript.status === "error") {
-			throw new Error(transcript.error ?? "AssemblyAI transcription failed");
+			throw new Error(transcript.error ?? "Audio transcription failed");
 		}
 
 		await sleep(3000);
 	}
 
-	throw new Error("AssemblyAI transcription timed out");
+	throw new Error("Audio transcription timed out");
 }
 
 async function getOrCreateTwelveLabsIndex(apiKey: string) {
@@ -301,7 +296,7 @@ async function getOrCreateTwelveLabsIndex(apiKey: string) {
 	const indexId = index.id ?? index._id ?? index.index_id;
 
 	if (!indexId) {
-		throw new Error("TwelveLabs did not return an index id");
+		throw new Error("Visual analysis setup failed");
 	}
 
 	return indexId;
@@ -310,7 +305,7 @@ async function getOrCreateTwelveLabsIndex(apiKey: string) {
 export async function analyzeWithTwelveLabs(filePath: string, fileName: string, onProgress?: ProgressCallback): Promise<VisualResult> {
 	const apiKey = requireEnv("TWELVELABS_API_KEY");
 	const indexId = await getOrCreateTwelveLabsIndex(apiKey);
-	onProgress?.(0.05, "Uploading video to TwelveLabs");
+	onProgress?.(0.05, "Preparing video");
 	const video = new Blob([await readFile(filePath)]);
 	const form = new FormData();
 
@@ -330,14 +325,14 @@ export async function analyzeWithTwelveLabs(filePath: string, fileName: string, 
 	const taskId = task.id ?? task._id ?? task.task_id;
 
 	if (!taskId) {
-		throw new Error("TwelveLabs did not return a task id");
+		throw new Error("Visual analysis setup failed");
 	}
 
-	onProgress?.(0.15, "TwelveLabs is indexing scenes");
+	onProgress?.(0.15, "Reading scenes");
 	let videoId = task.video_id ?? "";
 
 	for (let attempt = 0; attempt < 240; attempt += 1) {
-		onProgress?.(Math.min(0.88, 0.18 + attempt / 240 * 0.7), "TwelveLabs is indexing scenes");
+		onProgress?.(Math.min(0.88, 0.18 + attempt / 240 * 0.7), "Reading scenes");
 		const status = await fetchJson<{
 			status: string;
 			video_id?: string;
@@ -348,22 +343,22 @@ export async function analyzeWithTwelveLabs(filePath: string, fileName: string, 
 
 		if (status.status === "ready") {
 			videoId = status.video_id ?? "";
-			onProgress?.(0.9, "TwelveLabs visual index ready");
+			onProgress?.(0.9, "Visual analysis ready");
 			break;
 		}
 
 		if (["failed", "error"].includes(status.status)) {
-			throw new Error(status.error ?? "TwelveLabs indexing failed");
+			throw new Error(status.error ?? "Visual analysis failed");
 		}
 
 		await sleep(5000);
 	}
 
 	if (!videoId) {
-		throw new Error("TwelveLabs indexing timed out before returning a video id");
+		throw new Error("Visual analysis timed out");
 	}
 
-	onProgress?.(0.94, "TwelveLabs Pegasus is analyzing visuals");
+	onProgress?.(0.94, "Analyzing visuals");
 	const generated = await fetchJson<{
 		data?: string;
 		text?: string;
@@ -394,7 +389,7 @@ function extractJson(text: string): AnalysisAudit {
 	const end = candidate.lastIndexOf("}");
 
 	if (start === -1 || end === -1 || end <= start) {
-		throw new Error("Claude response did not contain JSON");
+		throw new Error("Audit generation returned an invalid response");
 	}
 
 	const parsed = JSON.parse(candidate.slice(start, end + 1)) as AnalysisAudit | { auditJson: string };
@@ -468,7 +463,7 @@ async function callAnthropic(payload: {
 
 	if (!text.trim()) {
 		const contentTypes = message.content.map((block) => block.type).join(", ") || "none";
-		throw new Error(`Claude returned no text content. stop_reason=${message.stop_reason ?? "unknown"} content_types=${contentTypes}`);
+		throw new Error(`Audit generation returned no text content. stop_reason=${message.stop_reason ?? "unknown"} content_types=${contentTypes}`);
 	}
 
 	return text;
@@ -510,10 +505,10 @@ export async function generateClaudeAudit(
 Return a JSON object with exactly one property, auditJson. The auditJson value must be a string containing minified valid JSON for the full audit object described in the system prompt. Do not put the audit fields next to auditJson; put the full audit object inside the auditJson string.
 
 TRANSCRIPT DATA:
-${JSON.stringify(transcript ?? { error: "AssemblyAI data unavailable" }, null, 2)}
+${JSON.stringify(transcript ?? { error: "Transcript data unavailable" }, null, 2)}
 
-PEGASUS VISUAL ANALYSIS:
-${JSON.stringify(visuals ?? { error: "TwelveLabs Pegasus data unavailable" }, null, 2)}${contextBlock}`;
+VISUAL ANALYSIS:
+${JSON.stringify(visuals ?? { error: "Visual analysis data unavailable" }, null, 2)}${contextBlock}`;
 
 	const initialMessages: AnthropicMessage[] = [
 		{ role: "user", content: [{ type: "text", text: userPrompt }] },

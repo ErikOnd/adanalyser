@@ -102,7 +102,109 @@
 			"status": "Bereit",
 			"start": "Audit starten",
 			"chooseAnother": "Anderes wählen",
-			"privacy": "Wir analysieren dein Video nur, um dieses Audit zu erstellen. Es wird nie geteilt oder zum Trainieren öffentlicher Modelle verwendet."
+			"privacy": "Wir analysieren dein Video nur, um dieses Audit zu erstellen. Es wird nie geteilt oder für externes Training verwendet."
+		},
+		"brief": {
+			"eyebrow": "Audit briefen",
+			"title": "Erzähl uns kurz etwas zu dieser Ad",
+			"copy": "Alles optional — je mehr die KI über deine Ad weiß, desto schärfer werden die Fixes und desto genauer die Zielerkennung.",
+			"goalLabel": "Was ist das Ziel dieser Ad?",
+			"destinationLabel": "Gibt es einen Link oder eine Seite, auf der Zuschauer handeln können?",
+			"notesLabel": "Worauf soll sich das Audit konzentrieren?",
+			"notesPlaceholder": "z. B. Ist der Hook stark genug? Führt der CTA klar zum Link?",
+			"optional": "Optional",
+			"goals": {
+				"sales": "Sales",
+				"followers": "Follower",
+				"awareness": "Awareness",
+				"traffic": "Traffic"
+			},
+			"destinations": {
+				"linkInBio": "Link in Bio",
+				"landingPage": "Landingpage",
+				"profileShop": "Profil / Shop",
+				"dmComment": "DM oder Kommentar",
+				"nowhere": "Noch nirgends"
+			}
+		},
+		"progressHint": "Das kann bis zu 3 Minuten dauern, während die KI das Video prüft.",
+		"errors": {
+			"chooseVideo": "Wähle eine Videodatei aus, bevor du das Audit startest.",
+			"tooLarge": "Das ausgewählte Video ist größer als das Limit von 500 MB.",
+			"unsupportedType": "Lade ein MP4-, MOV- oder WebM-Video hoch.",
+			"unexpectedFormat": "Die Analyseantwort hatte nicht das erwartete Format.",
+			"failed": "Die Analyse ist fehlgeschlagen. Versuche es mit einem anderen Video erneut."
+		},
+		"loading": {
+			"title": "Auditiere „{fileName}“",
+			"failedTitle": "Audit fehlgeschlagen",
+			"copy": "Wir betrachten es so, wie der Algorithmus — und dein Käufer — es sehen.",
+			"failedCopy": "Die Analyse wurde gestoppt, bevor der Report erstellt werden konnte.",
+			"platform": "Short-form Creative",
+			"chooseAnother": "Anderes wählen",
+			"steps": {
+				"media": {
+					"label": "Video vorbereiten",
+					"source": "Sicherer Upload"
+				},
+				"transcript": {
+					"label": "Audio transkribieren",
+					"source": "Audio-KI"
+				},
+				"visuals": {
+					"label": "Visuals verstehen",
+					"source": "Visual-KI"
+				},
+				"audit": {
+					"label": "Scoring & Fixes schreiben",
+					"source": "Creative-KI"
+				}
+			}
+		},
+		"report": {
+			"auditComplete": "Audit abgeschlossen",
+			"title": "Hier ist dein Creative-Audit",
+			"auditAnother": "Weiteres auditieren",
+			"shareReport": "Report teilen",
+			"reportFile": "creative-audit.report",
+			"detectedGoal": "Erkanntes Ziel",
+			"confidence": "{confidence}% Sicherheit",
+			"biggestProblem": "Größtes Problem",
+			"mainReadout": "Hauptbefund",
+			"bottomLine": "Fazit",
+			"scoreAria": "Heute {current}, Prognose {predicted}",
+			"scoreAfterFixes": "Score nach {count, plural, one {# Fix} other {# Fixes}}",
+			"currentScore": "Aktueller Score",
+			"todayScore": "Heute erreicht es {score}.",
+			"liftPrediction": "Der Lift ist eine Prognose nach den untenstehenden Edits.",
+			"whatToChange": "Was ändern",
+			"readout": "Befund",
+			"fixesHeading": "{count, plural, one {Der # wichtigste Fix} other {Die # wichtigsten Fixes}}",
+			"noMajorFixes": "Keine großen Fixes nötig",
+			"whyItMatters": "Warum das wichtig ist",
+			"theFix": "Der Fix",
+			"whyThisWorks": "Warum das funktioniert",
+			"highConfidence": "Hohe Sicherheit",
+			"emptyFixes": "Die Analyse hat kein relevantes Problem gefunden, das künstlich in den Report gehört. Veröffentliche mit normalem Plattform-Testing.",
+			"editorHeading": "Gib das an deinen Editor weiter",
+			"editorCopy": "{count, plural, one {Der # Fix ist} other {Die # Fixes sind}} eine Copy-paste-Aufgabenliste — gib sie direkt an die Person, die die nächste Version schneidet.",
+			"copyBrief": "Brief kopieren",
+			"finalRecommendation": "Finale Empfehlung",
+			"expectedResult": "Erwartetes Ergebnis",
+			"change": "Änderung",
+			"estimatedEditTime": "~15 Min. Edits",
+			"noUrgentEdits": "Keine dringenden Edits",
+			"fallbackRecommendation": "Nach {count, plural, one {# Fix} other {# Fixes}} veröffentlichen.",
+			"readyToPublish": "Bereit zum Veröffentlichen",
+			"needsRevision": "Braucht Überarbeitung",
+			"needsWork": "Braucht Arbeit",
+			"noFixesFallback": "Dieses Creative ist bereits in guter Form.",
+			"compactGoal": {
+				"conversions": "Conversions steigern",
+				"views": "Views steigern",
+				"signups": "Signups steigern",
+				"sales": "Sales steigern"
+			}
 		},
 		"trust": {
 			"noCard": "Keine Kreditkarte nötig",

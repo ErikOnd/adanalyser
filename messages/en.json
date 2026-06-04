@@ -102,7 +102,109 @@
 			"status": "Ready",
 			"start": "Start audit",
 			"chooseAnother": "Choose another",
-			"privacy": "We analyze your video only to generate this audit. It's never shared or used to train public models."
+			"privacy": "We analyze your video only to generate this audit. It's never shared or used for external training."
+		},
+		"brief": {
+			"eyebrow": "Brief the audit",
+			"title": "Tell us about this ad",
+			"copy": "All optional — but the more the AI knows about your ad, the sharper the fixes and the more accurate the goal detection.",
+			"goalLabel": "What's the goal of this ad?",
+			"destinationLabel": "Is there a link or page viewers can act on?",
+			"notesLabel": "Anything you want the audit to focus on?",
+			"notesPlaceholder": "e.g. Is the hook strong enough? Does the CTA clearly point viewers to the link?",
+			"optional": "Optional",
+			"goals": {
+				"sales": "Sales",
+				"followers": "Followers",
+				"awareness": "Awareness",
+				"traffic": "Traffic"
+			},
+			"destinations": {
+				"linkInBio": "Link in bio",
+				"landingPage": "Landing page",
+				"profileShop": "Profile / shop",
+				"dmComment": "DM or comment",
+				"nowhere": "Nowhere yet"
+			}
+		},
+		"progressHint": "This can take up to 3 minutes while the AI reviews the video.",
+		"errors": {
+			"chooseVideo": "Choose a video file before starting the audit.",
+			"tooLarge": "The selected video is larger than the 500MB limit.",
+			"unsupportedType": "Upload an MP4, MOV, or WebM video.",
+			"unexpectedFormat": "The analysis response was not in the expected format.",
+			"failed": "The analysis failed. Try again with a different video."
+		},
+		"loading": {
+			"title": "Auditing “{fileName}”",
+			"failedTitle": "Audit failed",
+			"copy": "Watching it the way the algorithm — and your buyer — will.",
+			"failedCopy": "The analysis stopped before the report could be created.",
+			"platform": "Short-form creative",
+			"chooseAnother": "Choose another",
+			"steps": {
+				"media": {
+					"label": "Preparing video",
+					"source": "Secure upload"
+				},
+				"transcript": {
+					"label": "Transcribing audio",
+					"source": "Audio AI"
+				},
+				"visuals": {
+					"label": "Understanding visuals",
+					"source": "Visual AI"
+				},
+				"audit": {
+					"label": "Scoring & writing fixes",
+					"source": "Creative AI"
+				}
+			}
+		},
+		"report": {
+			"auditComplete": "Audit complete",
+			"title": "Here's your creative audit",
+			"auditAnother": "Audit another",
+			"shareReport": "Share report",
+			"reportFile": "creative-audit.report",
+			"detectedGoal": "Detected goal",
+			"confidence": "{confidence}% confidence",
+			"biggestProblem": "Biggest problem",
+			"mainReadout": "Main readout",
+			"bottomLine": "Bottom line",
+			"scoreAria": "Today {current}, predicted {predicted}",
+			"scoreAfterFixes": "Score after your {count, plural, one {# fix} other {# fixes}}",
+			"currentScore": "Current score",
+			"todayScore": "Today it scores {score}.",
+			"liftPrediction": "The lift is a prediction after the edits below.",
+			"whatToChange": "What to change",
+			"readout": "Readout",
+			"fixesHeading": "The {count, plural, one {# fix that matters most} other {# fixes that matter most}}",
+			"noMajorFixes": "No major fixes needed",
+			"whyItMatters": "Why it matters",
+			"theFix": "The fix",
+			"whyThisWorks": "Why this works",
+			"highConfidence": "High confidence",
+			"emptyFixes": "The analysis did not find a meaningful problem worth forcing into the report. Publish with normal platform testing.",
+			"editorHeading": "Hand this to your editor",
+			"editorCopy": "The {count, plural, one {# fix is} other {# fixes are}} a copy-paste task list — paste it straight to whoever cuts the next version.",
+			"copyBrief": "Copy brief",
+			"finalRecommendation": "Final recommendation",
+			"expectedResult": "Expected result",
+			"change": "Change",
+			"estimatedEditTime": "~15 min of edits",
+			"noUrgentEdits": "No urgent edits",
+			"fallbackRecommendation": "Publish after {count, plural, one {# fix} other {# fixes}}.",
+			"readyToPublish": "Ready to publish",
+			"needsRevision": "Needs revision",
+			"needsWork": "Needs work",
+			"noFixesFallback": "This creative is already in good shape.",
+			"compactGoal": {
+				"conversions": "Drive conversions",
+				"views": "Drive views",
+				"signups": "Drive signups",
+				"sales": "Drive sales"
+			}
 		},
 		"trust": {
 			"noCard": "No card required",

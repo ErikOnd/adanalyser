@@ -21,10 +21,10 @@ function buildSteps(phase: PipelinePhase): JobStep[] {
 	const activeIndex = phase === "failed" ? -1 : order.indexOf(phase);
 
 	const steps: JobStep[] = [
-		{ id: "media", label: "Preparing video", source: "Upload", status: "pending" },
-		{ id: "transcript", label: "Transcribing audio", source: "AssemblyAI", status: "pending" },
-		{ id: "visuals", label: "Understanding visuals", source: "TwelveLabs Pegasus", status: "pending" },
-		{ id: "audit", label: "Scoring & writing fixes", source: "Claude Sonnet", status: "pending" },
+		{ id: "media", label: "Preparing video", source: "Secure upload", status: "pending" },
+		{ id: "transcript", label: "Transcribing audio", source: "Audio AI", status: "pending" },
+		{ id: "visuals", label: "Understanding visuals", source: "Visual AI", status: "pending" },
+		{ id: "audit", label: "Scoring & writing fixes", source: "Creative AI", status: "pending" },
 	];
 
 	return steps.map((step, index) => {
@@ -38,20 +38,20 @@ function buildSteps(phase: PipelinePhase): JobStep[] {
 
 function buildParallelSteps(mediaDone: boolean, transcriptProgress: number, visualProgress: number): JobStep[] {
 	return [
-		{ id: "media", label: "Preparing video", source: "Upload", status: mediaDone ? "complete" : "active" },
+		{ id: "media", label: "Preparing video", source: "Secure upload", status: mediaDone ? "complete" : "active" },
 		{
 			id: "transcript",
 			label: "Transcribing audio",
-			source: "AssemblyAI",
+			source: "Audio AI",
 			status: transcriptProgress >= 1 ? "complete" : "active",
 		},
 		{
 			id: "visuals",
 			label: "Understanding visuals",
-			source: "TwelveLabs Pegasus",
+			source: "Visual AI",
 			status: visualProgress >= 1 ? "complete" : "active",
 		},
-		{ id: "audit", label: "Scoring & writing fixes", source: "Claude Sonnet", status: "pending" },
+		{ id: "audit", label: "Scoring & writing fixes", source: "Creative AI", status: "pending" },
 	];
 }
 
@@ -113,29 +113,29 @@ export async function POST(request: Request) {
 			steps: buildParallelSteps(true, transcriptProgress, visualProgress),
 		});
 
-		const transcriptPromise = transcribeWithAssemblyAI(filePath, (progress, stage) => {
+		const transcriptPromise = transcribeWithAssemblyAI(filePath, (progress) => {
 			transcriptProgress = progress;
-			updateParallelProgress(stage ?? "Transcribing audio");
+			updateParallelProgress("Transcribing audio");
 		})
-			.catch((error): TranscriptResult => {
+			.catch((): TranscriptResult => {
 				transcriptProgress = 1;
 				updateParallelProgress("Audio transcript unavailable");
 				return {
 					text: "",
 					words: [],
-					error: error instanceof Error ? error.message : "AssemblyAI transcription failed",
+					error: "Audio analysis failed",
 				};
 			});
-		const visualsPromise = analyzeWithTwelveLabs(filePath, file.name, (progress, stage) => {
+		const visualsPromise = analyzeWithTwelveLabs(filePath, file.name, (progress) => {
 			visualProgress = progress;
-			updateParallelProgress(stage ?? "Understanding visuals");
+			updateParallelProgress("Understanding visuals");
 		})
-			.catch((error): VisualResult => {
+			.catch((): VisualResult => {
 				visualProgress = 1;
 				updateParallelProgress("Visual analysis unavailable");
 				return {
 					text: "",
-					error: error instanceof Error ? error.message : "TwelveLabs visual analysis failed",
+					error: "Visual analysis failed",
 				};
 			});
 
@@ -149,8 +149,9 @@ export async function POST(request: Request) {
 		});
 		return NextResponse.json({ jobId, audit, sourceStatus: { transcript, visuals } });
 	} catch (error) {
-		const message = error instanceof Error ? error.message : "The audit pipeline failed.";
-		console.error("[analyze] pipeline failed", { jobId, message, error });
+		const internalMessage = error instanceof Error ? error.message : "The audit pipeline failed.";
+		const message = "The audit could not be completed. Please try again with another video.";
+		console.error("[analyze] pipeline failed", { jobId, message: internalMessage, error });
 		updateJob(jobId, "Failed", 100, message, {
 			steps: (buildParallelSteps(true, transcriptProgress, visualProgress)).map((step) => (
 				step.status === "active" ? { ...step, status: "error" } : step
