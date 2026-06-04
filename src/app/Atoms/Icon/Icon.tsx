@@ -7,6 +7,7 @@ import badgeCardIcon from "./icons/badge-card.svg";
 import captionsIcon from "./icons/captions.svg";
 import checkIcon from "./icons/check.svg";
 import chevronDownIcon from "./icons/chevron-down.svg";
+import chevronLeftIcon from "./icons/chevron-left.svg";
 import chevronUpIcon from "./icons/chevron-up.svg";
 import clockIcon from "./icons/clock.svg";
 import eyeIcon from "./icons/eye.svg";
@@ -42,6 +43,7 @@ export type IconName =
 	| "spark"
 	| "check"
 	| "chevronDown"
+	| "chevronLeft"
 	| "chevronUp"
 	| "clock"
 	| "eye"
@@ -87,6 +89,7 @@ const icons = {
 	captions: captionsIcon,
 	check: checkIcon,
 	chevronDown: chevronDownIcon,
+	chevronLeft: chevronLeftIcon,
 	chevronUp: chevronUpIcon,
 	clock: clockIcon,
 	eye: eyeIcon,

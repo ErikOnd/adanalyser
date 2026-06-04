@@ -16,12 +16,12 @@
 	min-height: 2.75rem;
 	width: 100%;
 	align-items: center;
-	padding: var(--space-0) 1rem;
+	padding: var(--space-0) var(--space-md);
 	border: 0.06rem solid color-mix(in oklch, var(--ink-300) 68%, var(--fg-muted));
 	border-radius: 0.82rem;
 	background: rgba(24, 28, 33, 0.74);
 	color: var(--fg-muted);
-	gap: 0.85rem;
+	gap: var(--space-sm);
 }
 
 .control:focus-within {

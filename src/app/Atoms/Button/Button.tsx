@@ -3,8 +3,8 @@ import clsx from "clsx";
 import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactNode } from "react";
 import styles from "./Button.module.scss";
 
-type ButtonSize = "md" | "lg";
-type ButtonVariant = "primary" | "secondary" | "ghost";
+type ButtonSize = "sm" | "md" | "lg";
+type ButtonVariant = "primary" | "secondary" | "ghost" | "pulse" | "option" | "optionSelected";
 
 type BaseButtonProps = {
 	children: ReactNode;

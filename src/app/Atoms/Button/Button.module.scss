@@ -12,7 +12,14 @@
 		border-color var(--dur-base) var(--ease-out),
 		box-shadow var(--dur-base) var(--ease-out),
 		color var(--dur-base) var(--ease-out),
-		transform var(--dur-base) var(--ease-spring);
+	transform var(--dur-base) var(--ease-spring);
+}
+
+.sm {
+	gap: var(--space-xs);
+	min-height: 2rem;
+	padding: var(--space-xs) var(--space-sm);
+	font-size: 0.76rem;
 }
 
 .md {
@@ -79,4 +86,38 @@
 	background: transparent;
 	color: var(--fg-strong);
 	transform: translateY(-0.05rem);
+}
+
+.pulse {
+	background: var(--pulse-300);
+	color: var(--pulse-fg);
+}
+
+.pulse:hover,
+.pulse:focus-visible {
+	background: var(--pulse-200);
+	color: var(--pulse-fg);
+	box-shadow: var(--glow-pulse);
+}
+
+.option {
+	border-color: var(--border-strong);
+	background: rgba(13, 15, 18, 0.36);
+	color: var(--fg);
+}
+
+.option:hover,
+.option:focus-visible {
+	border-color: var(--ink-400);
+	background: rgba(24, 28, 33, 0.72);
+}
+
+.optionSelected,
+.optionSelected:hover,
+.optionSelected:focus-visible {
+	border-color: var(--accent);
+	background: var(--accent);
+	color: var(--accent-fg);
+	box-shadow: none;
+	transform: none;
 }
