@@ -255,6 +255,18 @@ function getReportTone(score: number, t: TranslationFunction) {
 	return t("needsWork");
 }
 
+function getVerdictShort(score: number, t: TranslationFunction) {
+	if (score >= 80) return t("verdictReady");
+	if (score >= 65) return t("verdictNotYet");
+	return t("verdictPoor");
+}
+
+function getVerdictClass(score: number, styles: Record<string, string>) {
+	if (score >= 80) return styles.verdictGood;
+	if (score >= 65) return styles.verdictFair;
+	return styles.verdictWeak;
+}
+
 function getImpactClass(impact: string) {
 	const normalized = impact.toLowerCase();
 
@@ -499,7 +511,9 @@ function AnalysisReport({ audit, onAuditAnother }: {
 						<section className={styles.editorBrief}>
 							<div className={styles.briefHeader}>
 								<div>
-									<Icon name="badgeCard" size="medium" />
+									<span>
+										<Icon name="badgeCard" size="medium" />
+									</span>
 									<div>
 										<h3>{t("editorHeading")}</h3>
 										<p>{t("editorCopy", { count: editorItems.length })}</p>
@@ -536,26 +550,52 @@ function AnalysisReport({ audit, onAuditAnother }: {
 
 				<section className={styles.finalCard}>
 					<div className={styles.finalHeader}>
-						<Icon name="rocket" size="medium" />
+						<span>
+							<Icon name="rocket" size="medium" />
+						</span>
 						<div>
 							<span>{t("finalRecommendation")}</span>
 							<h3>{finalRecommendation.headline}</h3>
 						</div>
 					</div>
 					<div className={styles.expectedResult}>
-						<span>{t("expectedResult")}</span>
+						<div className={styles.verdictPanel}>
+							<div className={styles.verdictLeft}>
+								<span className={styles.verdictLabel}>{t("readyToPublishQ")}</span>
+								<strong className={getVerdictClass(audit.overallScore, styles)}>
+									{getVerdictShort(audit.overallScore, t)}
+								</strong>
+								<p>{finalRecommendation.headline}</p>
+							</div>
+							{scoreLift > 0
+								? (
+									<div className={styles.verdictRight}>
+										<span>{t("scoreAfterFixesLabel")}</span>
+										<div>
+											<small>{audit.overallScore}</small>
+											<b aria-hidden="true">→</b>
+											<strong>{scoreAfterFixes}</strong>
+										</div>
+									</div>
+								)
+								: null}
+						</div>
+						<div className={styles.expectedDivider} />
 						<p>{finalRecommendation.expectedResult}</p>
 					</div>
-					<div className={styles.tagRows}>
-						{finalRecommendation.change.length
-							? (
+					{finalRecommendation.change.length
+						? (
+							<div className={styles.tagRows}>
 								<div>
-									<strong>{t("change")}</strong>
+									<strong>
+										<Icon name="wandSparkles" size="small" />
+										{t("change")}
+									</strong>
 									{finalRecommendation.change.map((tag) => <span key={tag}>{tag}</span>)}
 								</div>
-							)
-							: null}
-					</div>
+							</div>
+						)
+						: null}
 				</section>
 			</article>
 		</section>

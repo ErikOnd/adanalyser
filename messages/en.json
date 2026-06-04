@@ -198,6 +198,11 @@
 			"readyToPublish": "Ready to publish",
 			"needsRevision": "Needs revision",
 			"needsWork": "Needs work",
+			"readyToPublishQ": "Ready to publish?",
+			"scoreAfterFixesLabel": "Score after fixes",
+			"verdictReady": "Ready!",
+			"verdictNotYet": "Not yet",
+			"verdictPoor": "Not ready",
 			"noFixesFallback": "This creative is already in good shape.",
 			"compactGoal": {
 				"conversions": "Drive conversions",

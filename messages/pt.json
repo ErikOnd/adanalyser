@@ -198,6 +198,11 @@
 			"readyToPublish": "Pronto para publicar",
 			"needsRevision": "Precisa de revisão",
 			"needsWork": "Precisa de trabalho",
+			"readyToPublishQ": "Pronto para publicar?",
+			"scoreAfterFixesLabel": "Pontuação após fixes",
+			"verdictReady": "Pronto!",
+			"verdictNotYet": "Ainda não",
+			"verdictPoor": "Não está pronto",
 			"noFixesFallback": "Este creative já está em boa forma.",
 			"compactGoal": {
 				"conversions": "Gerar conversões",
