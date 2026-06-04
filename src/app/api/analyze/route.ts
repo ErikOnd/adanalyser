@@ -82,7 +82,9 @@ export async function POST(request: Request) {
 	}
 
 	if (file.size > MAX_FILE_SIZE) {
-		updateJob(jobId, "Failed", 100, "The selected video is larger than the 500MB limit.", { steps: buildSteps("failed") });
+		updateJob(jobId, "Failed", 100, "The selected video is larger than the 500MB limit.", {
+			steps: buildSteps("failed"),
+		});
 		return NextResponse.json({ error: "The selected video is larger than the 500MB limit.", jobId }, { status: 400 });
 	}
 

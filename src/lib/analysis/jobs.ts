@@ -22,6 +22,12 @@ if (!globalForJobs.adanalyserJobs) {
 	globalForJobs.adanalyserJobs = jobs;
 }
 
-export function updateJob(jobId: string, stage: string, progress: number, error?: string, details?: Omit<JobStatus, "stage" | "progress" | "error">) {
+export function updateJob(
+	jobId: string,
+	stage: string,
+	progress: number,
+	error?: string,
+	details?: Omit<JobStatus, "stage" | "progress" | "error">,
+) {
 	jobs.set(jobId, { stage, progress, error, ...details });
 }

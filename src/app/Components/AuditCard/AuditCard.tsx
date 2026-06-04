@@ -1,24 +1,11 @@
 import { Badge } from "@/app/Atoms/Badge/Badge";
-import { Icon, type IconName } from "@/app/Atoms/Icon/Icon";
+import { Icon } from "@/app/Atoms/Icon/Icon";
 import clsx from "clsx";
 import { useTranslations } from "next-intl";
-import type { CSSProperties } from "react";
 import styles from "./AuditCard.module.scss";
 
-type ScoreKey = "hook" | "retention" | "cta";
-
-type ScoreRow = {
-	key: ScoreKey;
-	icon: IconName;
-	score: number;
-	tone: "danger" | "warning";
-};
-
-const scoreRows: ScoreRow[] = [
-	{ key: "hook", score: 48, tone: "danger", icon: "bolt" },
-	{ key: "retention", score: 64, tone: "warning", icon: "wave" },
-	{ key: "cta", score: 41, tone: "danger", icon: "target" },
-];
+const READINESS_TIERS = ["needs-work", "almost-there", "ready-to-publish"] as const;
+const ACTIVE_TIER: (typeof READINESS_TIERS)[number] = "almost-there";
 
 export function AuditCard() {
 	const t = useTranslations("AuditCard");
@@ -31,9 +18,9 @@ export function AuditCard() {
 						<Icon name="film" size="small" />
 						ugc-ad-v3.mp4
 					</div>
-					<div className={styles.status}>
+					<div className={clsx(styles.statusBadge, styles.statusAlmost)}>
 						<span />
-						{t("status")}
+						{t(`tiers.${ACTIVE_TIER}`)}
 					</div>
 				</div>
 
@@ -41,41 +28,28 @@ export function AuditCard() {
 					{t("dropOff")}
 				</Badge>
 
-				<div className={styles.summary}>
-					<div className={styles.gauge} aria-label={t("gaugeAriaLabel")}>
-						<span>61</span>
-						<small>/ 100</small>
-					</div>
-
-					<div className={styles.verdict}>
-						<p>{t("overall")}</p>
-						<strong>{t("verdict")}</strong>
-						<span>{t("goal")}</span>
-						<b>{t("projection")}</b>
+				<div className={styles.readiness}>
+					<span className={styles.readinessKicker}>{t("readinessLabel")}</span>
+					<strong className={styles.readinessTier}>{t(`tiers.${ACTIVE_TIER}`)}</strong>
+					<div className={styles.readinessTrack}>
+						{READINESS_TIERS.map((tier) => (
+							<div
+								key={tier}
+								className={clsx(
+									styles.readinessSegment,
+									tier === ACTIVE_TIER && styles.readinessSegmentActive,
+								)}
+							>
+								<span />
+								<small>{t(`tiers.${tier}`)}</small>
+							</div>
+						))}
 					</div>
 				</div>
 
-				<div className={styles.divider} />
-
-				<div className={styles.scoreList}>
-					{scoreRows.map((row) => (
-						<div
-							className={clsx(styles.scoreRow, row.tone === "warning" && styles.warning)}
-							key={row.key}
-							style={{ "--score-width": `${row.score}%` } as CSSProperties}
-						>
-							<div className={styles.scoreMeta}>
-								<span className={styles.scoreIcon}>
-									<Icon name={row.icon} size="small" />
-								</span>
-								<strong>{t(`rows.${row.key}`)}</strong>
-								<b>{row.score}</b>
-							</div>
-							<div className={styles.bar}>
-								<span />
-							</div>
-						</div>
-					))}
+				<div className={styles.goalPill}>
+					<Icon name="target" size="small" />
+					<strong>{t("goal")}</strong>
 				</div>
 
 				<div className={styles.fix}>
@@ -86,12 +60,7 @@ export function AuditCard() {
 						<strong>{t("fixTitle")}</strong>
 						<p>{t("fixDetail")}</p>
 					</div>
-					<b>{t("fixDelta")}</b>
 				</div>
-
-				<Badge className={styles.soundTag} icon="check" tone="success">
-					{t("trendingSound")}
-				</Badge>
 			</div>
 		</div>
 	);

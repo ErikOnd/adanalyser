@@ -30,22 +30,17 @@
 		}
 	},
 	"AuditCard": {
-		"ariaLabel": "Exemple de carte d'audit publicitaire",
-		"status": "analysée",
+		"ariaLabel": "Exemple de carte de prêt-à-publier",
 		"dropOff": "Abandon 0:03",
-		"gaugeAriaLabel": "Score global 61 sur 100",
-		"overall": "Global",
-		"verdict": "À retravailler",
-		"goal": "Objectif : conversions · 92%",
-		"projection": "+8s après corrections",
-		"rows": {
-			"hook": "Hook",
-			"retention": "Rétention",
-			"cta": "CTA"
+		"readinessLabel": "Prêt-à-publier",
+		"tiers": {
+			"needs-work": "À retravailler",
+			"almost-there": "Presque prêt",
+			"ready-to-publish": "Prêt"
 		},
+		"goal": "Générer des conversions · 92%",
 		"fixTitle": "Hook faible · 0:00–0:03",
 		"fixDetail": "Couper sur le produit en main à 0:01",
-		"fixDelta": "+19%",
 		"trendingSound": "Son tendance"
 	},
 	"SignIn": {

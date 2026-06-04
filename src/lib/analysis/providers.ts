@@ -38,7 +38,7 @@ PLATFORM DEFAULT BEHAVIOR (important — do not overweight this):
 Viewers on TikTok and Reels already know to check the bio for a link, and they know in-app Shop tags exist. Those are reinforced every day by every other creator. So:
 - When the creator's stated destination is "Link in bio" or "Shop / product tag", an on-screen reinforcement of that path is a POLISH, not a make-or-break failure. Tier it as "Worth fixing" or "Optional polish" — never "Highest impact" on its own.
 - Do NOT make "the video doesn't tell viewers to tap your link in bio" the biggestProblem when the destination is in the bio. Save biggestProblem for the biggest weakness in the watchable creative (weak hook, dead air, unclear product, missing proof, contradicting the stated goal, no compelling reason to act now).
-- Do NOT collapse the cta score below ~60 purely because the video does not say "link in bio". The platform UI does part of the CTA work. Score cta on the actual close: is the product clear, is there a reason to act now, is there pricing/value/proof, is there a clear ask. A solid close that simply omits "link in bio" earns roughly 65–78 — not the 30s or 40s. Reserve a sub-50 cta score for a close that is genuinely weak (unclear product, no price, no reason to act, abrupt ending with no resolution).
+- Do NOT downgrade readiness purely because the video does not say "link in bio". The platform UI does part of the CTA work. Judge the close on the actual content: is the product clear, is there a reason to act now, is there pricing/value/proof, is there a clear ask. A solid close that simply omits "link in bio" is not enough to push the ad to "needs-work" on its own. Reserve "needs-work" for a close that is genuinely broken (unclear product, no price, no reason to act, abrupt ending with no resolution).
 
 USING CREATOR-PROVIDED CONTEXT:
 If creator context is provided, treat it as ground truth and let it override your guesses.
@@ -64,25 +64,24 @@ Every fix is one of two types. Decide which, and write it accordingly:
 Prefer COPY fixes wherever the problem is language (CTA, hook line, captions, proof text) — that is the highest-value, lowest-effort thing you can give. Use EDIT only when the fix genuinely requires re-shooting or re-cutting.
 
 ═══════════════════════════════════════
-SCORE PREDICTION — keep it honest
+READINESS — the only verdict that matters
 ═══════════════════════════════════════
-scoreAfterFixes is a prediction of the score IF the user applies the priorityFixes you listed — nothing more. Rules:
-  • The lift (scoreLift) must come only from the fixes you actually listed. Do not predict gains from changes you didn't recommend.
-  • Match the lift to the impact of the fixes: a single high-leverage fix (e.g. rewriting a dead hook) can lift +15–20; three strong fixes on a near-ready video can lift +20–25. Only cap the lift when the fixes are minor polish.
-  • A weak CTA with strong everything-else lifts more from one fix than a video weak across the board. Reflect that.
-  • scoreLift must exactly equal scoreAfterFixes minus overallScore.
+We do NOT score ads 0–100. Numerical scores read as false precision: a 72 vs. a 74 carries no real meaning. Instead, assign the ad to ONE of three readiness tiers based on the watchable creative as a whole:
+
+  • "needs-work" — the ad has at least one fundamental gap that will sink performance for the detected goal. Examples: hook fails entirely (logo-card open with no hook, dead air past 0:03, product never shown clearly), no understandable CTA or close, audio unintelligible, contradicts the stated goal. Reserve this tier for ads that genuinely should NOT be published until reworked.
+  • "almost-there" — the ad is publishable but capped by one or two real, fixable weaknesses (weak open, buried CTA, missing proof, slow middle, unclear price). The product and angle land; the close or the hook or one supporting beat is what's holding it back. This is where most ads honestly land.
+  • "ready-to-publish" — strong end-to-end execution for the goal. Hook lands fast, product is clear, close is clean. Any remaining notes are polish, not blockers. The creator can publish this as-is.
+
+Be honest. Do not push everything to "almost-there" out of politeness — if the hook is broken AND the CTA is missing AND the product is unclear, call it "needs-work". Equally, do not call something "almost-there" just because you can squint and find polish; a strong ad with one tiny note is "ready-to-publish".
 
 ═══════════════════════════════════════
-SCORING DISCIPLINE
+READINESS AFTER FIXES — predict the tier, not a number
 ═══════════════════════════════════════
-Score each dimension 0–100 honestly using the full range. Calibrate against this scale:
-  • 90–100 — exceptional: near-flawless execution for the goal, strong hook, clear product, compelling close, excellent retention signals
-  • 75–89  — solid: clearly publishable with minor improvements; most good ads land here
-  • 60–74  — needs work: publishable but has at least one significant gap that will hurt performance
-  • 40–59  — weak: multiple real problems; likely to underperform without meaningful rework
-  • 0–39   — poor: fundamental issues; hook fails, product unclear, no CTA, or the creative actively hurts the brand
-
-A great hook with no CTA should show a high hook score and a low cta score — do not average everything toward 70. Real ads have spiky profiles; flat scores read as lazy. overallScore should reflect the weighted reality for the detected goal (for a sales/conversion goal, CTA and conversion weigh heavily; for a views goal, hook and retention weigh heavily). The score must feel earned: a reader should be able to look at the six sub-scores and understand why the overall landed where it did.
+readinessAfterFixes is your prediction of the tier the ad will land in IF the creator applies the priorityFixes you listed. Rules:
+  • readinessAfterFixes must be >= readiness in tier ordering ("needs-work" < "almost-there" < "ready-to-publish"). It cannot regress.
+  • The jump must come ONLY from the fixes you listed. Do not predict gains from changes you didn't recommend.
+  • Realistic jumps: same tier (polish-only fixes), or one tier up (the listed fixes resolve the gap that was holding the ad back). A two-tier jump from "needs-work" straight to "ready-to-publish" almost never happens — three quick fixes rarely turn a broken ad into a great one. If you find yourself reaching for that, your readiness call was wrong: it was probably "almost-there" to start with, OR the fixes you listed are not enough.
+  • If priorityFixes is empty or only minor polish, readinessAfterFixes equals readiness.
 
 ═══════════════════════════════════════
 FIELD-BY-FIELD REQUIREMENTS
@@ -90,15 +89,17 @@ FIELD-BY-FIELD REQUIREMENTS
 - goal.detected — 2–4 words for a pill ("Drive conversions", "Drive signups", "Drive views"). goal.reasoning must cite a quote or moment that revealed the goal.
 - biggestProblem — ONE headline sentence, 8–14 words, no ellipsis, no quotes inside it. It must read like a verdict: "Your ad never tells viewers where to buy this home." Put the evidence and detail in bottomLine, NOT here.
 - bottomLine — one sentence, max 160 chars, naming what holds the ad back (or why it's already strong), grounded in a specific moment.
-- scores.*.reasoning — 2–3 sentences EACH, every one anchored (timestamp or quote). The hook reasoning must reference the actual first 3 seconds. The cta reasoning must say what the CTA was, the exact words if spoken, and when.
+- dimensions.*.reasoning — 2–3 sentences EACH, every one anchored (timestamp or quote). The hook reasoning must reference the actual first 3 seconds. The cta reasoning must say what the CTA was, the exact words if spoken, and when. No numeric scores — just the anchored reasoning.
 - priorityFixes — return 0–3, ordered by impact. Each needs: timestamp, a specific title, an impact tier, whyItMatters (anchored), fix (COPY or EDIT per the rules above), whyThisWorks (anchored), and a short editorTask. Only include a fix backed by real evidence. If the ad is strong with no real weakness, return 0–1 light polish items and do NOT invent problems to fill the UI.
 - editorBrief — estimatedEditTime (e.g. "~15 min of edits" or "No urgent edits") and one item per priorityFix: a short, paste-ready editor task with its timestamp.
 - topIssues — may be empty for excellent ads. If present, each must be real, timestamped, specific, with an expectedImpact naming the metric likely to move.
-- whatsWorking — 2–3 items when the ad has genuine strengths. Each must name something the creator genuinely did well, anchored to a timestamp. Title is 3–6 words. Description is 1–2 sentences explaining why it works and why to keep doing it. Do not invent strengths. If the ad is poor (overallScore below 50) or has no real standout moments, return an empty array — do not force positives that are not there.
+- whatsWorking — 2–3 items when the ad has genuine strengths. Each must name something the creator genuinely did well, anchored to a timestamp. Title is 3–6 words. Description is 1–2 sentences explaining why it works and why to keep doing it. Do not invent strengths. If the ad is "needs-work" or has no real standout moments, return an empty array — do not force positives that are not there.
 - viralTriggers — present[] and missing[] for short-form ad mechanics (face-in-frame, social proof, urgency, before/after, pattern interrupt, strong CTA, authority). biggestOpportunity = the single highest-leverage missing trigger with a concrete, video-specific way to add it.
-- platformFit — score TikTok, Instagram Reels, YouTube Shorts separately against each platform's ranking signals; notes must say something true about THIS cut on THAT platform, not boilerplate.
+- platformFit — write a note for TikTok, Instagram Reels, and YouTube Shorts that says something true about THIS cut on THAT platform, not boilerplate. No scores.
 - rewriteSuggestions.hook — a rewritten first-3-seconds script using this video's actual product and angle. rewriteSuggestions.cta — a rewritten CTA for this goal. Both must be literal, paste-ready lines, not descriptions.
-- finalRecommendation — headline ("Publish after these 3 fixes." / "Ready to publish."), expectedResult (a prediction, not a guarantee), change[] (short tags for what to change; empty if nothing meaningful).
+- finalRecommendation.headline — e.g. "Publish after these 3 fixes." or "Ready to publish."
+- finalRecommendation.expectedResult — one or two sentences predicting what the listed fixes will unlock for the detected goal. Not a guarantee; not a number.
+- finalRecommendation.keep[] and finalRecommendation.change[] — short category tags (NOT sentences). Pick ONLY from this closed vocabulary, and only those that are genuinely true for this ad: Hook, CTA, Proof, Demo, Delivery, Captions, Pacing, Trust, Storyline, Sound. "keep" lists categories the creator already nails (mirror the strengths in whatsWorking). "change" lists categories the priorityFixes touch. A tag may appear in keep OR change, never both. Both arrays are typically 1–4 items; either may be empty when nothing meaningful fits.
 - summary — 1–2 sentences, max 190 chars: what to fix first and whether it is ready to publish.
 
 ═══════════════════════════════════════
@@ -110,19 +111,17 @@ JSON SCHEMA — match exactly
     "confidence": number 0-100,
     "reasoning": "string — 1-2 sentences, anchored to a quote or moment"
   },
-  "overallScore": number 0-100,
-  "scoreAfterFixes": number 0-100,
-  "scoreLift": number (must equal scoreAfterFixes - overallScore),
-  "verdict": "Strong | Needs Revision | Major Issues | Do Not Run",
+  "readiness": "needs-work | almost-there | ready-to-publish",
+  "readinessAfterFixes": "needs-work | almost-there | ready-to-publish",
   "biggestProblem": "string — one headline sentence, 8-14 words, no ellipsis, no quotes",
   "bottomLine": "string — one sentence, max 160 chars, anchored",
-  "scores": {
-    "hook":       { "score": number, "reasoning": "string — 2-3 sentences, anchored, references actual first 3 seconds" },
-    "retention":  { "score": number, "reasoning": "string — 2-3 sentences, anchored" },
-    "clarity":    { "score": number, "reasoning": "string — 2-3 sentences, anchored" },
-    "trust":      { "score": number, "reasoning": "string — 2-3 sentences, anchored" },
-    "cta":        { "score": number, "reasoning": "string — 2-3 sentences, anchored, names exact CTA words and when" },
-    "conversion": { "score": number, "reasoning": "string — 2-3 sentences, anchored" }
+  "dimensions": {
+    "hook":       { "reasoning": "string — 2-3 sentences, anchored, references actual first 3 seconds" },
+    "retention":  { "reasoning": "string — 2-3 sentences, anchored" },
+    "clarity":    { "reasoning": "string — 2-3 sentences, anchored" },
+    "trust":      { "reasoning": "string — 2-3 sentences, anchored" },
+    "cta":        { "reasoning": "string — 2-3 sentences, anchored, names exact CTA words and when" },
+    "conversion": { "reasoning": "string — 2-3 sentences, anchored" }
   },
   "priorityFixes": [
     {
@@ -160,9 +159,9 @@ JSON SCHEMA — match exactly
     "biggestOpportunity": "string — single highest-leverage missing trigger with concrete, video-specific implementation"
   },
   "platformFit": {
-    "tiktok":         { "score": number, "notes": "string — true about THIS cut on TikTok" },
-    "instagramReels": { "score": number, "notes": "string — true about THIS cut on Reels" },
-    "youtubeShorts":  { "score": number, "notes": "string — true about THIS cut on Shorts" }
+    "tiktok":         { "notes": "string — true about THIS cut on TikTok" },
+    "instagramReels": { "notes": "string — true about THIS cut on Reels" },
+    "youtubeShorts":  { "notes": "string — true about THIS cut on Shorts" }
   },
   "rewriteSuggestions": {
     "hook": "string — literal paste-ready first-3-seconds script using this video's product and angle",
@@ -171,7 +170,8 @@ JSON SCHEMA — match exactly
   "finalRecommendation": {
     "headline": "string — e.g. 'Publish after these 3 fixes.' or 'Ready to publish.'",
     "expectedResult": "string — prediction, not a guarantee",
-    "change": ["string — short tag, empty array if nothing meaningful"]
+    "keep":   ["string — short category tag from the closed vocabulary; empty array if nothing meaningful"],
+    "change": ["string — short category tag from the closed vocabulary; empty array if nothing meaningful"]
   },
   "summary": "string — 1-2 sentences, max 190 chars"
 }
@@ -183,7 +183,6 @@ Return ONLY valid JSON matching the schema exactly — no markdown, no fences, n
 
 const PEGASUS_PROMPT =
 	"Analyze this video as a short-form ad. For EVERY observation include an approximate timestamp or range (e.g. 0:00–0:03). Cover, with timestamps: exactly what is on screen in the first 3 seconds; every text overlay and when it appears and disappears; each scene change and the pacing between cuts; whether and how a product is shown; any CTA shown or spoken and when; who delivers it (UGC creator on camera, voiceover, animation, b-roll); the emotional tone and how it shifts; and any social-proof or authority elements. Be concrete and visual — name what you actually see at each moment.";
-
 
 function requireEnv(name: string) {
 	const value = process.env[name];
@@ -213,7 +212,10 @@ async function fetchJson<T>(url: string, init: RequestInit): Promise<T> {
 
 type ProgressCallback = (progress: number, stage?: string) => void;
 
-export async function transcribeWithAssemblyAI(filePath: string, onProgress?: ProgressCallback): Promise<TranscriptResult> {
+export async function transcribeWithAssemblyAI(
+	filePath: string,
+	onProgress?: ProgressCallback,
+): Promise<TranscriptResult> {
 	const apiKey = requireEnv("ASSEMBLYAI_API_KEY");
 	const video = await readFile(filePath);
 	onProgress?.(0.05, "Preparing audio");
@@ -309,7 +311,11 @@ async function getOrCreateTwelveLabsIndex(apiKey: string) {
 	return indexId;
 }
 
-export async function analyzeWithTwelveLabs(filePath: string, fileName: string, onProgress?: ProgressCallback): Promise<VisualResult> {
+export async function analyzeWithTwelveLabs(
+	filePath: string,
+	fileName: string,
+	onProgress?: ProgressCallback,
+): Promise<VisualResult> {
 	const apiKey = requireEnv("TWELVELABS_API_KEY");
 	const indexId = await getOrCreateTwelveLabsIndex(apiKey);
 	onProgress?.(0.05, "Preparing video");
@@ -404,15 +410,17 @@ function extractJson(text: string): AnalysisAudit {
 	return audit;
 }
 
+const READINESS_TIERS = ["needs-work", "almost-there", "ready-to-publish"] as const;
+
 function assertAuditShape(audit: AnalysisAudit) {
 	const missing: string[] = [];
 	if (typeof audit?.summary !== "string" || !audit.summary) missing.push("summary");
-	if (typeof audit?.overallScore !== "number") missing.push("overallScore");
+	if (!READINESS_TIERS.includes(audit?.readiness as (typeof READINESS_TIERS)[number])) missing.push("readiness");
 	if (typeof audit?.goal?.detected !== "string") missing.push("goal.detected");
-	if (!audit?.scores) missing.push("scores");
+	if (!audit?.dimensions) missing.push("dimensions");
 	else {
 		for (const key of ["hook", "retention", "clarity", "trust", "cta", "conversion"] as const) {
-			if (typeof audit.scores[key]?.score !== "number") missing.push(`scores.${key}.score`);
+			if (typeof audit.dimensions[key]?.reasoning !== "string") missing.push(`dimensions.${key}.reasoning`);
 		}
 	}
 	if (!audit?.rewriteSuggestions) missing.push("rewriteSuggestions");
@@ -461,7 +469,11 @@ async function callAnthropic(payload: {
 
 	if (!text.trim()) {
 		const contentTypes = message.content.map((block) => block.type).join(", ") || "none";
-		throw new Error(`Audit generation returned no text content. stop_reason=${message.stop_reason ?? "unknown"} content_types=${contentTypes}`);
+		throw new Error(
+			`Audit generation returned no text content. stop_reason=${
+				message.stop_reason ?? "unknown"
+			} content_types=${contentTypes}`,
+		);
 	}
 
 	return text;
@@ -498,7 +510,8 @@ export async function generateClaudeAudit(
 ) {
 	const contextBlock = formatUserContext(userContext);
 
-	const userPrompt = `Create the audit from the available data. If transcript or visual analysis is missing, explicitly account for that limitation in the JSON reasoning.
+	const userPrompt =
+		`Create the audit from the available data. If transcript or visual analysis is missing, explicitly account for that limitation in the JSON reasoning.
 
 Return the audit as a JSON object directly matching the schema in the system prompt. Do not wrap it — output the audit fields at the top level.
 

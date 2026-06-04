@@ -12,8 +12,9 @@ export type VisualResult = {
 	error?: string;
 };
 
-export type ScoreDetail = {
-	score: number;
+export type ReadinessTier = "needs-work" | "almost-there" | "ready-to-publish";
+
+export type DimensionInsight = {
 	reasoning: string;
 };
 
@@ -30,8 +31,7 @@ export type TimestampedIssue = {
 	expectedImpact: string;
 };
 
-export type PlatformScore = {
-	score: number;
+export type PlatformNote = {
 	notes: string;
 };
 
@@ -56,19 +56,17 @@ export type AnalysisAudit = {
 		confidence: number;
 		reasoning: string;
 	};
-	overallScore: number;
-	scoreAfterFixes?: number;
-	scoreLift?: number;
-	verdict: "Strong" | "Needs Revision" | "Major Issues" | "Do Not Run" | string;
+	readiness: ReadinessTier;
+	readinessAfterFixes?: ReadinessTier;
 	biggestProblem?: string;
 	bottomLine?: string;
-	scores: {
-		hook: ScoreDetail;
-		retention: ScoreDetail;
-		clarity: ScoreDetail;
-		trust: ScoreDetail;
-		cta: ScoreDetail;
-		conversion: ScoreDetail;
+	dimensions: {
+		hook: DimensionInsight;
+		retention: DimensionInsight;
+		clarity: DimensionInsight;
+		trust: DimensionInsight;
+		cta: DimensionInsight;
+		conversion: DimensionInsight;
 	};
 	priorityFixes?: PriorityFix[];
 	editorBrief?: {
@@ -83,9 +81,9 @@ export type AnalysisAudit = {
 		biggestOpportunity: string;
 	};
 	platformFit: {
-		tiktok: PlatformScore;
-		instagramReels: PlatformScore;
-		youtubeShorts: PlatformScore;
+		tiktok: PlatformNote;
+		instagramReels: PlatformNote;
+		youtubeShorts: PlatformNote;
 	};
 	rewriteSuggestions: {
 		hook: string;
@@ -94,6 +92,7 @@ export type AnalysisAudit = {
 	finalRecommendation?: {
 		headline: string;
 		expectedResult: string;
+		keep: string[];
 		change: string[];
 	};
 	summary: string;

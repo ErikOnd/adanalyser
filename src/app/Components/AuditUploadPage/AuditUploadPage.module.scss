@@ -1108,13 +1108,14 @@
 .goalPills small {
 	display: inline-flex;
 	align-items: center;
-	min-height: 2.25rem;
-	padding: var(--space-xs) var(--space-sm);
-	border: 0.06rem solid var(--border);
+	min-height: 2.55rem;
+	padding: var(--space-xs) var(--space-md);
+	border: 0.06rem solid rgba(198, 244, 50, 0.32);
 	border-radius: var(--radius-full);
 	background: rgba(198, 244, 50, 0.12);
 	color: var(--fg-strong);
-	font-size: 0.94rem;
+	font-size: 1.02rem;
+	font-weight: var(--w-bold);
 	gap: var(--space-xs);
 }
 
@@ -1132,10 +1133,20 @@
 }
 
 .goalPills small {
-	background: rgba(8, 9, 11, 0.3);
+	border-color: var(--border);
+	background: rgba(8, 9, 11, 0.42);
 	color: var(--fg-muted);
 	font-family: var(--font-mono), ui-monospace, monospace;
-	font-size: 0.82rem;
+	font-size: 0.86rem;
+	font-weight: var(--w-regular);
+	gap: var(--space-2xs);
+}
+
+.goalPills small b {
+	color: var(--fg-strong);
+	font-family: var(--font-mono), ui-monospace, monospace;
+	font-size: 0.94rem;
+	font-weight: var(--w-bold);
 }
 
 .problemLabel {
@@ -1175,7 +1186,7 @@
 }
 
 .bottomLine p,
-.scoreLift p,
+.readinessCard p,
 .fixBody p,
 .editorBrief p,
 .expectedResult p,
@@ -1186,7 +1197,7 @@
 	line-height: 1.55;
 }
 
-.scoreLift {
+.readinessCard {
 	position: relative;
 	align-self: end;
 	padding: 1.15rem 1.45rem 1.25rem;
@@ -1196,30 +1207,59 @@
 	box-shadow: none;
 }
 
-.revisionBadge {
+.statusBadge {
 	display: inline-flex;
 	width: fit-content;
 	align-items: center;
 	padding: var(--space-2xs) var(--space-sm);
-	border: 0.06rem solid rgba(255, 178, 61, 0.42);
 	border-radius: var(--radius-full);
-	background: rgba(255, 178, 61, 0.16);
-	color: var(--warning);
 	font-size: 0.72rem;
 	font-weight: var(--w-bold);
 	gap: var(--space-xs);
+	border: 0.06rem solid transparent;
 }
 
-.revisionBadge span {
+.statusBadge span {
 	display: block;
 	width: 0.5rem;
 	height: 0.5rem;
 	border-radius: var(--radius-full);
+}
+
+.statusWork {
+	border-color: rgba(255, 92, 92, 0.42);
+	background: rgba(255, 92, 92, 0.16);
+	color: var(--danger);
+}
+
+.statusBadge.statusWork span {
+	background: var(--danger);
+	box-shadow: 0 0 0.8rem rgba(255, 92, 92, 0.45);
+}
+
+.statusAlmost {
+	border-color: rgba(255, 178, 61, 0.42);
+	background: rgba(255, 178, 61, 0.16);
+	color: var(--warning);
+}
+
+.statusBadge.statusAlmost span {
 	background: var(--warning);
 	box-shadow: 0 0 0.8rem rgba(255, 178, 61, 0.45);
 }
 
-.scoreLift > span {
+.statusReady {
+	border-color: rgba(77, 224, 138, 0.42);
+	background: rgba(77, 224, 138, 0.16);
+	color: var(--success);
+}
+
+.statusBadge.statusReady span {
+	background: var(--success);
+	box-shadow: 0 0 0.8rem rgba(77, 224, 138, 0.45);
+}
+
+.readinessKicker {
 	display: block;
 	color: var(--accent);
 	font-family: var(--font-mono), ui-monospace, monospace;
@@ -1230,87 +1270,74 @@
 	text-transform: uppercase;
 }
 
-.scoreLift > div:not(.liftBar, .revisionBadge) {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: center;
-	margin-top: 0.9rem;
-	gap: 0.75rem;
-}
-
-.scoreLift small {
-	color: var(--fg-faint);
+.readinessTier {
+	display: block;
+	margin-top: 0.7rem;
 	font-family: var(--font-display), system-ui, sans-serif;
-	font-size: 1.28rem;
-	font-weight: var(--w-bold);
+	font-size: 2.05rem;
+	font-weight: 800;
 	line-height: 1;
 }
 
-.scoreLift b {
-	color: var(--fg-faint);
-	font-size: 1.15rem;
-	line-height: 1;
+.readinessTrack {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 0.45rem;
+	margin-top: 1rem;
 }
 
-.scoreLift strong {
-	color: var(--success);
-	font-family: var(--font-display), system-ui, sans-serif;
-	font-size: 3.05rem;
-	line-height: 1;
+.readinessSegment {
+	display: grid;
+	gap: 0.45rem;
 }
 
-.scoreLift em {
-	display: inline-flex;
-	align-items: center;
-	min-height: 1.75rem;
-	padding: 0.3rem 0.75rem;
-	border-radius: var(--radius-full);
-	background: var(--success-soft);
-	color: var(--success);
-	font-size: 0.84rem;
-	font-style: normal;
-	font-weight: var(--w-bold);
-	gap: var(--space-2xs);
-	line-height: 1;
-}
-
-.scoreLift em span {
-	width: 0.75rem;
-	height: 0.75rem;
-	color: currentColor;
-}
-
-.liftBar {
-	position: relative;
-	overflow: hidden;
-	height: 0.45rem;
-	margin-top: 0.95rem;
+.readinessSegment > span {
+	display: block;
+	height: 0.42rem;
 	border-radius: var(--radius-full);
 	background: var(--fill-08);
 }
 
-.liftBar span {
-	position: absolute;
-	inset-block: 0;
-	left: 0;
-	width: var(--score-width);
-	border-radius: inherit;
+.readinessSegment small {
+	color: var(--fg-faint);
+	font-family: var(--font-mono), ui-monospace, monospace;
+	font-size: 0.62rem;
+	font-weight: var(--w-bold);
+	letter-spacing: 0.08em;
+	line-height: 1.15;
+	text-transform: uppercase;
 }
 
-.liftBar span:first-child {
-	background: linear-gradient(90deg, #9a6a35, var(--warning));
+.readinessSegmentActive small {
+	color: var(--fg-strong);
 }
 
-.liftBar span:last-child {
-	left: calc(var(--score-start) + 0.22rem);
-	width: calc(var(--score-width) - var(--score-start) - 0.22rem);
+.readinessSegmentActive.statusWork,
+.readinessSegmentActive.statusAlmost,
+.readinessSegmentActive.statusReady {
+	border-color: transparent;
+	background: transparent;
+}
+
+.readinessSegmentActive.statusWork > span {
+	background: var(--danger);
+	box-shadow: 0 0 0.7rem rgba(255, 92, 92, 0.5);
+}
+
+.readinessSegmentActive.statusAlmost > span {
+	background: var(--warning);
+	box-shadow: 0 0 0.7rem rgba(255, 178, 61, 0.55);
+}
+
+.readinessSegmentActive.statusReady > span {
 	background: var(--success);
+	box-shadow: 0 0 0.7rem rgba(77, 224, 138, 0.5);
 }
 
-.scoreLift p {
-	margin-top: 0.9rem;
-	font-size: 0.76rem;
-	line-height: 1.38;
+.readinessCard p {
+	margin-top: 0.95rem;
+	font-size: 0.78rem;
+	line-height: 1.4;
 }
 
 .whatsWorkingSection {
@@ -1395,7 +1422,29 @@
 }
 
 .finalCard {
+	position: relative;
+	overflow: hidden;
+	margin: var(--space-xl);
 	padding: var(--space-xl);
+	border: 0.06rem solid var(--border-strong);
+	border-radius: var(--radius-xl);
+	background: rgba(14, 17, 20, 0.96);
+}
+
+.finalCard::before {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 68%;
+	height: 68%;
+	background: radial-gradient(ellipse at bottom left, rgba(255, 61, 139, 0.22), transparent 68%);
+	content: "";
+	pointer-events: none;
+}
+
+.finalCard > * {
+	position: relative;
+	z-index: 1;
 }
 
 .fixSection h3,
@@ -1453,6 +1502,7 @@
 	grid-template-columns: repeat(3, 1.05rem);
 	gap: 0.2rem;
 	margin: var(--space-sm) auto var(--space-0);
+	background: #101114;
 }
 
 .fixNumber i {
@@ -1801,12 +1851,19 @@
 }
 
 .finalHeader h3 {
+	margin: var(--space-2xs) var(--space-0) var(--space-0);
+	color: var(--fg-strong);
 	font-size: 1.3rem;
+	line-height: 1.2;
 }
 
 .finalHeader div > span {
 	color: var(--fg-faint);
+	font-family: var(--font-mono), ui-monospace, monospace;
+	font-size: 0.68rem;
+	font-weight: var(--w-bold);
 	letter-spacing: 0.12em;
+	text-transform: uppercase;
 }
 
 .expectedResult {
@@ -1837,9 +1894,10 @@
 	text-transform: uppercase;
 }
 
-.verdictText {
+.verdictLeft > strong {
+	margin-top: var(--space-2xs);
 	font-family: var(--font-display), system-ui, sans-serif;
-	font-size: 2.2rem;
+	font-size: clamp(2.4rem, 1.85rem + 1.6vw, 3rem);
 	font-weight: 800;
 	line-height: 1;
 }
@@ -1884,26 +1942,26 @@
 	gap: 0.55rem;
 }
 
-.verdictRight small {
-	color: var(--fg-faint);
+.tierTransition small {
+	color: var(--fg-muted);
 	font-family: var(--font-display), system-ui, sans-serif;
-	font-size: 1.45rem;
+	font-size: clamp(1.05rem, 0.9rem + 0.4vw, 1.3rem);
+	font-weight: var(--w-bold);
+	line-height: 1.1;
+}
+
+.tierTransition b {
+	color: var(--fg-faint);
+	font-size: clamp(1rem, 0.9rem + 0.25vw, 1.18rem);
 	font-weight: var(--w-bold);
 	line-height: 1;
 }
 
-.verdictRight b {
-	color: var(--fg-faint);
-	font-size: 1.1rem;
-	line-height: 1;
-}
-
-.verdictRight strong {
-	color: var(--success);
+.tierTransition strong {
 	font-family: var(--font-display), system-ui, sans-serif;
-	font-size: 2.2rem;
+	font-size: clamp(1.45rem, 1.15rem + 0.85vw, 1.85rem);
 	font-weight: 800;
-	line-height: 1;
+	line-height: 1.1;
 }
 
 .expectedDivider {
@@ -1915,13 +1973,13 @@
 
 .tagRows {
 	display: flex;
-	flex-wrap: wrap;
-	align-items: center;
+	flex-direction: column;
+	align-items: flex-start;
 	margin-top: var(--space-lg);
 	gap: var(--space-sm);
 }
 
-.tagRows div {
+.tagRows > div {
 	display: flex;
 	flex-wrap: wrap;
 	align-items: center;
@@ -1931,8 +1989,7 @@
 .tagRows strong {
 	display: inline-flex;
 	align-items: center;
-	color: var(--pulse);
-	font-size: 0.82rem;
+	font-size: 0.86rem;
 	gap: var(--space-xs);
 }
 
@@ -1942,14 +1999,52 @@
 	color: currentColor;
 }
 
-.tagRows span {
+.tagRows span:not(.tagDivider) {
 	display: inline-flex;
 	padding: var(--space-2xs) var(--space-sm);
 	border-radius: var(--radius-full);
+	font-size: 0.78rem;
+	font-weight: var(--w-bold);
+}
+
+.tagDivider {
+	display: none;
+	align-self: stretch;
+	width: 0.06rem;
+	padding: 0;
+	border-radius: 0;
+	margin-inline: var(--space-sm);
+	background: var(--border);
+}
+
+.keepRow strong {
+	color: var(--success);
+}
+
+.keepRow > span {
+	background: var(--success-soft);
+	color: var(--success);
+}
+
+.changeRow strong {
+	color: var(--pulse);
+}
+
+.changeRow > span {
 	background: rgba(255, 61, 139, 0.18);
 	color: var(--pulse);
-	font-size: 0.76rem;
-	font-weight: var(--w-bold);
+}
+
+@include breakpoint(tablet) {
+	.tagRows {
+		flex-direction: row;
+		flex-wrap: wrap;
+		align-items: center;
+	}
+
+	.tagDivider {
+		display: block;
+	}
 }
 
 .eyebrow {
@@ -2150,7 +2245,7 @@
 		padding: var(--space-xl);
 	}
 
-	.revisionBadge {
+	.statusBadge {
 		position: absolute;
 		top: var(--space-xl);
 		right: var(--space-xl);

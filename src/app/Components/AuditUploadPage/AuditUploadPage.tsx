@@ -4,12 +4,17 @@ import { Button } from "@/app/Atoms/Button/Button";
 import { Icon, type IconName } from "@/app/Atoms/Icon/Icon";
 import { AuditSteps } from "@/app/Components/AuditSteps/AuditSteps";
 import { UploadDropzone } from "@/app/Components/UploadDropzone/UploadDropzone";
-import type { AnalysisAudit, AnalysisResponse, PriorityFix } from "@/lib/analysis/types";
+import type { AnalysisAudit, AnalysisResponse, PriorityFix, ReadinessTier } from "@/lib/analysis/types";
 import clsx from "clsx";
 import { useLocale, useTranslations } from "next-intl";
-import type { CSSProperties } from "react";
 import { useEffect, useMemo, useState } from "react";
 import styles from "./AuditUploadPage.module.scss";
+
+const READINESS_ORDER: ReadinessTier[] = ["needs-work", "almost-there", "ready-to-publish"];
+
+function tierRank(tier: ReadinessTier) {
+	return READINESS_ORDER.indexOf(tier);
+}
 
 const DESTINATION_OPTIONS = [
 	{ icon: "user", key: "linkInBio", value: "Link in bio" },
@@ -223,12 +228,12 @@ function AuditLoadingPanel({
 }
 
 function isAnalysisResponse(value: unknown): value is AnalysisResponse {
-	return Boolean(
-		value
-			&& typeof value === "object"
-			&& "audit" in value
-			&& typeof (value as AnalysisResponse).audit?.overallScore === "number",
-	);
+	if (!value || typeof value !== "object" || !("audit" in value)) {
+		return false;
+	}
+
+	const tier = (value as AnalysisResponse).audit?.readiness;
+	return typeof tier === "string" && READINESS_ORDER.includes(tier as ReadinessTier);
 }
 
 function buildFallbackFixes(audit: AnalysisAudit): PriorityFix[] {
@@ -243,28 +248,26 @@ function buildFallbackFixes(audit: AnalysisAudit): PriorityFix[] {
 	}));
 }
 
-function getReportTone(score: number, t: TranslationFunction) {
-	if (score >= 80) {
-		return t("readyToPublish");
-	}
-
-	if (score >= 65) {
-		return t("needsRevision");
-	}
-
-	return t("needsWork");
+function getReadinessLabel(tier: ReadinessTier, t: TranslationFunction) {
+	return t(`readiness.${tier}`);
 }
 
-function getVerdictShort(score: number, t: TranslationFunction) {
-	if (score >= 80) return t("verdictReady");
-	if (score >= 65) return t("verdictNotYet");
+function getVerdictShort(tier: ReadinessTier, t: TranslationFunction) {
+	if (tier === "ready-to-publish") return t("verdictReady");
+	if (tier === "almost-there") return t("verdictNotYet");
 	return t("verdictPoor");
 }
 
-function getVerdictClass(score: number, styles: Record<string, string>) {
-	if (score >= 80) return styles.verdictGood;
-	if (score >= 65) return styles.verdictFair;
+function getReadinessClass(tier: ReadinessTier) {
+	if (tier === "ready-to-publish") return styles.verdictGood;
+	if (tier === "almost-there") return styles.verdictFair;
 	return styles.verdictWeak;
+}
+
+function getReadinessBadgeClass(tier: ReadinessTier) {
+	if (tier === "ready-to-publish") return styles.statusReady;
+	if (tier === "almost-there") return styles.statusAlmost;
+	return styles.statusWork;
 }
 
 function getImpactClass(impact: string) {
@@ -319,6 +322,28 @@ function getLocalizedError(message: string, t: TranslationFunction) {
 	return message;
 }
 
+function ReadinessBar({ tier, t }: { tier: ReadinessTier; t: TranslationFunction }) {
+	const activeIndex = tierRank(tier);
+
+	return (
+		<div className={styles.readinessTrack} role="img" aria-label={getReadinessLabel(tier, t)}>
+			{READINESS_ORDER.map((step, index) => (
+				<div
+					key={step}
+					className={clsx(
+						styles.readinessSegment,
+						index === activeIndex && styles.readinessSegmentActive,
+						index === activeIndex && getReadinessBadgeClass(step),
+					)}
+				>
+					<span />
+					<small>{t(`readiness.${step}`)}</small>
+				</div>
+			))}
+		</div>
+	);
+}
+
 function AnalysisReport({ audit, onAuditAnother }: {
 	audit: AnalysisAudit;
 	onAuditAnother: () => void;
@@ -330,8 +355,12 @@ function AnalysisReport({ audit, onAuditAnother }: {
 	const priorityFixes = audit.priorityFixes?.length ? audit.priorityFixes : buildFallbackFixes(audit);
 	const hasFixes = priorityFixes.length > 0;
 	const biggestProblemHeadline = getBiggestProblemHeadline(audit, priorityFixes, hasFixes, t("noFixesFallback"));
-	const scoreAfterFixes = audit.scoreAfterFixes ?? Math.min(100, audit.overallScore + (hasFixes ? 12 : 0));
-	const scoreLift = audit.scoreLift ?? Math.max(0, scoreAfterFixes - audit.overallScore);
+	const readiness: ReadinessTier = audit.readiness;
+	const readinessAfterFixes: ReadinessTier = audit.readinessAfterFixes ?? readiness;
+	const isReady = readiness === "ready-to-publish";
+	const hasLift = tierRank(readinessAfterFixes) > tierRank(readiness);
+	const readinessLabel = getReadinessLabel(readiness, t);
+	const readinessAfterFixesLabel = getReadinessLabel(readinessAfterFixes, t);
 	const editorItems = audit.editorBrief?.items.length
 		? audit.editorBrief.items
 		: priorityFixes.map((fix) => ({ task: fix.editorTask, timestamp: fix.timestamp }));
@@ -341,7 +370,10 @@ function AnalysisReport({ audit, onAuditAnother }: {
 		change: priorityFixes.map((fix) => fix.title.split(" ").slice(0, 3).join(" ")),
 		expectedResult: audit.summary,
 		headline: hasFixes ? t("fallbackRecommendation", { count: priorityFixes.length }) : t("readyToPublish"),
+		keep: [] as string[],
 	};
+	const keepTags = finalRecommendation.keep ?? [];
+	const changeTags = finalRecommendation.change ?? [];
 	const copyBrief = async () => {
 		const brief = editorItems
 			.map((item, index) => `${index + 1}. ${item.task} (${item.timestamp})`)
@@ -394,14 +426,10 @@ function AnalysisReport({ audit, onAuditAnother }: {
 				</div>
 
 				<div className={styles.diagnosis}>
-					{audit.overallScore < 80
-						? (
-							<div className={styles.revisionBadge}>
-								<span />
-								{t("needsRevision")}
-							</div>
-						)
-						: null}
+					<div className={clsx(styles.statusBadge, getReadinessBadgeClass(readiness))}>
+						<span />
+						{readinessLabel}
+					</div>
 					<div>
 						<div className={styles.goalPills}>
 							<span>{t("detectedGoal")}</span>
@@ -409,7 +437,10 @@ function AnalysisReport({ audit, onAuditAnother }: {
 								<Icon name="target" size="small" />
 								{compactGoal}
 							</strong>
-							<small>{t("confidence", { confidence: audit.goal.confidence })}</small>
+							<small>
+								<b>{audit.goal.confidence}%</b>
+								{t("confidence")}
+							</small>
 						</div>
 
 						<p className={styles.problemLabel}>{hasFixes ? t("biggestProblem") : t("mainReadout")}</p>
@@ -424,38 +455,23 @@ function AnalysisReport({ audit, onAuditAnother }: {
 						</div>
 					</div>
 
-					{audit.overallScore < 80 && <aside
-						className={styles.scoreLift}
-						aria-label={t("scoreAria", { current: audit.overallScore, predicted: scoreAfterFixes })}
+					<aside
+						className={styles.readinessCard}
+						aria-label={t("readinessAria", { current: readinessLabel, predicted: readinessAfterFixesLabel })}
 					>
-						<span>{hasFixes ? t("scoreAfterFixes", { count: priorityFixes.length }) : t("currentScore")}</span>
-						<div>
-							<small>{audit.overallScore}</small>
-							<b aria-hidden="true">→</b>
-							<strong>{scoreAfterFixes}</strong>
-							{scoreLift > 0
-								? (
-									<em>
-										<Icon name="wave" size="small" />
-										+{scoreLift} pts
-									</em>
-								)
-								: null}
-						</div>
-						<div className={styles.liftBar}>
-							<span style={{ "--score-width": `${audit.overallScore}%` } as CSSProperties} />
-							<span
-								style={{
-									"--score-start": `${audit.overallScore}%`,
-									"--score-width": `${scoreAfterFixes}%`,
-								} as CSSProperties}
-							/>
-						</div>
+						<span className={styles.readinessKicker}>{t("readinessLabel")}</span>
+						<strong className={clsx(styles.readinessTier, getReadinessClass(readiness))}>
+							{readinessLabel}
+						</strong>
+						<ReadinessBar tier={readiness} t={t} />
 						<p>
-							{t("todayScore", { score: audit.overallScore })}{" "}
-							{scoreLift > 0 ? t("liftPrediction") : getReportTone(audit.overallScore, t)}
+							{hasLift
+								? t("readinessLiftCopy", { current: readinessLabel, predicted: readinessAfterFixesLabel })
+								: isReady
+								? t("readinessReadyCopy")
+								: t("readinessHoldingCopy", { current: readinessLabel })}
 						</p>
-					</aside>}
+					</aside>
 				</div>
 
 				<section className={styles.fixSection}>
@@ -590,19 +606,21 @@ function AnalysisReport({ audit, onAuditAnother }: {
 						<div className={styles.verdictPanel}>
 							<div className={styles.verdictLeft}>
 								<span className={styles.verdictLabel}>{t("readyToPublishQ")}</span>
-								<strong className={getVerdictClass(audit.overallScore, styles)}>
-									{getVerdictShort(audit.overallScore, t)}
+								<strong className={getReadinessClass(readiness)}>
+									{getVerdictShort(readiness, t)}
 								</strong>
 								<p>{finalRecommendation.headline}</p>
 							</div>
-							{scoreLift > 0 && audit.overallScore < 80
+							{hasLift
 								? (
 									<div className={styles.verdictRight}>
-										<span>{t("scoreAfterFixesLabel")}</span>
-										<div>
-											<small>{audit.overallScore}</small>
+										<span>{t("readinessAfterFixesLabel")}</span>
+										<div className={styles.tierTransition}>
+											<small>{readinessLabel}</small>
 											<b aria-hidden="true">→</b>
-											<strong>{scoreAfterFixes}</strong>
+											<strong className={getReadinessClass(readinessAfterFixes)}>
+												{readinessAfterFixesLabel}
+											</strong>
 										</div>
 									</div>
 								)
@@ -611,16 +629,34 @@ function AnalysisReport({ audit, onAuditAnother }: {
 						<div className={styles.expectedDivider} />
 						<p>{finalRecommendation.expectedResult}</p>
 					</div>
-					{finalRecommendation.change.length
+					{(keepTags.length > 0 || changeTags.length > 0)
 						? (
 							<div className={styles.tagRows}>
-								<div>
-									<strong>
-										<Icon name="wandSparkles" size="small" />
-										{t("change")}
-									</strong>
-									{finalRecommendation.change.map((tag) => <span key={tag}>{tag}</span>)}
-								</div>
+								{keepTags.length > 0
+									? (
+										<div className={styles.keepRow}>
+											<strong>
+												<Icon name="check" size="small" />
+												{t("keep")}
+											</strong>
+											{keepTags.map((tag) => <span key={`keep-${tag}`}>{tag}</span>)}
+										</div>
+									)
+									: null}
+								{keepTags.length > 0 && changeTags.length > 0
+									? <span className={styles.tagDivider} aria-hidden="true" />
+									: null}
+								{changeTags.length > 0
+									? (
+										<div className={styles.changeRow}>
+											<strong>
+												<Icon name="wandSparkles" size="small" />
+												{t("change")}
+											</strong>
+											{changeTags.map((tag) => <span key={`change-${tag}`}>{tag}</span>)}
+										</div>
+									)
+									: null}
 							</div>
 						)
 						: null}
