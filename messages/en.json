@@ -186,6 +186,8 @@
 			"whyThisWorks": "Why this works",
 			"highConfidence": "High confidence",
 			"emptyFixes": "The analysis did not find a meaningful problem worth forcing into the report. Publish with normal platform testing.",
+			"whatsWorking": "What's working",
+			"keepDoingThis": "Keep doing this",
 			"editorHeading": "Hand this to your editor",
 			"editorCopy": "The {count, plural, one {# fix is} other {# fixes are}} a copy-paste task list — paste it straight to whoever cuts the next version.",
 			"copyBrief": "Copy brief",

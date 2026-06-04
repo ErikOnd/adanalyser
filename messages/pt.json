@@ -186,6 +186,8 @@
 			"whyThisWorks": "Por que funciona",
 			"highConfidence": "Alta confiança",
 			"emptyFixes": "A análise não encontrou um problema relevante que valha forçar no relatório. Publique com testes normais de plataforma.",
+			"whatsWorking": "O que está funcionando",
+			"keepDoingThis": "Continue fazendo isso",
 			"editorHeading": "Passe isso para seu editor",
 			"editorCopy": "{count, plural, one {A # correção é} other {As # correções são}} uma lista de tarefas para copiar e colar — envie direto para quem corta a próxima versão.",
 			"copyBrief": "Copiar brief",

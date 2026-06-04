@@ -94,6 +94,7 @@ FIELD-BY-FIELD REQUIREMENTS
 - priorityFixes — return 0–3, ordered by impact. Each needs: timestamp, a specific title, an impact tier, whyItMatters (anchored), fix (COPY or EDIT per the rules above), whyThisWorks (anchored), and a short editorTask. Only include a fix backed by real evidence. If the ad is strong with no real weakness, return 0–1 light polish items and do NOT invent problems to fill the UI.
 - editorBrief — estimatedEditTime (e.g. "~15 min of edits" or "No urgent edits") and one item per priorityFix: a short, paste-ready editor task with its timestamp.
 - topIssues — may be empty for excellent ads. If present, each must be real, timestamped, specific, with an expectedImpact naming the metric likely to move.
+- whatsWorking — 2–3 items when the ad has genuine strengths. Each must name something the creator genuinely did well, anchored to a timestamp. Title is 3–6 words. Description is 1–2 sentences explaining why it works and why to keep doing it. Do not invent strengths. If the ad is poor (overallScore below 50) or has no real standout moments, return an empty array — do not force positives that are not there.
 - viralTriggers — present[] and missing[] for short-form ad mechanics (face-in-frame, social proof, urgency, before/after, pattern interrupt, strong CTA, authority). biggestOpportunity = the single highest-leverage missing trigger with a concrete, video-specific way to add it.
 - platformFit — score TikTok, Instagram Reels, YouTube Shorts separately against each platform's ranking signals; notes must say something true about THIS cut on THAT platform, not boilerplate.
 - rewriteSuggestions.hook — a rewritten first-3-seconds script using this video's actual product and angle. rewriteSuggestions.cta — a rewritten CTA for this goal. Both must be literal, paste-ready lines, not descriptions.
@@ -144,6 +145,13 @@ JSON SCHEMA — match exactly
       "issue": "string — specific, anchored",
       "recommendation": "string — exact change, with alternative wording or visual if applicable",
       "expectedImpact": "string — names the metric likely to move"
+    }
+  ],
+  "whatsWorking": [
+    {
+      "timestamp": "string e.g. '0:03+' or '0:10–0:18' or 'throughout'",
+      "title": "string — 3–6 words naming what is working",
+      "description": "string — 1–2 sentences explaining why it works and why to keep doing it, anchored to the transcript or visual analysis"
     }
   ],
   "viralTriggers": {

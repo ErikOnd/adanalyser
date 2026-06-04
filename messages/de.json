@@ -186,6 +186,8 @@
 			"whyThisWorks": "Warum das funktioniert",
 			"highConfidence": "Hohe Sicherheit",
 			"emptyFixes": "Die Analyse hat kein relevantes Problem gefunden, das künstlich in den Report gehört. Veröffentliche mit normalem Plattform-Testing.",
+			"whatsWorking": "Was funktioniert",
+			"keepDoingThis": "Weiter so",
 			"editorHeading": "Gib das an deinen Editor weiter",
 			"editorCopy": "{count, plural, one {Der # Fix ist} other {Die # Fixes sind}} eine Copy-paste-Aufgabenliste — gib sie direkt an die Person, die die nächste Version schneidet.",
 			"copyBrief": "Brief kopieren",

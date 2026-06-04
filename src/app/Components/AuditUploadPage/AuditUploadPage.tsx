@@ -289,6 +289,12 @@ function getFixIcon(): IconName {
 	return "bolt";
 }
 
+const whatsWorkingIcons: IconName[] = ["user", "film", "captions", "shieldCheck", "wave", "spark"];
+
+function getWhatsWorkingIcon(index: number): IconName {
+	return whatsWorkingIcons[index % whatsWorkingIcons.length];
+}
+
 function getLocalizedError(message: string, t: TranslationFunction) {
 	if (message.includes("Choose a video file")) {
 		return t("errors.chooseVideo");
@@ -320,6 +326,7 @@ function AnalysisReport({ audit, onAuditAnother }: {
 	const t = useTranslations("AuditUpload.report");
 	const shortSummary = getShortSummary(audit);
 	const compactGoal = getCompactGoal(audit.goal.detected, t);
+	const whatsWorking = audit.whatsWorking?.slice(0, 3) ?? [];
 	const priorityFixes = audit.priorityFixes?.length ? audit.priorityFixes : buildFallbackFixes(audit);
 	const hasFixes = priorityFixes.length > 0;
 	const biggestProblemHeadline = getBiggestProblemHeadline(audit, priorityFixes, hasFixes, t("noFixesFallback"));
@@ -547,6 +554,27 @@ function AnalysisReport({ audit, onAuditAnother }: {
 						</section>
 					)
 					: null}
+
+				{whatsWorking.length > 0 && (
+					<section className={styles.whatsWorkingSection}>
+						<p className={styles.sectionKicker}>{t("whatsWorking")}</p>
+						<h3>{t("keepDoingThis")}</h3>
+						<div className={styles.whatsWorkingList}>
+							{whatsWorking.map((item, index) => (
+								<article className={styles.whatsWorkingCard} key={`${item.timestamp}-${item.title}`}>
+									<div className={styles.whatsWorkingCardHeader}>
+										<span className={styles.whatsWorkingIcon}>
+											<Icon name={getWhatsWorkingIcon(index)} size="small" />
+										</span>
+										<span className={styles.whatsWorkingTimestamp}>{item.timestamp}</span>
+									</div>
+									<h4>{item.title}</h4>
+									<p>{item.description}</p>
+								</article>
+							))}
+						</div>
+					</section>
+				)}
 
 				<section className={styles.finalCard}>
 					<div className={styles.finalHeader}>

@@ -17,6 +17,12 @@ export type ScoreDetail = {
 	reasoning: string;
 };
 
+export type WhatsWorkingItem = {
+	timestamp: string;
+	title: string;
+	description: string;
+};
+
 export type TimestampedIssue = {
 	timestamp: string;
 	issue: string;
@@ -70,6 +76,7 @@ export type AnalysisAudit = {
 		items: EditorBriefItem[];
 	};
 	topIssues: TimestampedIssue[];
+	whatsWorking?: WhatsWorkingItem[];
 	viralTriggers: {
 		present: string[];
 		missing: string[];
