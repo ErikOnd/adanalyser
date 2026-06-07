@@ -1,5 +1,6 @@
 import { Hero } from "@/app/Components/Hero/Hero";
 import { Navigation } from "@/app/Components/Navigation/Navigation";
+import { QuestionBanner } from "@/app/Components/QuestionBanner/QuestionBanner";
 import { setRequestLocale } from "next-intl/server";
 import { use } from "react";
 import styles from "./page.module.scss";
@@ -16,6 +17,7 @@ export default function Home({ params }: Props) {
 		<main className={styles.page}>
 			<Navigation />
 			<Hero />
+			<QuestionBanner />
 		</main>
 	);
 }

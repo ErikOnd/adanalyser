@@ -2,7 +2,7 @@
 
 .visual {
 	position: relative;
-	display: none;
+	display: grid;
 	width: 100%;
 	min-height: auto;
 	padding: var(--space-2xl) var(--space-0) var(--space-md);
@@ -37,8 +37,8 @@
 
 .header,
 .fileName,
-.fix,
-.goalPill {
+.goalRow,
+.fixBody {
 	display: flex;
 	align-items: center;
 }
@@ -106,14 +106,71 @@
 	box-shadow: 0 0 0.8rem rgba(77, 224, 138, 0.45);
 }
 
-.dropOff {
-	position: static;
-	width: fit-content;
-	margin: var(--space-0);
+.sectionLabel {
+	color: var(--danger);
+	font-family: var(--font-mono), ui-monospace, monospace;
+	font-size: 0.58rem;
+	font-weight: var(--w-bold);
+	letter-spacing: 0.08em;
+	line-height: 1;
+	text-transform: uppercase;
 }
 
-.dropOffIcon {
-	color: var(--pulse-300);
+.biggestProblem {
+	display: grid;
+	gap: var(--space-2xs);
+}
+
+.biggestProblemText {
+	margin: var(--space-0);
+	color: var(--fg-strong);
+	font-size: 0.92rem;
+	font-weight: var(--w-bold);
+	line-height: 1.35;
+}
+
+.goalRow {
+	gap: var(--space-xs);
+}
+
+.goalPill {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--space-xs);
+	padding: var(--space-2xs) var(--space-sm);
+	border: 0.06rem solid var(--border);
+	border-radius: var(--radius-full);
+	background: rgba(198, 244, 50, 0.12);
+	color: var(--fg-strong);
+	font-size: 0.78rem;
+}
+
+.goalPill > span {
+	color: var(--accent);
+}
+
+.goalPill strong {
+	font-weight: var(--w-bold);
+}
+
+.confidencePill {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--space-xs);
+	padding: var(--space-2xs) var(--space-sm);
+	border: 0.06rem solid var(--border);
+	border-radius: var(--radius-full);
+	background: var(--fill-08);
+	color: var(--fg-muted);
+	font-size: 0.72rem;
+}
+
+.confidencePill span {
+	display: block;
+	width: 0.45rem;
+	height: 0.45rem;
+	border-radius: var(--radius-full);
+	background: var(--success);
 }
 
 .readiness {
@@ -181,36 +238,48 @@
 	box-shadow: 0 0 0.7rem rgba(255, 178, 61, 0.55);
 }
 
-.goalPill {
-	gap: var(--space-xs);
-	width: fit-content;
-	padding: var(--space-2xs) var(--space-sm);
-	border: 0.06rem solid var(--border);
-	border-radius: var(--radius-full);
-	background: rgba(198, 244, 50, 0.12);
-	color: var(--fg-strong);
-	font-size: 0.78rem;
-}
-
-.goalPill > span {
-	color: var(--accent);
-}
-
-.goalPill strong {
-	color: var(--fg-strong);
-	font-weight: var(--w-bold);
-}
-
 .fix {
-	align-items: flex-start;
-	gap: var(--space-sm);
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-xs);
 	padding: var(--space-sm);
 	border: 0.06rem solid var(--border);
 	border-radius: var(--radius-lg);
 	background: var(--ink-950);
 }
 
-.fix > span {
+.fixMeta {
+	display: flex;
+	align-items: center;
+	gap: var(--space-xs);
+}
+
+.fixTimestamp {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--space-2xs);
+	padding: var(--space-2xs) var(--space-xs);
+	border: 0.06rem solid var(--border);
+	border-radius: var(--radius-full);
+	color: var(--fg-muted);
+	font-family: var(--font-mono), ui-monospace, monospace;
+	font-size: 0.6rem;
+}
+
+.fixImpact {
+	padding: var(--space-2xs) var(--space-xs);
+	border-radius: var(--radius-full);
+	background: rgba(255, 92, 92, 0.14);
+	color: var(--danger);
+	font-size: 0.6rem;
+	font-weight: var(--w-bold);
+}
+
+.fixBody {
+	gap: var(--space-sm);
+}
+
+.fixIconWrap {
 	display: grid;
 	width: 2.15rem;
 	height: 2.15rem;
@@ -238,7 +307,6 @@
 
 @include breakpoint(desktop) {
 	.visual {
-		display: grid;
 		min-height: 27rem;
 		padding: var(--space-0);
 		overflow: visible;
@@ -249,9 +317,4 @@
 		padding: var(--space-lg);
 		border-radius: var(--radius-xl);
 	}
-
-	.fix {
-		align-items: center;
-	}
-
 }

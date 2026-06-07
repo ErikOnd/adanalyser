@@ -8,12 +8,11 @@ import { useLocale, useTranslations } from "next-intl";
 import { useState } from "react";
 import styles from "./Navigation.module.scss";
 
-const navItemKeys = ["how", "example", "pricing", "faq"] as const;
+const navItemKeys = ["how", "example", "faq"] as const;
 
 const navItemHrefs: Record<(typeof navItemKeys)[number], string> = {
 	how: "#how",
 	example: "#example",
-	pricing: "#pricing",
 	faq: "#faq",
 };
 
@@ -75,15 +74,6 @@ export function Navigation() {
 					>
 						{t("signIn")}
 					</Link>
-					<Button
-						className={styles.mobileCta}
-						href={`/${locale}/audit`}
-						icon="arrow"
-						iconSize="small"
-						tabIndex={isMenuOpen ? undefined : -1}
-					>
-						{t("cta")}
-					</Button>
 				</div>
 			</div>
 		</nav>

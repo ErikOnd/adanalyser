@@ -14,13 +14,10 @@
 	},
 	"Hero": {
 		"eyebrow": "AI ad auditor for TikTok & Reels",
-		"headlineLine1": "Know why",
-		"headlineLine2": "your video",
-		"headlineLine3Prefix": "will",
-		"headlineHighlight": "pop or flop",
-		"headlineLine4": "— before you post",
-		"headlineLine5": "it.",
-		"subcopy": "Upload a TikTok ad, Reel, or UGC clip and get an AI audit that finds your weak hook, dead air, unclear CTA, and missing trust signals — with the exact fix for each, scored before you publish.",
+		"headlineLine1": "Get an honest",
+		"headlineLine2": "audit of your ad",
+		"headlineHighlight": "before you publish.",
+		"subcopy": "Drop your TikTok, Instagram, or YouTube Shorts ad and know exactly what's losing viewers, what's working, and the precise edit to make — before you publish.",
 		"ctaPrimary": "Audit your first video free",
 		"ctaSecondary": "See an example audit",
 		"trust": {
@@ -28,6 +25,12 @@
 			"fastAudit": "Full audit in ~90s",
 			"formats": "MP4 / MOV, up to 3 min"
 		}
+	},
+	"QuestionBanner": {
+		"ariaLabel": "Core audit question",
+		"prefix": "The one question every audit answers:",
+		"questionLine1": "Why will this video succeed or fail on TikTok and Instagram — and",
+		"questionLine2": "what should I change before publishing?"
 	},
 	"AuditCard": {
 		"ariaLabel": "Example ad audit readiness card",
@@ -38,9 +41,15 @@
 			"almost-there": "Almost there",
 			"ready-to-publish": "Ready"
 		},
+		"biggestProblemLabel": "Biggest problem",
+		"biggestProblem": "The hook loses viewers before the product is shown.",
+		"goalName": "Drive conversions",
+		"confidence": "95% confidence",
 		"goal": "Drive conversions · 92%",
-		"fixTitle": "Weak hook · 0:00–0:03",
-		"fixDetail": "Cut to the product in-hand at 0:01",
+		"fixTimestamp": "0:00–0:03",
+		"fixImpact": "Highest impact",
+		"fixTitle": "Weak hook",
+		"fixDetail": "Open with the product in hand at 0:01",
 		"trendingSound": "Trending sound"
 	},
 	"SignIn": {
@@ -84,7 +93,7 @@
 		"backHome": "Back to home",
 		"eyebrow": "Audit your first video — free",
 		"title": "Why will this video pop or flop?",
-		"copy": "Drop your TikTok, Instagram Reels, or YouTube Shorts ad. In about 90 seconds you'll get a full audit — hook, retention, dead air, CTA, trust, and the exact fix for each, before you publish.",
+		"copy": "Drop your TikTok, Instagram Reels, or YouTube Shorts ad and get a full audit — what's losing viewers, what's working, and the exact fix for each weak moment, before you publish.",
 		"dropzone": {
 			"title": "Drop your video here to audit it",
 			"formats": "MP4 or MOV · vertical 9:16 · up to 3 min",
@@ -135,7 +144,7 @@
 			"failedTitle": "Audit failed",
 			"copy": "Watching it the way the algorithm — and your buyer — will.",
 			"failedCopy": "The analysis stopped before the report could be created.",
-			"platform": "Short-form creative",
+			"platform": "Short-form ad",
 			"chooseAnother": "Choose another",
 			"steps": {
 				"media": {
@@ -152,20 +161,20 @@
 				},
 				"audit": {
 					"label": "Scoring & writing fixes",
-					"source": "Creative AI"
+					"source": "Analysis AI"
 				}
 			}
 		},
 		"report": {
 			"auditComplete": "Audit complete",
-			"title": "Here's your creative audit",
+			"title": "Here's your ad audit",
 			"auditAnother": "Audit another",
 			"shareReport": "Share report",
 			"reportFile": "creative-audit.report",
 			"detectedGoal": "Detected goal",
 			"confidence": "confidence",
 			"biggestProblem": "Biggest problem",
-			"mainReadout": "Main readout",
+			"mainReadout": "Overview",
 			"bottomLine": "Bottom line",
 			"readiness": {
 				"needs-work": "Needs work",
@@ -204,7 +213,7 @@
 			"verdictReady": "Ready!",
 			"verdictNotYet": "Not yet",
 			"verdictPoor": "Not ready",
-			"noFixesFallback": "This creative is already in good shape.",
+			"noFixesFallback": "This ad is already in good shape.",
 			"compactGoal": {
 				"conversions": "Drive conversions",
 				"views": "Drive views",

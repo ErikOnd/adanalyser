@@ -14,13 +14,10 @@
 	},
 	"Hero": {
 		"eyebrow": "Auditor de anuncios con IA para TikTok y Reels",
-		"headlineLine1": "Descubre por qué",
-		"headlineLine2": "tu vídeo",
-		"headlineLine3Prefix": "va a",
-		"headlineHighlight": "petarlo o fracasar",
-		"headlineLine4": "— antes de publicarlo",
-		"headlineLine5": ".",
-		"subcopy": "Sube un anuncio de TikTok, un Reel o un clip UGC y obtén una auditoría con IA que detecta hooks débiles, tiempos muertos, CTA poco claros y señales de confianza ausentes — con la solución exacta para cada uno, puntuada antes de publicar.",
+		"headlineLine1": "Una auditoría honesta",
+		"headlineLine2": "de tu anuncio —",
+		"headlineHighlight": "antes de publicar.",
+		"subcopy": "Sube tu anuncio de TikTok, Instagram o YouTube Shorts y sabe exactamente qué está perdiendo espectadores, qué funciona y la edición precisa que debes hacer — antes de publicar.",
 		"ctaPrimary": "Audita tu primer vídeo gratis",
 		"ctaSecondary": "Ver un ejemplo de auditoría",
 		"trust": {
@@ -28,6 +25,12 @@
 			"fastAudit": "Auditoría completa en ~90 s",
 			"formats": "MP4 / MOV, hasta 3 min"
 		}
+	},
+	"QuestionBanner": {
+		"ariaLabel": "Pregunta central de la auditoría",
+		"prefix": "La pregunta que responde cada auditoría:",
+		"questionLine1": "¿Por qué este vídeo tendrá éxito o fallará en TikTok e Instagram — y",
+		"questionLine2": "qué debería cambiar antes de publicarlo?"
 	},
 	"AuditCard": {
 		"ariaLabel": "Tarjeta de ejemplo del estado de la auditoría",
@@ -38,9 +41,15 @@
 			"almost-there": "Casi listo",
 			"ready-to-publish": "Listo"
 		},
+		"biggestProblemLabel": "Problema principal",
+		"biggestProblem": "El hook pierde espectadores antes de mostrar el producto.",
+		"goalName": "Generar conversiones",
+		"confidence": "95% de confianza",
 		"goal": "Generar conversiones · 92%",
-		"fixTitle": "Hook débil · 0:00–0:03",
-		"fixDetail": "Cortar al producto en mano en 0:01",
+		"fixTimestamp": "0:00–0:03",
+		"fixImpact": "Mayor impacto",
+		"fixTitle": "Hook débil",
+		"fixDetail": "Muestra el producto en mano en 0:01",
 		"trendingSound": "Sonido en tendencia"
 	},
 	"SignIn": {
@@ -84,7 +93,7 @@
 		"backHome": "Volver al inicio",
 		"eyebrow": "Audita tu primer vídeo — gratis",
 		"title": "¿Por qué este vídeo va a petarlo o fracasar?",
-		"copy": "Sube tu anuncio de TikTok, Instagram Reels o YouTube Shorts. En unos 90 segundos recibirás una auditoría completa — hook, retención, tiempos muertos, CTA, confianza y el arreglo exacto para cada punto.",
+		"copy": "Sube tu anuncio de TikTok, Instagram Reels o YouTube Shorts y sabe exactamente qué está perdiendo espectadores, qué funciona y el arreglo exacto para cada momento débil — antes de publicar.",
 		"dropzone": {
 			"title": "Suelta tu vídeo aquí para auditarlo",
 			"formats": "MP4 o MOV · vertical 9:16 · hasta 3 min",
@@ -135,7 +144,7 @@
 			"failedTitle": "La auditoría falló",
 			"copy": "Lo analizamos como lo verá el algoritmo — y tu comprador.",
 			"failedCopy": "El análisis se detuvo antes de poder crear el reporte.",
-			"platform": "Creative short-form",
+			"platform": "Anuncio short-form",
 			"chooseAnother": "Elegir otro",
 			"steps": {
 				"media": {
@@ -152,20 +161,20 @@
 				},
 				"audit": {
 					"label": "Puntuando y escribiendo arreglos",
-					"source": "IA creativa"
+					"source": "IA de análisis"
 				}
 			}
 		},
 		"report": {
 			"auditComplete": "Auditoría completa",
-			"title": "Aquí está tu auditoría creativa",
+			"title": "Aquí está tu auditoría",
 			"auditAnother": "Auditar otro",
 			"shareReport": "Compartir reporte",
 			"reportFile": "creative-audit.report",
 			"detectedGoal": "Objetivo detectado",
 			"confidence": "de confianza",
 			"biggestProblem": "Problema principal",
-			"mainReadout": "Lectura principal",
+			"mainReadout": "Resumen",
 			"bottomLine": "Conclusión",
 			"readiness": {
 				"needs-work": "Necesita trabajo",
@@ -204,7 +213,7 @@
 			"verdictReady": "¡Listo!",
 			"verdictNotYet": "Aún no",
 			"verdictPoor": "No está listo",
-			"noFixesFallback": "Este creative ya está en buen estado.",
+			"noFixesFallback": "Este anuncio ya está en buen estado.",
 			"compactGoal": {
 				"conversions": "Impulsar conversiones",
 				"views": "Impulsar views",

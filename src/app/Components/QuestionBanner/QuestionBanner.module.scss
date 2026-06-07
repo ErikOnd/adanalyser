@@ -1,0 +1,44 @@
+@use "../../styles/mixins" as *;
+
+.banner {
+	position: relative;
+	z-index: 1;
+	display: flex;
+	align-items: flex-start;
+	width: 100%;
+	max-width: var(--content-max);
+	padding: var(--space-xl) var(--space-lg) var(--space-2xl);
+	margin: var(--space-0) auto;
+	gap: var(--space-sm);
+	color: var(--fg-muted);
+}
+
+.icon {
+	flex: 0 0 auto;
+	margin-top: 0.16rem;
+	color: var(--accent);
+}
+
+.banner p {
+	max-width: 68rem;
+	margin: var(--space-0);
+	font-size: clamp(0.8rem, 0.72rem + 0.35vw, 1rem);
+	letter-spacing: 0;
+	line-height: 1.55;
+}
+
+.banner strong {
+	color: var(--fg-strong);
+	font-style: italic;
+	font-weight: var(--w-bold);
+}
+
+@include breakpoint(tablet) {
+	.banner {
+		padding: var(--space-xl) clamp(var(--space-lg), 3vw, var(--space-4xl)) var(--space-3xl);
+	}
+
+	.banner p {
+		text-align: center;
+	}
+}

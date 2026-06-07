@@ -29,13 +29,7 @@ export function Hero() {
 					<br />
 					{t("headlineLine2")}
 					<br />
-					<span className={styles.line}>
-						{t("headlineLine3Prefix")} <span className={styles.highlight}>{t("headlineHighlight")}</span>
-					</span>
-					<br />
-					<span className={styles.line}>{t("headlineLine4")}</span>
-					<br />
-					{t("headlineLine5")}
+					<span className={styles.highlight}>{t("headlineHighlight")}</span>
 				</h1>
 
 				<p className={styles.subcopy}>{t("subcopy")}</p>

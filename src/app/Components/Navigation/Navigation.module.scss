@@ -177,13 +177,6 @@
 	font-weight: var(--w-bold);
 }
 
-.mobilePanel .mobileCta {
-	justify-content: center;
-	margin-top: var(--space-xs);
-	min-height: 3.25rem;
-	color: var(--accent-fg);
-}
-
 @include breakpoint(tablet) {
 	.inner {
 		display: grid;

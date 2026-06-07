@@ -67,6 +67,29 @@ function getWhatsWorkingIcon(index: number): IconName {
 	return whatsWorkingIcons[index % whatsWorkingIcons.length];
 }
 
+function getDisplayFix(fix: string) {
+	return fix.replace(/^\s*(?:COPY|EDIT)\s*(?:[-—:])\s*/i, "");
+}
+
+function getDisplayRecommendationHeadline(headline: string, fixCount: number, t: TranslationFunction) {
+	const normalized = headline.trim();
+	const publishMatch = normalized.match(/^publish after (?:these )?(\d+) fixes?\.?$/i);
+
+	if (publishMatch) {
+		return t("fallbackRecommendation", { count: Number(publishMatch[1]) });
+	}
+
+	if (/^ready to publish\.?$/i.test(normalized)) {
+		return t("readyToPublish");
+	}
+
+	if (/^publish after these fixes\.?$/i.test(normalized) && fixCount > 0) {
+		return t("fallbackRecommendation", { count: fixCount });
+	}
+
+	return headline;
+}
+
 function ReadinessBar({ tier, t }: { tier: ReadinessTier; t: TranslationFunction }) {
 	const activeIndex = tierRank(tier);
 
@@ -342,7 +365,7 @@ function PriorityFixCard({ fix, index, t }: { fix: PriorityFix; index: number; t
 					</span>
 					<div>
 						<strong>{t("theFix")}</strong>
-						<p>{fix.fix}</p>
+						<p>{getDisplayFix(fix.fix)}</p>
 					</div>
 				</div>
 				<div className={styles.whyBox}>
@@ -377,6 +400,8 @@ function FinalRecommendation({
 	readinessLabel,
 	t,
 }: FinalRecommendationProps) {
+	const displayHeadline = getDisplayRecommendationHeadline(finalRecommendation.headline, changeTags.length, t);
+
 	return (
 		<section className={styles.finalCard}>
 			<div className={styles.finalHeader}>
@@ -385,7 +410,7 @@ function FinalRecommendation({
 				</span>
 				<div>
 					<span>{t("finalRecommendation")}</span>
-					<h3>{finalRecommendation.headline}</h3>
+					<h3>{displayHeadline}</h3>
 				</div>
 			</div>
 			<div className={styles.expectedResult}>
@@ -395,7 +420,7 @@ function FinalRecommendation({
 						<strong className={getReadinessClass(readiness)}>
 							{getVerdictShort(readiness, t)}
 						</strong>
-						<p>{finalRecommendation.headline}</p>
+						<p>{displayHeadline}</p>
 					</div>
 					{hasLift
 						? (

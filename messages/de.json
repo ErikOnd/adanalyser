@@ -14,13 +14,10 @@
 	},
 	"Hero": {
 		"eyebrow": "KI-Anzeigen-Auditor für TikTok & Reels",
-		"headlineLine1": "Erfahre, warum",
-		"headlineLine2": "dein Video",
-		"headlineLine3Prefix": "wird",
-		"headlineHighlight": "zünden oder floppen",
-		"headlineLine4": "— bevor du es postest",
-		"headlineLine5": ".",
-		"subcopy": "Lade eine TikTok-Anzeige, ein Reel oder einen UGC-Clip hoch und erhalte ein KI-Audit, das schwache Hooks, tote Momente, unklare CTAs und fehlende Trust-Signale findet — mit dem exakten Fix für jedes Problem, bewertet bevor du veröffentlichst.",
+		"headlineLine1": "Ein ehrliches Audit",
+		"headlineLine2": "deiner Anzeige —",
+		"headlineHighlight": "vor der Veröffentlichung.",
+		"subcopy": "Lade deine TikTok-, Instagram- oder YouTube-Shorts-Anzeige hoch und erfahre genau, was Zuschauer verliert, was funktioniert und welche Änderung du machen musst — bevor du veröffentlichst.",
 		"ctaPrimary": "Erstes Video kostenlos auditieren",
 		"ctaSecondary": "Beispiel-Audit ansehen",
 		"trust": {
@@ -29,18 +26,30 @@
 			"formats": "MP4 / MOV, bis zu 3 Min"
 		}
 	},
+	"QuestionBanner": {
+		"ariaLabel": "Zentrale Audit-Frage",
+		"prefix": "Die eine Frage, die jedes Audit beantwortet:",
+		"questionLine1": "Warum wird dieses Video auf TikTok und Instagram funktionieren oder scheitern — und",
+		"questionLine2": "was sollte ich vor der Veröffentlichung ändern?"
+	},
 	"AuditCard": {
-		"ariaLabel": "Beispielkarte zur Audit-Bereitschaft",
+		"ariaLabel": "Beispielkarte zum Audit-Status",
 		"dropOff": "Absprung 0:03",
-		"readinessLabel": "Bereitschaft",
+		"readinessLabel": "Status",
 		"tiers": {
 			"needs-work": "Braucht Arbeit",
 			"almost-there": "Fast bereit",
 			"ready-to-publish": "Bereit"
 		},
+		"biggestProblemLabel": "Größtes Problem",
+		"biggestProblem": "Der Einstieg verliert Zuschauer, bevor das Produkt gezeigt wird.",
+		"goalName": "Conversions steigern",
+		"confidence": "95 % Sicherheit",
 		"goal": "Conversions steigern · 92%",
-		"fixTitle": "Schwacher Hook · 0:00–0:03",
-		"fixDetail": "Bei 0:01 auf das Produkt in der Hand schneiden",
+		"fixTimestamp": "0:00–0:03",
+		"fixImpact": "Größte Wirkung",
+		"fixTitle": "Schwacher Hook",
+		"fixDetail": "Zeig das Produkt bei 0:01 direkt in die Kamera",
 		"trendingSound": "Trend-Sound"
 	},
 	"SignIn": {
@@ -84,7 +93,7 @@
 		"backHome": "Zur Startseite",
 		"eyebrow": "Erstes Video auditieren — kostenlos",
 		"title": "Warum wird dieses Video zünden oder floppen?",
-		"copy": "Lade deine TikTok-, Instagram-Reels- oder YouTube-Shorts-Ad hoch. In etwa 90 Sekunden erhältst du ein komplettes Audit — Hook, Retention, tote Momente, CTA, Trust und den exakten Fix für jedes Thema.",
+		"copy": "Lade deine TikTok-, Instagram-Reels- oder YouTube-Shorts-Anzeige hoch und erfahre genau, was Zuschauer verliert, was funktioniert und den exakten Fix für jede schwache Stelle — bevor du veröffentlichst.",
 		"dropzone": {
 			"title": "Ziehe dein Video hierher, um es zu auditieren",
 			"formats": "MP4 oder MOV · vertikal 9:16 · bis zu 3 Min",
@@ -135,7 +144,7 @@
 			"failedTitle": "Audit fehlgeschlagen",
 			"copy": "Wir betrachten es so, wie der Algorithmus — und dein Käufer — es sehen.",
 			"failedCopy": "Die Analyse wurde gestoppt, bevor der Report erstellt werden konnte.",
-			"platform": "Short-form Creative",
+			"platform": "Short-form-Anzeige",
 			"chooseAnother": "Anderes wählen",
 			"steps": {
 				"media": {
@@ -152,13 +161,13 @@
 				},
 				"audit": {
 					"label": "Scoring & Fixes schreiben",
-					"source": "Creative-KI"
+					"source": "Analyse-KI"
 				}
 			}
 		},
 		"report": {
 			"auditComplete": "Audit abgeschlossen",
-			"title": "Hier ist dein Creative-Audit",
+			"title": "Hier ist dein Anzeigen-Audit",
 			"auditAnother": "Weiteres auditieren",
 			"shareReport": "Report teilen",
 			"reportFile": "creative-audit.report",
@@ -172,12 +181,12 @@
 				"almost-there": "Fast bereit",
 				"ready-to-publish": "Bereit zum Posten"
 			},
-			"readinessLabel": "Bereitschaft",
+			"readinessLabel": "Status",
 			"readinessAria": "Aktuell {current}, Prognose {predicted} nach Fixes",
 			"readinessLiftCopy": "Mit den Fixes unten geht es von {current} auf {predicted}.",
 			"readinessHoldingCopy": "Im Moment ist es {current} — die Fixes unten sind das, was es zurückhält.",
 			"readinessReadyCopy": "Bereit zum Posten — keine dringenden Edits nötig.",
-			"readinessAfterFixesLabel": "Bereitschaft nach Fixes",
+			"readinessAfterFixesLabel": "Status nach Fixes",
 			"keep": "Beibehalten",
 			"whatToChange": "Was ändern",
 			"readout": "Befund",
@@ -204,7 +213,7 @@
 			"verdictReady": "Bereit!",
 			"verdictNotYet": "Noch nicht",
 			"verdictPoor": "Nicht bereit",
-			"noFixesFallback": "Dieses Creative ist bereits in guter Form.",
+			"noFixesFallback": "Diese Anzeige ist bereits in guter Form.",
 			"compactGoal": {
 				"conversions": "Conversions steigern",
 				"views": "Views steigern",

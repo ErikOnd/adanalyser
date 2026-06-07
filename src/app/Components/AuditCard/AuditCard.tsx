@@ -1,4 +1,3 @@
-import { Badge } from "@/app/Atoms/Badge/Badge";
 import { Icon } from "@/app/Atoms/Icon/Icon";
 import clsx from "clsx";
 import { useTranslations } from "next-intl";
@@ -24,9 +23,21 @@ export function AuditCard() {
 					</div>
 				</div>
 
-				<Badge className={styles.dropOff} icon="bolt" iconClassName={styles.dropOffIcon} iconSize="small" tone="dark">
-					{t("dropOff")}
-				</Badge>
+				<div className={styles.biggestProblem}>
+					<span className={styles.sectionLabel}>{t("biggestProblemLabel")}</span>
+					<p className={styles.biggestProblemText}>{t("biggestProblem")}</p>
+				</div>
+
+				<div className={styles.goalRow}>
+					<div className={styles.goalPill}>
+						<Icon name="target" size="small" />
+						<strong>{t("goalName")}</strong>
+					</div>
+					<div className={styles.confidencePill}>
+						<span />
+						{t("confidence")}
+					</div>
+				</div>
 
 				<div className={styles.readiness}>
 					<span className={styles.readinessKicker}>{t("readinessLabel")}</span>
@@ -47,18 +58,22 @@ export function AuditCard() {
 					</div>
 				</div>
 
-				<div className={styles.goalPill}>
-					<Icon name="target" size="small" />
-					<strong>{t("goal")}</strong>
-				</div>
-
 				<div className={styles.fix}>
-					<span>
-						<Icon name="bolt" size="small" />
-					</span>
-					<div>
-						<strong>{t("fixTitle")}</strong>
-						<p>{t("fixDetail")}</p>
+					<div className={styles.fixMeta}>
+						<span className={styles.fixTimestamp}>
+							<Icon name="clock" size="small" />
+							{t("fixTimestamp")}
+						</span>
+						<span className={styles.fixImpact}>{t("fixImpact")}</span>
+					</div>
+					<div className={styles.fixBody}>
+						<span className={styles.fixIconWrap}>
+							<Icon name="bolt" size="small" />
+						</span>
+						<div>
+							<strong>{t("fixTitle")}</strong>
+							<p>{t("fixDetail")}</p>
+						</div>
 					</div>
 				</div>
 			</div>
